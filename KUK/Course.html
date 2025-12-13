@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - University PYQ Portal</title>
+    
+    <link data-default-icon="https://pandit777.github.io/pyq/logo.png" rel="icon" sizes="192x192" href="https://pandit777.github.io/pyq/logo.png" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ---------------------------------------------------------------------- */
+        /* PROFESSIONAL COLOR VARIABLES (ENHANCED COLOR SCHEME) */
+        /* ---------------------------------------------------------------------- */
+        :root {
+            --primary-dark-navy: #1a237e;
+            --primary-medium-blue: #283593;
+            --accent-yellow: #ffc107;
+            --accent-gold: #ffb300;
+            --gradient-primary: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+            --gradient-accent: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+            --gradient-card: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            --text-main: #2d3748;
+            --text-light: #718096;
+            --background-light: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --shadow-strong: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Smooth scrolling for the whole page */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background: var(--background-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ---------------------------------------------------------------------- */
+        /* HEADER & NAVIGATION STYLES (CONSISTENT WITH OTHER PAGES) */
+        /* ---------------------------------------------------------------------- */
+        header {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-medium);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            position: relative;
+            z-index: 100;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .logo-img {
+            width: 60px;
+            height: 60px;
+            margin-right: 1rem;
+            border-radius: 12px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+            background: white;
+            padding: 5px;
+        }
+        
+        .logo-area:hover .logo-img {
+            transform: rotate(-5deg) scale(1.1); 
+        }
+
+        .header-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #ffeb3b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .desktop-nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 5px;
+        }
+
+        .desktop-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-left: 5px;
+            cursor: pointer; 
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .desktop-nav ul li a:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .desktop-nav ul li a:hover:before {
+            left: 100%;
+        }
+
+        .desktop-nav ul li a:hover {
+            background-color: rgba(255,255,255,0.1); 
+            color: var(--accent-yellow); 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .active-nav-link {
+            background-color: rgba(255,255,255,0.15) !important;
+            color: var(--accent-yellow) !important;
+            border: 1px solid var(--accent-yellow) !important;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3) !important;
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none; 
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 100;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: scale(1.05);
+        }
+
+        /* Mobile Nav Container */
+        .mobile-nav {
+            display: none; 
+            background: var(--gradient-primary);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-strong);
+            width: 100%; 
+            position: absolute; 
+            top: 100%; 
+            left: 0;
+            z-index: 99; 
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mobile-nav ul li {
+            margin: 12px 0;
+        }
+
+        .mobile-nav ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 12px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent; 
+            font-weight: 600;
+        }
+
+        .mobile-nav ul li a:hover {
+            background-color: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        /* ---------------------------------------------------------------------- */
+        /* MARQUEE BAR (ENHANCED) */
+        /* ---------------------------------------------------------------------- */
+        marquee {
+            background: var(--gradient-accent);
+            color: var(--primary-dark-navy);
+            padding: 12px 0; 
+            font-weight: 700;
+            font-size: 1rem;
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            line-height: 1; 
+        }
+
+        /* ---------------------------------------------------------------------- */
+        /* FOOTER STYLES (ENHANCED) */
+        /* ---------------------------------------------------------------------- */
+        footer {
+            margin-top: auto;
+            background: var(--gradient-primary); 
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            width: 100%;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        footer:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-accent);
+        }
+
+        /* ---------------------------------------------------------------------- */
+        /* GENERAL ANIMATION STYLES */
+        /* ---------------------------------------------------------------------- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .content-section {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* ---------------------------------------------------------------------- */
+        /* COURSE BUTTONS STYLES */
+        /* ---------------------------------------------------------------------- */
+        .course-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .course-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        .course-button:hover::before {
+            left: 100%;
+        }
+        
+        .course-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .course-button:active {
+            transform: translateY(-2px);
+        }
+        
+        .course-button i {
+            font-size: 1.2rem;
+        }
+        
+        .welcome-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-top: 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .welcome-section:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            transform: translateY(-3px);
+        }
+        
+        /* Animation for page load */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        main {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-medium-blue);
+            color: var(--primary-dark-navy);
+        }
+
+        /* Back to Home Button */
+        .back-home-btn {
+            display: inline-block;
+            background: var(--gradient-accent);
+            color: var(--primary-dark-navy);
+            padding: 0.8rem 2.2rem;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .back-home-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .back-home-btn:hover:before {
+            left: 100%;
+        }
+
+        .back-home-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
+        }
+
+        /* ---------------------------------------------------------------------- */
+        /* MOBILE MEDIA QUERY */
+        /* ---------------------------------------------------------------------- */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 1rem;
+            }
+            .logo-img {
+                width: 50px;
+                height: 50px;
+                margin-right: 0.8rem;
+            }
+            .header-title {
+                font-size: 1.6rem;
+            }
+            
+            /* Hide Desktop Nav and Show Mobile Button */
+            .desktop-nav { 
+                display: none; 
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-title {
+                font-size: 1.3rem;
+                margin-top: 1.5rem;
+            }
+            
+            .course-button {
+                padding: 15px 20px !important;
+                font-size: 1rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 1.4rem;
+            }
+            
+            .logo-img {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .category-title {
+                font-size: 1.2rem;
+            }
+            
+            .course-button {
+                padding: 12px 16px !important;
+                font-size: 0.9rem !important;
+            }
+            
+            footer {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Consistent Header -->
+    <header>
+        <div class="header-content">
+            
+            <a href="https://pandit777.github.io/pyq/index.html" class="logo-area">
+                <img src="https://pandit777.github.io/pyq/logo.png" alt="University PYQ Portal Logo" class="logo-img"> 
+                <h1 class="header-title">Exam Saarthi</h1>
+            </a>
+            
+            <nav class="desktop-nav">
+                <ul>
+                    <li><a href="https://pandit777.github.io/pyq/index.html">Home</a></li>
+                    <li><a href="https://pandit777.github.io/pyq/Universities.html">Universities</a></li>
+                    <li><a href="https://pandit777.github.io/pyq/About.html">About</a></li>
+                    <li><a href="https://pandit777.github.io/pyq/Contact.html">Contact</a></li>
+                    <li><a href="https://kuk.ac.in/syllabi/" target="_blank">Syllabus</a></li>
+                </ul>
+            </nav>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <marquee behavior="scroll" direction="left" scrollamount="6">
+            <i class="fas fa-bullhorn mr-2"></i> Welcome to the KUK PYQ Portal - Your Gateway to Academic Excellence! Explore courses and previous year papers.
+        </marquee>
+        
+        <div class="mobile-nav" id="mobileNav">
+            <ul>
+                <li><a href="https://pandit777.github.io/pyq/index.html">Home</a></li>
+                <li><a href="https://pandit777.github.io/pyq/Universities.html">Universities</a></li>
+                <li><a href="https://pandit777.github.io/pyq/About.html">About</a></li>
+                <li><a href="https://pandit777.github.io/pyq/Contact.html">Contact</a></li>
+                <li><a href="https://kuk.ac.in/syllabi/" target="_blank">Syllabus</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-6 flex flex-col items-center">
+
+        <!-- Back to Home Button -->
+        <div class="w-full max-w-6xl mb-6 text-left">
+            <a href="https://pandit777.github.io/pyq/Universities.html" class="back-home-btn">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Home
+            </a>
+        </div>
+
+        <!-- Course Selection Buttons -->
+        <section class="mt-10 w-full max-w-6xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Explore KUK Courses</h2>
+            
+            <!-- Undergraduate Courses -->
+            <h3 class="category-title">Undergraduate Programs</h3>
+            <div id="course-selection" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 course-grid">
+                <button onclick="btech()" class="course-button bg-blue-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>📚</i> B.Tech
+                </button>
+                <button onclick="bca()" class="course-button bg-green-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>💻</i> BCA
+                </button>
+                <button onclick="bcom()" class="course-button bg-purple-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>📊</i> B.Com
+                </button>
+                <button onclick="bba()" class="course-button bg-red-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>🏢</i> BBA
+                </button>
+                <button onclick="bsc()" class="course-button bg-amber-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>🔬</i> BSc
+                </button>
+                <button onclick="ba()" class="course-button bg-teal-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>🎓</i> BA
+                </button>
+                <button onclick="bpharmacy()" class="course-button bg-cyan-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>💊</i> B.Pharmacy
+                </button>
+                <button onclick="ballb()" class="course-button bg-indigo-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>⚖️</i> BALLB
+                </button>
+                <button onclick="bjmc()" class="course-button bg-pink-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>📰</i> BJMC
+                </button>
+                <button onclick="bhmct()" class="course-button bg-rose-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>🏨</i> BHMCT
+                </button>
+                <button onclick="bed()" class="course-button bg-lime-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-lime-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>👨‍🏫</i> B.Ed
+                </button>
+                <button onclick="bped()" class="course-button bg-emerald-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>🏃‍♂️</i> BPED
+                </button>
+                <button onclick="msw()" class="course-button bg-fuchsia-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>🤝</i> MSW
+                </button>
+            </div>
+            
+            <!-- Postgraduate Courses -->
+            <h3 class="category-title">Postgraduate Programs</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 course-grid">
+                <button onclick="mtech()" class="course-button bg-blue-700 text-white py-5 px-6 rounded-xl shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>🔧</i> M.Tech
+                </button>
+                <button onclick="ma()" class="course-button bg-teal-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>🎓</i> MA
+                </button>
+                <button onclick="mcom()" class="course-button bg-purple-600 text-white py-5 px-6 rounded-xl shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>📊</i> M.Com
+                </button>
+                <button onclick="msc()" class="course-button bg-amber-700 text-white py-5 px-6 rounded-xl shadow-md hover:bg-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>🧪</i> MSc
+                </button>
+                <button onclick="mba()" class="course-button bg-red-700 text-white py-5 px-6 rounded-xl shadow-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>📈</i> MBA
+                </button>
+                <button onclick="mca()" class="course-button bg-green-700 text-white py-5 px-6 rounded-xl shadow-md hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>💾</i> MCA
+                </button>
+                <button onclick="mpharma()" class="course-button bg-cyan-700 text-white py-5 px-6 rounded-xl shadow-md hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>🧬</i> M.Pharma
+                </button>
+                <button onclick="llb()" class="course-button bg-indigo-700 text-white py-5 px-6 rounded-xl shadow-md hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>📜</i> LLB
+                </button>
+            </div>
+            
+            <!-- Research Programs -->
+            <h3 class="category-title">Research Programs</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 course-grid">
+                <button onclick="phd()" class="course-button bg-purple-700 text-white py-5 px-6 rounded-xl shadow-md hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>🔍</i> Ph.D
+                </button>
+                <button onclick="mphil()" class="course-button bg-teal-700 text-white py-5 px-6 rounded-xl shadow-md hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>📖</i> M.Phil
+                </button>
+                <button onclick="dped()" class="course-button bg-emerald-700 text-white py-5 px-6 rounded-xl shadow-md hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-75 text-lg font-semibold">
+                    <i>🏅</i> DPED
+                </button>
+            </div>
+
+            <!-- Quick Info Section -->
+            <div class="mt-12 p-6 bg-white rounded-xl shadow-md border border-gray-100">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">📋 Course Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">How to Use:</h4>
+                        <ul class="text-gray-600 space-y-1">
+                            <li>• Click on any course button to view papers</li>
+                            <li>• Select year and semester for papers</li>
+                            <li>• Download PDFs for offline study</li>
+                            <li>• Search within papers for specific topics</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">Features:</h4>
+                        <ul class="text-gray-600 space-y-1">
+                            <li>• All previous year question papers</li>
+                            <li>• Semester-wise organization</li>
+                            <li>• Mobile-friendly interface</li>
+                            <li>• Regular updates with new papers</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Consistent Footer -->
+    <footer>
+        &copy; 2025 University PYQ Portal | Designed by Gourav Sharma
+    </footer>
+
+    <script>
+        // Mobile menu toggle functionality
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const mobileNav = document.getElementById('mobileNav');
+            const icon = this.querySelector('i');
+            
+            if (mobileNav.style.display === 'block') {
+                mobileNav.style.display = 'none';
+                icon.className = 'fas fa-bars';
+            } else {
+                mobileNav.style.display = 'block';
+                icon.className = 'fas fa-times';
+            }
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            
+            if (mobileNav.style.display === 'block' && 
+                !mobileNav.contains(event.target) && 
+                !mobileMenuBtn.contains(event.target)) {
+                mobileNav.style.display = 'none';
+                mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+            }
+        });
+
+        // Add scroll effect to header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(26, 35, 126, 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.background = '';
+                header.style.backdropFilter = '';
+            }
+        });
+
+        // Existing functions for course buttons
+        function btech(){
+            window.location.href="B.Tech.html";
+        }
+
+        function bca(){
+            window.location.href="BCA.html";
+        }
+
+        function bcom(){
+            window.location.href="BCom.html";
+        }
+
+        function bba(){
+            window.location.href="BBA.html";
+        }
+
+        function bsc(){
+            window.location.href="BSC.html";
+        }
+
+        function ba(){
+            window.location.href="BA.html";
+        }
+        
+        // New functions for additional courses
+        function mtech(){
+            window.location.href="MTech.html";
+        }
+
+        function ma(){
+            window.location.href="MA.html";
+        }
+
+        function msc(){
+            window.location.href="MSc.html";
+        }
+
+        function mba(){
+            window.location.href="MBA.html";
+        }
+
+        function mca(){
+            window.location.href="MCA.html";
+        }
+
+        function mcom(){
+            window.location.href="MCom.html";
+        }
+
+        function bed(){
+            window.location.href="BEd.html";
+        }
+
+        function bhmct(){
+            window.location.href="BHMCT.html";
+        }
+
+        function ballb(){
+            window.location.href="BALLB.html";
+        }
+
+        function bjmc(){
+            window.location.href="BJMC.html";
+        }
+
+        function bped(){
+            window.location.href="BPED.html";
+        }
+
+        function dped(){
+            window.location.href="DPED.html";
+        }
+        
+        // Functions for newly requested courses
+        function mpharma(){
+            window.location.href="MPharma.html";
+        }
+
+        function bpharmacy(){
+            window.location.href="BPharmacy.html";
+        }
+
+        function llb(){
+            window.location.href="LLB.html";
+        }
+
+        function phd(){
+            window.location.href="PHD.html";
+        }
+
+        function mphil(){
+            window.location.href="MPhil.html";
+        }
+
+        function msw(){
+            window.location.href="MSW.html";
+        }
+    </script>
+</body>
+</html>
+

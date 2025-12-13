@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://www.examsaarthi.com/" />
+  <link rel="manifest" href="/manifest.json">
+  <title>Exam Saarthi - All University Previous Year Question Papers</title>
+  <meta name="description" content="Exam Saarthi provides all university previous year question papers (PYQ) for free. Download semester-wise question papers for easy exam preparation.">
+  <meta name="keywords" content="exam saarthi,exam prepration,exam pyq,university pyqs,igu,indira ghandhi university pyq ,examsaarthi igu, examsaarthi btech pyq, examsaarthi bca pyq, igu pyq,pyq, previous year question papers, all university pyq, semester wise question papers, university exam papers">
+  <meta name="author" content="Exam Saarthi">
+  
+  <link data-default-icon="https://www.examsaarthi.com/logo.png" rel="icon" sizes="192x192" href="https://www.examsaarthi.com/logo.png" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ---------------------------------------------------------------------- */
+    /* PROFESSIONAL COLOR VARIABLES (ENHANCED COLOR SCHEME) */
+    /* ---------------------------------------------------------------------- */
+    :root {
+      --primary-dark-navy: #1a237e;
+      --primary-medium-blue: #283593;
+      --accent-yellow: #ffc107;
+      --accent-gold: #ffb300;
+      --gradient-primary: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+      --gradient-accent: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+      --gradient-card: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      --text-main: #2d3748;
+      --text-light: #718096;
+      --background-light: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+      --shadow-strong: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Smooth scrolling for the whole page */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+      background: var(--background-light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* HEADER & NAVIGATION STYLES (ENHANCED) */
+    /* ---------------------------------------------------------------------- */
+    header {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-medium);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      position: relative;
+      z-index: 100;
+    }
+    
+    .logo-area {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+    }
+
+    .logo-img {
+        width: 60px;
+        height: 60px;
+        margin-right: 1rem;
+        border-radius: 12px;
+        object-fit: contain;
+        transition: transform 0s ease;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        background: white;
+        padding: 5px;
+    }
+    
+    .logo-area:hover .logo-img {
+        transform: rotate(-5deg) scale(1.1); 
+    }
+
+    .header-title {
+        font-size: 2.2rem;
+        font-weight: 900;
+        letter-spacing: 0.5px;
+        background: linear-gradient(135deg, #ffffff 0%, #ffeb3b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .desktop-nav ul {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      gap: 5px;
+    }
+
+    .desktop-nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      margin-left: 5px;
+      cursor: pointer; 
+      border: 1px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .desktop-nav ul li a:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .desktop-nav ul li a:hover:before {
+      left: 100%;
+    }
+
+    .desktop-nav ul li a:hover {
+      background-color: rgba(255,255,255,0.1); 
+      color: var(--accent-yellow); 
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .active-nav-link {
+        background-color: rgba(255,255,255,0.15) !important;
+        color: var(--accent-yellow) !important;
+        border: 1px solid var(--accent-yellow) !important;
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3) !important;
+    }
+    
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none; 
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 100;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 8px 12px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-btn:hover {
+      background-color: rgba(255,255,255,0.2);
+      transform: scale(1.05);
+    }
+
+    /* Mobile Nav Container */
+    .mobile-nav {
+      display: none; 
+      background: var(--gradient-primary);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-strong);
+      width: 100%; 
+      position: absolute; 
+      top: 100%; 
+      left: 0;
+      z-index: 99; 
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .mobile-nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .mobile-nav ul li {
+      margin: 12px 0;
+    }
+
+    .mobile-nav ul li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 12px 16px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      border: 1px solid transparent; 
+      font-weight: 600;
+    }
+
+    .mobile-nav ul li a:hover {
+      background-color: rgba(255,255,255,0.1);
+      transform: translateX(5px);
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* MARQUEE BAR (ENHANCED) */
+    /* ---------------------------------------------------------------------- */
+    marquee {
+      background: var(--gradient-accent);
+      color: var(--primary-dark-navy);
+      padding: 12px 0; 
+      font-weight: 700;
+      font-size: 1rem;
+      width: 100%;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      line-height: 1; 
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* FOOTER STYLES (ENHANCED) */
+    /* ---------------------------------------------------------------------- */
+    footer {
+      margin-top: auto;
+      background: var(--gradient-primary); 
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      width: 100%;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    footer:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-accent);
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* GENERAL ANIMATION STYLES (ENHANCED) */
+    /* ---------------------------------------------------------------------- */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .content-section {
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* SECTION SPECIFIC STYLES (HOME - ENHANCED) */
+    /* ---------------------------------------------------------------------- */
+    .welcome-section {
+      background: var(--gradient-card);
+      border-radius: 20px;
+      padding: 3rem; 
+      box-shadow: var(--shadow-soft);
+      margin-top: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      transition: all 0.4s ease;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-section:before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .welcome-section:hover:before {
+      opacity: 1;
+    }
+
+    .welcome-section:hover {
+        transform: translateY(-8px); 
+        box-shadow: var(--shadow-strong);
+    }
+    
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary-dark-navy) 0%, var(--primary-medium-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .explore-btn {
+      background: var(--gradient-accent);
+      color: var(--primary-dark-navy);
+      padding: 1rem 2.5rem;
+      border-radius: 12px;
+      font-weight: 800; 
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 15px rgba(255, 193, 7, 0.4); 
+      cursor: pointer;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+    
+    .explore-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.5s;
+    }
+    
+    .explore-btn:hover:before {
+      left: 100%;
+    }
+    
+    .explore-btn:hover {
+      transform: translateY(-5px); 
+      box-shadow: 0 10px 25px rgba(255, 193, 7, 0.6);
+    }
+    
+    /* Enhanced Feature Cards */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .feature-card {
+      background: var(--gradient-card);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow-soft);
+      text-align: center;
+      transition: all 0.4s ease;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-accent);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .feature-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+    
+    /* Team Image Card Styles (ENHANCED) */
+    .team-images-container {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem; 
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .team-image-card {
+      position: relative;
+      background: var(--gradient-card);
+      border-radius: 20px; 
+      box-shadow: var(--shadow-medium); 
+      transition: all 0.4s ease;
+      max-width: 300px;
+      width: 100%;
+      text-align: center;
+      padding: 2rem 1.5rem; 
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+    
+    .team-image-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-accent);
+    }
+    
+    .team-image-card:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-strong);
+    }
+    
+    .team-image {
+      width: 160px; 
+      height: 160px; 
+      object-fit: cover;
+      display: block;
+      border-radius: 50%;
+      margin-bottom: 1.5rem; 
+      border: 5px solid var(--accent-yellow); 
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
+      transition: transform 0.3s ease;
+    }
+
+    .team-image-card:hover .team-image {
+        transform: scale(1.05);
+    }
+
+    .image-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary-dark-navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .image-role {
+      font-size: 1rem;
+      color: var(--text-light);
+      font-weight: 600;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Stats Section */
+    .stats-container {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 3rem 0;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--gradient-card);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+      transition: all 0.3s ease;
+      min-width: 180px;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-medium);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-dark-navy) 0%, var(--primary-medium-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+    
+    /* ---------------------------------------------------------------------- */
+    /* MOBILE MEDIA QUERY (ENHANCED) */
+    /* ---------------------------------------------------------------------- */
+    @media (max-width: 768px) {
+      .header-content {
+        padding: 1rem;
+      }
+      .logo-img {
+        width: 50px;
+        height: 50px;
+        margin-right: 0.8rem;
+      }
+      .header-title {
+        font-size: 1.6rem;
+      }
+      
+      /* Hide Desktop Nav and Show Mobile Button */
+      .desktop-nav { 
+        display: none; 
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .welcome-section {
+        padding: 2rem 1.5rem;
+        border-radius: 16px;
+      }
+      
+      .hero-title {
+        font-size: 2.2rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .team-images-container {
+        gap: 1.5rem;
+      }
+      
+      .team-image-card {
+        max-width: 90%;
+        padding: 1.5rem 1rem;
+      }
+      
+      .team-image {
+        width: 130px;
+        height: 130px;
+      }
+      
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-container {
+        gap: 1rem;
+      }
+      
+      .stat-card {
+        min-width: 140px;
+        padding: 1.5rem 1rem;
+      }
+      
+      .stat-number {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-title {
+        font-size: 1.4rem;
+      }
+      
+      .logo-img {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .hero-title {
+        font-size: 1.8rem;
+      }
+      
+      .team-images-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .team-image-card {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      
+      <a href="https://www.examsaarthi.com/" class="logo-area">
+        <img src="https://www.examsaarthi.com/logo.png" alt="University PYQ Portal Logo" class="logo-img"> 
+        <h1 class="header-title">Exam Saarthi</h1>
+      </a>
+      
+      <nav class="desktop-nav">
+        <ul>
+          <li><a href="https://www.examsaarthi.com/" class="active-nav-link">Home</a></li>
+          <li><a href="Universities.html">Universities</a></li>
+          <li><a href="About.html">About</a></li>
+          <li><a href="Contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    
+    <marquee behavior="scroll" direction="left" scrollamount="6">
+      <i class="fas fa-bullhorn mr-2"></i> Welcome to the University PYQ Portal - Your Gateway to Academic Excellence for All Universities!
+    </marquee>
+    
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="https://www.examsaarthi.com/" class="active-nav-link">Home</a></li>
+        <li><a href="Universities.html">Universities</a></li>
+        <li><a href="About.html">About</a></li>
+        <li><a href="Contact.html">Contact</a></li>
+
+      </ul>
+    </div>
+  </header>
+
+  <main class="container mx-auto p-4 md:p-6 flex flex-col items-center">
+    
+    <!-- Home Content -->
+    <div class="content-section max-w-5xl w-full">
+      
+      <div class="welcome-section max-w-4xl mx-auto">
+        <h1 class="hero-title">Welcome to University PYQ Portal 🏆</h1>
+        <p class="hero-subtitle mb-8 text-lg text-gray-700">
+          **Explore previous year question papers (PYQs) for all universities and their courses.** Our goal is to make your exam preparation simple, organized, and effective.
+        </p>
+        <a href="Universities.html" class="explore-btn">Explore Universities</a>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <span class="stat-number">50+</span>
+          <span class="stat-label">Universities</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">5000+</span>
+          <span class="stat-label">PYQs</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">100+</span>
+          <span class="stat-label">Courses</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">24/7</span>
+          <span class="stat-label">Access</span>
+        </div>
+      </div>
+
+      <div class="welcome-section max-w-5xl mt-10 text-left">
+        <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">✅ What You'll Find Here</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <i class="fas fa-book-open feature-icon"></i>
+            <h3 class="text-xl font-bold mb-3 text-gray-800">Comprehensive PYQs</h3>
+            <p class="text-gray-600">All UG and PG Courses PYQs in one place from multiple universities.</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-mobile-alt feature-icon"></i>
+            <h3 class="text-xl font-bold mb-3 text-gray-800">Mobile Friendly</h3>
+            <p class="text-gray-600">Easy navigation and modern responsive design for all devices.</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-check-circle feature-icon"></i>
+            <h3 class="text-xl font-bold mb-3 text-gray-800">Verified Content</h3>
+            <p class="text-gray-600">Accurate papers collected from verified university sources.</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-graduation-cap feature-icon"></i>
+            <h3 class="text-xl font-bold mb-3 text-gray-800">Free Access</h3>
+            <p class="text-gray-600">Completely free and accessible for every student.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="welcome-section max-w-5xl mt-10 text-center">
+        <h2 class="text-3xl font-bold mb-6 text-gray-800">🎯 Our Mission</h2>
+        <p class="text-gray-700 leading-relaxed text-lg mb-6">
+          To empower all students with easy access to academic materials and promote smart learning.  
+          With our portal, you can focus on understanding and revising instead of searching endlessly for papers.
+        </p>
+        
+        <div class="team-images-container">
+          <div class="team-image-card floating">
+            <img src="https://www.examsaarthi.com/Dev.jpg" alt="Developer Image" class="team-image">
+            <div class="image-overlay">
+              <div class="image-title">Gourav Sharma</div>
+              <div class="image-role">Developer & Founder</div>
+            </div>
+          </div>
+          
+          <div class="team-image-card floating" style="animation-delay: 2s;">
+            <img src="https://pandit777.github.io/pyq/Edit.jpg" alt="Editor Image" class="team-image">
+            <div class="image-overlay">
+              <div class="image-title">Mahesh Verma</div>
+              <div class="image-role">Developer & Founder</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile-specific section -->
+      <div class="welcome-section max-w-5xl mt-10 text-center md:hidden">
+        <h2 class="text-2xl font-bold mb-3 text-gray-800">📱 Mobile Friendly</h2>
+        <p class="text-gray-700 leading-relaxed">
+          This portal is fully optimized for mobile devices. Access your PYQs anytime, anywhere with our responsive design.
+        </p>
+        <div class="flex justify-center mt-4 space-x-4">
+          <div class="text-center">
+            <i class="fas fa-mobile-alt text-3xl text-blue-500 mb-2"></i>
+            <p class="text-sm">Easy Navigation</p>
+          </div>
+          <div class="text-center">
+            <i class="fas fa-search text-3xl text-green-500 mb-2"></i>
+            <p class="text-sm">Quick Search</p>
+          </div>
+          <div class="text-center">
+            <i class="fas fa-download text-3xl text-purple-500 mb-2"></i>
+            <p class="text-sm">Easy Downloads</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    &copy; 2025 University PYQ Portal | Designed by Gourav Sharma
+  </footer>
+
+  <script>
+    // Mobile menu toggle functionality
+    document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+      const mobileNav = document.getElementById('mobileNav');
+      const icon = this.querySelector('i');
+      
+      if (mobileNav.style.display === 'block') {
+        mobileNav.style.display = 'none';
+        icon.className = 'fas fa-bars';
+      } else {
+        mobileNav.style.display = 'block';
+        icon.className = 'fas fa-times';
+      }
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+      const mobileNav = document.getElementById('mobileNav');
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      
+      if (mobileNav.style.display === 'block' && 
+          !mobileNav.contains(event.target) && 
+          !mobileMenuBtn.contains(event.target)) {
+        
+        mobileNav.style.display = 'none';
+        if (mobileMenuBtn.querySelector('i')) {
+          mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+        }
+      }
+    });
+
+    // Add scroll effect to header
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('header');
+      if (window.scrollY > 50) {
+        header.style.background = 'rgba(26, 35, 126, 0.95)';
+        header.style.backdropFilter = 'blur(10px)';
+      } else {
+        header.style.background = '';
+        header.style.backdropFilter = '';
+      }
+    });
+
+    // Add animation to stats on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const stats = document.querySelectorAll('.stat-number');
+        stats.forEach(stat => {
+          stat.style.animation = 'fadeIn 0.8s ease-out';
+        });
+      }, 500);
+    });
+  </script>
+
+</body>
+</html>
