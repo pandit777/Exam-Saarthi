@@ -1,11 +1,800 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Same head content as your universities page -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universities - University PYQ Portal</title>
+  <link rel="canonical" href="https://www.examsaarthi.com/" />
+  <meta name="description" content="Exam Saarthi provides all university previous year question papers (PYQ) for free. Download semester-wise question papers for easy exam preparation.">
+  <meta name="keywords" content="exam saarthi,exam prepration,exam pyq,university pyqs,igu,indira ghandhi university pyq ,examsaarthi igu, examsaarthi btech pyq, examsaarthi bca pyq, igu pyq,pyq, previous year question papers, all university pyq, semester wise question papers, university exam papers">
+  <meta name="author" content="Exam Saarthi">
+
+  
+  <link data-default-icon="https://pandit777.github.io/pyq/logo.png" rel="icon" sizes="192x192" href="https://pandit777.github.io/pyq/logo.png" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ---------------------------------------------------------------------- */
+    /* PROFESSIONAL COLOR VARIABLES (ENHANCED COLOR SCHEME) */
+    /* ---------------------------------------------------------------------- */
+    :root {
+      --primary-dark-navy: #1a237e;
+      --primary-medium-blue: #283593;
+      --accent-yellow: #ffc107;
+      --accent-gold: #ffb300;
+      --gradient-primary: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+      --gradient-accent: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+      --gradient-card: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      --text-main: #2d3748;
+      --text-light: #718096;
+      --background-light: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+      --shadow-strong: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Smooth scrolling for the whole page */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+      background: var(--background-light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* HEADER & NAVIGATION STYLES (ENHANCED) */
+    /* ---------------------------------------------------------------------- */
+    header {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-medium);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      position: relative;
+      z-index: 100;
+    }
+    
+    .logo-area {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+    }
+
+    .logo-img {
+        width: 60px;
+        height: 60px;
+        margin-right: 1rem;
+        border-radius: 12px;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        background: white;
+        padding: 5px;
+    }
+    
+    .logo-area:hover .logo-img {
+        transform: rotate(-5deg) scale(1.1); 
+    }
+
+    .header-title {
+        font-size: 2.2rem;
+        font-weight: 900;
+        letter-spacing: 0.5px;
+        background: linear-gradient(135deg, #ffffff 0%, #ffeb3b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .desktop-nav ul {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      gap: 5px;
+    }
+
+    .desktop-nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      margin-left: 5px;
+      cursor: pointer; 
+      border: 1px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .desktop-nav ul li a:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .desktop-nav ul li a:hover:before {
+      left: 100%;
+    }
+
+    .desktop-nav ul li a:hover {
+      background-color: rgba(255,255,255,0.1); 
+      color: var(--accent-yellow); 
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .active-nav-link {
+        background-color: rgba(255,255,255,0.15) !important;
+        color: var(--accent-yellow) !important;
+        border: 1px solid var(--accent-yellow) !important;
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3) !important;
+    }
+    
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none; 
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 100;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 8px 12px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-btn:hover {
+      background-color: rgba(255,255,255,0.2);
+      transform: scale(1.05);
+    }
+
+    /* Mobile Nav Container */
+    .mobile-nav {
+      display: none; 
+      background: var(--gradient-primary);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-strong);
+      width: 100%; 
+      position: absolute; 
+      top: 100%; 
+      left: 0;
+      z-index: 99; 
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .mobile-nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .mobile-nav ul li {
+      margin: 12px 0;
+    }
+
+    .mobile-nav ul li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 12px 16px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      border: 1px solid transparent; 
+      font-weight: 600;
+    }
+
+    .mobile-nav ul li a:hover {
+      background-color: rgba(255,255,255,0.1);
+      transform: translateX(5px);
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* MARQUEE BAR (ENHANCED) */
+    /* ---------------------------------------------------------------------- */
+    marquee {
+      background: var(--gradient-accent);
+      color: var(--primary-dark-navy);
+      padding: 12px 0; 
+      font-weight: 700;
+      font-size: 1rem;
+      width: 100%;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      line-height: 1; 
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* FOOTER STYLES (ENHANCED) */
+    /* ---------------------------------------------------------------------- */
+    footer {
+      margin-top: auto;
+      background: var(--gradient-primary); 
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      width: 100%;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    footer:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-accent);
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* GENERAL ANIMATION STYLES (ENHANCED) */
+    /* ---------------------------------------------------------------------- */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .content-section {
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* SECTION SPECIFIC STYLES (UNIVERSITIES & CARDS - ENHANCED) */
+    /* ---------------------------------------------------------------------- */
+    .search-container {
+        margin-bottom: 3rem;
+        position: relative;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #universitySearch {
+        width: 100%;
+        padding: 1.2rem 1.5rem 1.2rem 4rem;
+        border-radius: 50px;
+        border: 2px solid var(--primary-medium-blue);
+        box-shadow: var(--shadow-soft);
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    #universitySearch:focus {
+        outline: none;
+        border-color: var(--accent-yellow);
+        box-shadow: 0 0 20px rgba(255, 193, 7, 0.5);
+        transform: scale(1.02);
+    }
+    
+    .search-icon {
+        position: absolute;
+        left: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--primary-medium-blue);
+        font-size: 1.3rem;
+        z-index: 2;
+    }
+    
+    .university-card {
+        background: var(--gradient-card);
+        padding: 2rem 1.5rem;
+        border-radius: 16px;
+        box-shadow: var(--shadow-soft);
+        text-align: center;
+        transition: all 0.4s ease-in-out;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        height: 100%; 
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        animation: fadeIn 0.8s ease-out;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .university-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-accent);
+    }
+
+    .university-card:hover {
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: var(--shadow-strong);
+    }
+
+    .university-icon {
+        font-size: 3.5rem;
+        color: var(--accent-yellow);
+        margin-bottom: 1.5rem;
+        display: inline-block;
+        transition: all 0.3s;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .university-card:hover .university-icon {
+        transform: scale(1.2) rotate(5deg);
+        color: var(--accent-gold);
+    }
+
+    .card-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--primary-dark-navy);
+        margin-bottom: 0.5rem;
+    }
+
+    .card-subtitle {
+        font-size: 1rem;
+        color: var(--text-light);
+        margin-bottom: 1.5rem;
+    }
+
+    .view-btn {
+        display: inline-block;
+        background: var(--gradient-primary);
+        color: white;
+        padding: 0.8rem 2.2rem;
+        border-radius: 10px;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        margin-top: auto; 
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        border: none;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+    }
+
+    .view-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .view-btn:hover:before {
+      left: 100%;
+    }
+
+    .view-btn:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Back to Home Button */
+    .back-home-btn {
+        display: inline-block;
+        background: var(--gradient-accent);
+        color: var(--primary-dark-navy);
+        padding: 0.8rem 2.2rem;
+        border-radius: 10px;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        margin-bottom: 2rem;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
+        border: none;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+    }
+
+    .back-home-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.5s;
+    }
+
+    .back-home-btn:hover:before {
+      left: 100%;
+    }
+
+    .back-home-btn:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
+    }
+    
+    /* ---------------------------------------------------------------------- */
+    /* MOBILE MEDIA QUERY (ENHANCED) */
+    /* ---------------------------------------------------------------------- */
+    @media (max-width: 768px) {
+      .header-content {
+        padding: 1rem;
+      }
+      .logo-img {
+        width: 50px;
+        height: 50px;
+        margin-right: 0.8rem;
+      }
+      .header-title {
+        font-size: 1.6rem;
+      }
+      
+      /* Hide Desktop Nav and Show Mobile Button */
+      .desktop-nav { 
+        display: none; 
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .search-icon {
+        left: 1.2rem;
+      }
+      
+      #universitySearch {
+        padding: 1rem 1.5rem 1rem 3.5rem;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-title {
+        font-size: 1.4rem;
+      }
+      
+      .logo-img {
+        width: 45px;
+        height: 45px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- No body content, app.js will inject everything -->
-  
-  <script src="universities-app.js"></script> <!-- दूसरा app.js -->
+
+  <header>
+    <div class="header-content">
+      
+      <a href="https://pandit777.github.io/pyq/index.html" class="logo-area">
+        <img src="https://pandit777.github.io/pyq/logo.png" alt="University PYQ Portal Logo" class="logo-img"> 
+        <h1 class="header-title">Exam Saarthi</h1>
+      </a>
+      
+      <nav class="desktop-nav">
+        <ul>
+          <li><a href="https://pandit777.github.io/pyq/index.html">Home</a></li>
+          <li><a href="Universities.html" class="active-nav-link">Universities</a></li>
+          <li><a href="About.html">About</a></li>
+          <li><a href="Contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    
+    <marquee behavior="scroll" direction="left" scrollamount="6">
+      <i class="fas fa-bullhorn mr-2"></i> Browse universities and find previous year question papers for all courses! Search instantly by university name.
+    </marquee>
+    
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Universities.html" class="active-nav-link">Universities</a></li>
+        <li><a href="About.html">About</a></li>
+        <li><a href="Contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container mx-auto p-4 md:p-6 flex flex-col items-center">
+    
+    <!-- Back to Home Button -->
+    <div class="w-full max-w-6xl mb-6 text-left">
+      <a href="https://pandit777.github.io/pyq/index.html" class="back-home-btn">
+        <i class="fas fa-arrow-left mr-2"></i> Back to Home
+      </a>
+    </div>
+
+    <!-- Universities Content -->
+    <div class="content-section max-w-6xl w-full">
+        <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-2">Explore Universities</h1>
+        <p class="text-center text-xl text-gray-600 mb-8">Select your university or <strong>search instantly</strong> to find PYQs.</p>
+        
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="universitySearch" placeholder="Search University Name (e.g., IGU, KUK, DU)" onkeyup="filterUniversities()">
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="universityGrid">
+            
+            <!-- IGU University Card - Course.html Link Added -->
+            <div class="university-card">
+                <i class="fas fa-university university-icon"></i>
+                <div>
+                  <h3 class="card-title">Indira Gandhi University (IGU)</h3>
+                  <p class="card-subtitle">Meerpur, Rewari</p>
+                </div>
+                <a href="/IGU/Course.html" class="view-btn">View Papers</a>
+            </div>
+            
+            <div class="university-card">
+                <i class="fas fa-university university-icon"></i>
+                <div>
+                  <h3 class="card-title">Kurukshetra University (KUK)</h3>
+                  <p class="card-subtitle">Kurukshetra, Haryana</p>
+                </div>
+                <a href="KUK/Course.html" class="view-btn">View Papers</a>
+            </div>
+            
+            <div class="university-card">
+                <i class="fas fa-university university-icon"></i>
+                <div>
+                  <h3 class="card-title">Maharshi Dayanand University (MDU)</h3>
+                  <p class="card-subtitle">Rohtak, Haryana</p>
+                </div>
+                <a href="/MDU/Course.html" class="view-btn">View Papers</a>
+            </div>
+            
+            <div class="university-card">
+                <i class="fas fa-university university-icon"></i>
+                <div>
+                  <h3 class="card-title">Delhi University (DU)</h3>
+                  <p class="card-subtitle">New Delhi</p>
+                </div>
+                <a href="DU/Course.html" class="view-btn">View Papers</a>
+            </div>
+
+            <div class="university-card">
+                <i class="fas fa-university university-icon"></i>
+                <div>
+                  <h3 class="card-title">Guru Jambheshwar University (GJU)</h3>
+                  <p class="card-subtitle">Hisar, Haryana</p>
+                </div>
+                <a href="GJU/Course.html" class="view-btn">View Papers</a>
+            </div>
+
+            <div class="university-card">
+                <i class="fas fa-university university-icon"></i>
+                <div>
+                  <h3 class="card-title">B.P.S. Mahila University</h3>
+                  <p class="card-subtitle">Khanpur Kalan, Haryana</p>
+                </div>
+                <a href="/BPS/Course.html" class="view-btn">View Papers</a>
+            </div>
+
+            <div class="university-card">
+                <i class="fas fa-university university-icon"></i>
+                <div>
+                  <h3 class="card-title">Chaudhary Charan Singh University (CCSU)</h3>
+                  <p class="card-subtitle">Meerut, Uttar Pradesh</p>
+                </div>
+                <a href="/CCSU/Course.html" class="view-btn">View Papers</a>
+            </div>
+
+            <div class="university-card">
+                <i class="fas fa-university university-icon"></i>
+                <div>
+                  <h3 class="card-title">Guru Nanak Dev University (GNDU)</h3>
+                  <p class="card-subtitle">Amritsar, Punjab</p>
+                </div>
+                <a href="/GNDU/Course.html" class="view-btn">View Papers</a>
+            </div>
+
+            <div class="university-card">
+                <i class="fas fa-university university-icon"></i>
+                <div>
+                  <h3 class="card-title">Punjab University (PU)</h3>
+                  <p class="card-subtitle">Chandigarh</p>
+                </div>
+                <a href="/PU/Course.html" class="view-btn">View Papers</a>
+            </div>
+
+            <div class="university-card">
+                <i class="fas fa-university university-icon"></i>
+                <div>
+                  <h3 class="card-title">University of Rajasthan (UOR)</h3>
+                  <p class="card-subtitle">Jaipur, Rajasthan</p>
+                </div>
+                <a href="/UOR/Course.html" class="view-btn">View Papers</a>
+            </div>
+
+            <div class="university-card">
+                <i class="fas fa-university university-icon"></i>
+                <div>
+                  <h3 class="card-title">Jawaharlal Nehru University (JNU)</h3>
+                  <p class="card-subtitle">New Delhi</p>
+                </div>
+                <a href="/JNU/Course.html" class="view-btn">View Papers</a>
+            </div>
+
+            <div class="university-card">
+                <i class="fas fa-university university-icon"></i>
+                <div>
+                  <h3 class="card-title">Banaras Hindu University (BHU)</h3>
+                  <p class="card-subtitle">Varanasi, Uttar Pradesh</p>
+                </div>
+                <a href="/BHU/Course.html" class="view-btn">View Papers</a>
+            </div>
+            
+        </div>
+        
+        <div class="text-center mt-12 p-8 bg-white rounded-2xl shadow-lg border border-gray-100">
+            <i class="fas fa-university text-5xl text-yellow-500 mb-4"></i>
+            <h3 class="text-2xl font-semibold text-gray-700 mb-3">Can't Find Your University?</h3>
+            <p class="text-gray-500 mt-2 text-lg mb-4">We are constantly adding new universities. Contact us to request papers for your university or course.</p>
+            <a href="Contact.html" class="inline-block bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition">
+                Request University
+            </a>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-md text-center">
+                <i class="fas fa-graduation-cap text-3xl text-blue-500 mb-3"></i>
+                <h3 class="text-xl font-bold text-gray-800">All UG/PG Courses</h3>
+                <p class="text-gray-600 mt-2">Complete coverage of undergraduate and postgraduate programs</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md text-center">
+                <i class="fas fa-file-pdf text-3xl text-red-500 mb-3"></i>
+                <h3 class="text-xl font-bold text-gray-800">Downloadable PDFs</h3>
+                <p class="text-gray-600 mt-2">Easy download options for all question papers</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md text-center">
+                <i class="fas fa-search text-3xl text-green-500 mb-3"></i>
+                <h3 class="text-xl font-bold text-gray-800">Advanced Search</h3>
+                <p class="text-gray-600 mt-2">Find papers by year, course, or university</p>
+            </div>
+        </div>
+    </div>
+
+  </main>
+
+  <footer>
+    &copy; 2025 University PYQ Portal | Designed by Gourav Sharma
+  </footer>
+
+  <script>
+    // University Search Filter Function
+    function filterUniversities() {
+      const input = document.getElementById('universitySearch');
+      if (!input) return;
+
+      const filter = input.value.toUpperCase();
+      const grid = document.getElementById('universityGrid');
+      const cards = grid.getElementsByClassName('university-card');
+
+      for (let i = 0; i < cards.length; i++) {
+        const title = cards[i].querySelector('.card-title');
+        const subtitle = cards[i].querySelector('.card-subtitle');
+        const textToSearch = (title.innerText + ' ' + subtitle.innerText).toUpperCase();
+        
+        if (textToSearch.indexOf(filter) > -1) {
+          cards[i].style.display = ''; 
+        } else {
+          cards[i].style.display = 'none'; 
+        }
+      }
+    }
+
+    // Show coming soon message for other universities
+    function showComingSoon(universityName) {
+      alert(`Papers for ${universityName} will be available soon!\nWe're working on adding all papers.\n\nCurrently available: Indira Gandhi University (IGU)`);
+    }
+
+    // Mobile menu toggle functionality
+    document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+      const mobileNav = document.getElementById('mobileNav');
+      const icon = this.querySelector('i');
+      
+      if (mobileNav.style.display === 'block') {
+        mobileNav.style.display = 'none';
+        icon.className = 'fas fa-bars';
+      } else {
+        mobileNav.style.display = 'block';
+        icon.className = 'fas fa-times';
+      }
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+      const mobileNav = document.getElementById('mobileNav');
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      
+      if (mobileNav.style.display === 'block' && 
+          !mobileNav.contains(event.target) && 
+          !mobileMenuBtn.contains(event.target)) {
+        
+        mobileNav.style.display = 'none';
+        if (mobileMenuBtn.querySelector('i')) {
+          mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+        }
+      }
+    });
+
+    // Add scroll effect to header
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('header');
+      if (window.scrollY > 50) {
+        header.style.background = 'rgba(26, 35, 126, 0.95)';
+        header.style.backdropFilter = 'blur(10px)';
+      } else {
+        header.style.background = '';
+        header.style.backdropFilter = '';
+      }
+    });
+
+    // Clear search on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('universitySearch');
+      if (searchInput) {
+        searchInput.value = '';
+        filterUniversities();
+      }
+    });
+  </script>
+
 </body>
+
 </html>
+
+
+
