@@ -1,11 +1,1060 @@
-<!-- about.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Same meta tags as your about page -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Exam Saarthi</title>
+  <link rel="canonical" href="https://www.examsaarthi.com/" />
+  <meta name="description" content="Exam Saarthi provides all university previous year question papers (PYQ) for free. Download semester-wise question papers for easy exam preparation.">
+  <meta name="keywords" content="exam saarthi,exam prepration,exam pyq,university pyqs,igu,indira ghandhi university pyq ,examsaarthi igu, examsaarthi btech pyq, examsaarthi bca pyq, igu pyq,pyq, previous year question papers, all university pyq, semester wise question papers, university exam papers">
+  <meta name="author" content="Exam Saarthi">
+
+  
+  <link data-default-icon="https://pandit777.github.io/pyq/logo.png" rel="icon" sizes="192x192" href="https://pandit777.github.io/pyq/logo.png" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ---------------------------------------------------------------------- */
+    /* PROFESSIONAL COLOR VARIABLES (HOMEPAGE के जैसे) */
+    /* ---------------------------------------------------------------------- */
+    :root {
+      --primary-dark-navy: #1a237e;
+      --primary-medium-blue: #283593;
+      --accent-yellow: #ffc107;
+      --accent-gold: #ffb300;
+      --gradient-primary: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+      --gradient-accent: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+      --gradient-card: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      --text-main: #2d3748;
+      --text-light: #718096;
+      --background-light: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+      --shadow-strong: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+      background: var(--background-light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* HEADER & NAVIGATION STYLES (HOMEPAGE के जैसे) */
+    /* ---------------------------------------------------------------------- */
+    header {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-medium);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      position: relative;
+      z-index: 100;
+    }
+    
+    .logo-area {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+    }
+
+    .logo-img {
+        width: 60px;
+        height: 60px;
+        margin-right: 1rem;
+        border-radius: 12px;
+        object-fit: contain;
+        transition: transform 0s ease;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        background: white;
+        padding: 5px;
+    }
+    
+    .logo-area:hover .logo-img {
+        transform: rotate(-5deg) scale(1.1); 
+    }
+
+    .header-title {
+        font-size: 2.2rem;
+        font-weight: 900;
+        letter-spacing: 0.5px;
+        background: linear-gradient(135deg, #ffffff 0%, #ffeb3b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .desktop-nav ul {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      gap: 5px;
+    }
+
+    .desktop-nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      margin-left: 5px;
+      cursor: pointer; 
+      border: 1px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .desktop-nav ul li a:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .desktop-nav ul li a:hover:before {
+      left: 100%;
+    }
+
+    .desktop-nav ul li a:hover {
+      background-color: rgba(255,255,255,0.1); 
+      color: var(--accent-yellow); 
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .active-nav-link {
+        background-color: rgba(255,255,255,0.15) !important;
+        color: var(--accent-yellow) !important;
+        border: 1px solid var(--accent-yellow) !important;
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3) !important;
+    }
+    
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none; 
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 100;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 8px 12px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-btn:hover {
+      background-color: rgba(255,255,255,0.2);
+      transform: scale(1.05);
+    }
+
+    /* Mobile Nav Container */
+    .mobile-nav {
+      display: none; 
+      background: var(--gradient-primary);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-strong);
+      width: 100%; 
+      position: absolute; 
+      top: 100%; 
+      left: 0;
+      z-index: 99; 
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .mobile-nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .mobile-nav ul li {
+      margin: 12px 0;
+    }
+
+    .mobile-nav ul li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 12px 16px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      border: 1px solid transparent; 
+      font-weight: 600;
+    }
+
+    .mobile-nav ul li a:hover {
+      background-color: rgba(255,255,255,0.1);
+      transform: translateX(5px);
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* MARQUEE BAR (HOMEPAGE के जैसे) */
+    /* ---------------------------------------------------------------------- */
+    marquee {
+      background: var(--gradient-accent);
+      color: var(--primary-dark-navy);
+      padding: 12px 0; 
+      font-weight: 700;
+      font-size: 1rem;
+      width: 100%;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      line-height: 1; 
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* FOOTER STYLES (HOMEPAGE के जैसे) */
+    /* ---------------------------------------------------------------------- */
+    footer {
+      margin-top: auto;
+      background: var(--gradient-primary); 
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      width: 100%;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    footer:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-accent);
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* GENERAL ANIMATION STYLES */
+    /* ---------------------------------------------------------------------- */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    main {
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* CONTACT PAGE SPECIFIC STYLES */
+    /* ---------------------------------------------------------------------- */
+    .contact-section {
+      background: var(--gradient-card);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-soft);
+      margin-top: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-section:before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .contact-section:hover:before {
+      opacity: 1;
+    }
+
+    .contact-section:hover {
+      box-shadow: var(--shadow-strong);
+      transform: translateY(-5px);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary-dark-navy) 0%, var(--primary-medium-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Success Modal Styles */
+    .success-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .success-content {
+      background: var(--gradient-card);
+      padding: 3rem;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: var(--shadow-strong);
+      animation: modalFadeIn 0.5s ease-out;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+    }
+
+    .continue-btn {
+      background: var(--gradient-accent);
+      color: var(--primary-dark-navy);
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 15px rgba(255, 193, 7, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .continue-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.5s;
+    }
+    
+    .continue-btn:hover:before {
+      left: 100%;
+    }
+
+    .continue-btn:hover {
+      background: var(--gradient-accent);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255, 193, 7, 0.6);
+    }
+
+    /* Form Overlay Styles */
+    .form-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .form-container {
+      background: var(--gradient-card);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-strong);
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      animation: modalFadeIn 0.5s ease-out;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(0,0,0,0.1);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-btn:hover {
+      color: var(--primary-dark-navy);
+      background: rgba(0,0,0,0.15);
+      transform: rotate(90deg);
+    }
+
+    .query-btn {
+      background: var(--gradient-accent);
+      color: var(--primary-dark-navy);
+      border: none;
+      padding: 1.2rem 2.5rem;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 2rem auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .query-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.5s;
+    }
+    
+    .query-btn:hover:before {
+      left: 100%;
+    }
+
+    .query-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(255, 193, 7, 0.6);
+    }
+
+    /* Enhanced styling for contact info */
+    .contact-info {
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+
+    .contact-link {
+      color: var(--primary-medium-blue);
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 10px;
+      border-radius: 8px;
+    }
+
+    .contact-link:hover {
+      color: var(--primary-dark-navy);
+      background: rgba(26, 35, 126, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .social-link {
+      color: var(--primary-medium-blue);
+      font-size: 2rem;
+      transition: all 0.3s ease;
+      background: var(--gradient-card);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .social-link:hover {
+      color: var(--primary-dark-navy);
+      transform: scale(1.2) translateY(-5px);
+      box-shadow: var(--shadow-medium);
+    }
+
+    /* Floating animation for contact cards */
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* Select dropdown styling */
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231a237e'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1.5em 1.5em;
+      padding-right: 3rem;
+    }
+
+    /* Mobile-specific styles */
+    @media (max-width: 768px) {
+      .header-content {
+        padding: 1rem;
+      }
+      .logo-img {
+        width: 50px;
+        height: 50px;
+        margin-right: 0.8rem;
+      }
+      .header-title {
+        font-size: 1.6rem;
+      }
+      
+      /* Hide Desktop Nav and Show Mobile Button */
+      .desktop-nav { 
+        display: none; 
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .contact-section {
+        padding: 2rem 1.5rem;
+        margin-top: 1.5rem;
+        border-radius: 16px;
+      }
+      
+      .form-container {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+      }
+      
+      marquee {
+        font-size: 1rem;
+        padding: 10px;
+      }
+      
+      footer {
+        padding: 1.5rem;
+        font-size: 0.9rem;
+      }
+      
+      form input, form textarea, form select {
+        font-size: 16px;
+      }
+      
+      .query-btn {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        margin: 1.5rem auto;
+      }
+
+      .social-link {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+      }
+
+      .success-content {
+        padding: 2rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-title {
+        font-size: 1.4rem;
+      }
+      
+      .logo-img {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .section-title {
+        font-size: 1.8rem;
+      }
+      
+      .contact-section {
+        padding: 1.5rem 1rem;
+      }
+      
+      .form-container {
+        padding: 1.5rem 1rem;
+      }
+      
+      form button {
+        padding: 1rem !important;
+        font-size: 1rem;
+      }
+
+      .social-links {
+        gap: 1.5rem;
+      }
+
+      .social-link {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- app.js will inject all content -->
-  <script src="contact-app.js"></script>
+
+  <!-- Header (Homepage के जैसा) -->
+  <header>
+    <div class="header-content">
+      
+      <a href="index.html" class="logo-area">
+        <img src="https://pandit777.github.io/pyq/logo.png" alt="Exam Saarthi Logo" class="logo-img"> 
+        <h1 class="header-title">Exam Saarthi</h1>
+      </a>
+      
+      <nav class="desktop-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="Universities.html">Universities</a></li>
+          <li><a href="About.html">About</a></li>
+          <li><a href="Contact.html" class="active-nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    
+    <marquee behavior="scroll" direction="left" scrollamount="6">
+      <i class="fas fa-bullhorn mr-2"></i> Get in touch with us — We'd love to hear from you! | Exam Saarthi - Your Complete PYQ Solution
+    </marquee>
+    
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Universities.html">Universities</a></li>
+        <li><a href="About.html">About</a></li>
+        <li><a href="Contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container mx-auto p-4 md:p-6 flex flex-col items-center">
+    
+    <!-- Query Button Section -->
+    <section class="contact-section max-w-3xl w-full text-center">
+      <h1 class="section-title">📬 Contact Us - Exam Saarthi</h1>
+      <p class="text-gray-700 text-center mb-6 text-lg">
+        Have questions, feedback, or suggestions? Click the button below to reach out to the <br /><span class="font-bold text-blue-700">Exam Saarthi</span> team.  
+        We'll get back to you as soon as possible.
+      </p>
+      
+      <div class="flex flex-col items-center space-y-6">
+        <button class="query-btn" id="queryBtn">
+          <i class="fas fa-question-circle"></i>
+          Submit Your Query
+        </button>
+        
+        <!-- Additional Info -->
+        <div class="text-gray-600 text-center">
+          <p class="font-semibold">Need help with PYQs?</p>
+          <p>Tell us which university and course you need help with</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section max-w-3xl w-full mt-8 text-center">
+      <h2 class="section-title">📍 About Exam Saarthi</h2>
+      <div class="contact-info">
+        <p class="text-gray-700 mb-6 text-lg">
+          <strong>Exam Saarthi</strong> is your one-stop solution for all university previous year question papers (PYQs).  
+          We provide comprehensive PYQs for multiple universities to help students excel in their exams.
+        </p>
+        
+        <div class="space-y-4 text-lg">
+          <p><strong>Official Email:</strong> <a href="mailto:igupyq@gmail.com" class="contact-link">examsaarthi@gmail.com</a></p>
+          <p><strong>Support Email:</strong> <a href="mailto:igupyq.support@gmail.com" class="contact-link">examsaarthi.support@gmail.com</a></p>
+          <p><strong>Follow us:</strong> <a href="https://instagram.com/velogourav" target="_blank" class="contact-link">@velogourav</a></p>
+        </div>
+        
+        <div class="social-links">
+          <a href="mailto:igupyq@gmail.com" class="social-link"/>
+            <i class="fas fa-envelope"></i>
+          </a>
+          <a href="https://instagram.com/velogourav" target="_blank" class="social-link">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://github.com/pandit777" target="_blank" class="social-link">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mobile-specific contact info -->
+    <section class="contact-section max-w-3xl w-full mt-8 text-center md:hidden floating">
+      <h2 class="section-title">📱 Quick Contact</h2>
+      <div class="flex justify-center space-x-6 mt-6">
+        <a href="mailto:igupyq@gmail.com" class="text-center">
+          <i class="fas fa-envelope text-3xl mb-3 text-blue-600"></i>
+          <p class="text-sm font-semibold">Email</p>
+        </a>
+        <a href="https://instagram.com/velogourav" target="_blank" class="text-center">
+          <i class="fab fa-instagram text-3xl mb-3 text-pink-600"></i>
+          <p class="text-sm font-semibold">Instagram</p>
+        </a>
+        <a href="https://github.com/pandit777" target="_blank" class="text-center">
+          <i class="fab fa-github text-3xl mb-3 text-gray-700"></i>
+          <p class="text-sm font-semibold">GitHub</p>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Form Overlay -->
+  <div class="form-overlay" id="formOverlay">
+    <div class="form-container">
+      <button class="close-btn" id="closeForm">
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <h2 class="section-title">📝 Contact Form</h2>
+      <p class="text-gray-700 text-center mb-6 text-lg">
+        Fill out the form below and we'll get back to you as soon as possible.
+      </p>
+
+      <!-- Contact Form -->
+      <form id="contactForm" class="space-y-6">
+        <div>
+          <label for="name" class="block font-bold text-gray-800 mb-2 text-lg">Full Name *</label>
+          <input type="text" id="name" name="name" required
+            class="w-full border-2 border-gray-300 rounded-xl p-4 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+            placeholder="Enter your full name">
+        </div>
+
+        <div>
+          <label for="email" class="block font-bold text-gray-800 mb-2 text-lg">Email Address *</label>
+          <input type="email" id="email" name="email" required
+            class="w-full border-2 border-gray-300 rounded-xl p-4 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+            placeholder="Enter your email address">
+        </div>
+
+        <div>
+          <label for="university" class="block font-bold text-gray-800 mb-2 text-lg">University *</label>
+          <select id="university" name="university" required
+            class="w-full border-2 border-gray-300 rounded-xl p-4 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition bg-white">
+            <option value="" disabled selected>Select your university</option>
+            <option value="IGU">Indira Gandhi University (IGU)</option>
+            <option value="DU">Delhi University (DU)</option>
+            <option value="PU">Punjab University (PU)</option>
+            <option value="MU">Mumbai University (MU)</option>
+            <option value="CU">Calcutta University (CU)</option>
+            <option value="BU">Bangalore University (BU)</option>
+            <option value="AU">Anna University (AU)</option>
+            <option value="Other">Other University</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="course" class="block font-bold text-gray-800 mb-2 text-lg">Course/Subject</label>
+          <input type="text" id="course" name="course"
+            class="w-full border-2 border-gray-300 rounded-xl p-4 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+            placeholder="e.g., B.Tech CSE, B.Com, M.A. English, etc.">
+        </div>
+
+        <div>
+          <label for="message" class="block font-bold text-gray-800 mb-2 text-lg">Your Message *</label>
+          <textarea id="message" name="message" rows="6" required
+            class="w-full border-2 border-gray-300 rounded-xl p-4 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+            placeholder="Please describe your query in detail..."></textarea>
+        </div>
+
+        <div class="text-sm text-gray-600">
+          <p><span class="text-red-500">*</span> Required fields</p>
+        </div>
+
+        <button type="submit" 
+          class="w-full bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold py-4 px-4 rounded-xl hover:from-blue-700 hover:to-blue-900 transition transform hover:-translate-y-1 active:translate-y-0 shadow-lg">
+          Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="success-modal" id="successModal">
+    <div class="success-content">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-3">Message Sent!</h2>
+      <p class="text-gray-600 mb-6 text-lg">Thank you for contacting Exam Saarthi. We'll get back to you soon.</p>
+      <button class="continue-btn" id="continueBtn">
+        Continue...
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer (Homepage के जैसा) -->
+  <footer>
+    &copy; 2025 Exam Saarthi | Designed by Gourav Sharma
+  </footer>
+
+  <script>
+    // API configuration
+    const API_CONFIG = {
+      accessKey: '26135714-726d-4de7-8d51-e9900e9f1f5d',
+      endpoint: 'https://api.web3forms.com/submit'
+    };
+
+    // Mobile menu toggle functionality (Homepage style)
+    document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+      const mobileNav = document.getElementById('mobileNav');
+      const icon = this.querySelector('i');
+      
+      if (mobileNav.style.display === 'block') {
+        mobileNav.style.display = 'none';
+        icon.className = 'fas fa-bars';
+      } else {
+        mobileNav.style.display = 'block';
+        icon.className = 'fas fa-times';
+      }
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+      const mobileNav = document.getElementById('mobileNav');
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      
+      if (mobileNav.style.display === 'block' && 
+          !mobileNav.contains(event.target) && 
+          !mobileMenuBtn.contains(event.target)) {
+        mobileNav.style.display = 'none';
+        mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+      }
+    });
+
+    // Add scroll effect to header (Homepage style)
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('header');
+      if (window.scrollY > 50) {
+        header.style.background = 'rgba(26, 35, 126, 0.95)';
+        header.style.backdropFilter = 'blur(10px)';
+      } else {
+        header.style.background = '';
+        header.style.backdropFilter = '';
+      }
+    });
+
+    // Query Button - Open Form Overlay
+    document.getElementById('queryBtn').addEventListener('click', function() {
+      document.getElementById('formOverlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+
+    // Close Form Overlay
+    document.getElementById('closeForm').addEventListener('click', function() {
+      document.getElementById('formOverlay').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    });
+
+    // Close overlay when clicking outside the form
+    document.getElementById('formOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    // Form submission handling with enhanced validation
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Basic validation
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const university = document.getElementById('university').value;
+      const message = document.getElementById('message').value.trim();
+      
+      if (!name || !email || !university || !message) {
+        showError('Please fill all required fields');
+        return;
+      }
+      
+      if (!isValidEmail(email)) {
+        showError('Please enter a valid email address');
+        return;
+      }
+      
+      const formData = new FormData(this);
+      formData.append('access_key', API_CONFIG.accessKey);
+      
+      // Add subject to email
+      const subject = `Exam Saarthi Query - ${university}`;
+      formData.append('subject', subject);
+      
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+      
+      try {
+        const response = await fetch(API_CONFIG.endpoint, {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          document.getElementById('formOverlay').style.display = 'none';
+          document.body.style.overflow = 'auto';
+          document.getElementById('successModal').style.display = 'flex';
+          this.reset();
+        } else {
+          showError('There was an error sending your message. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showError('There was an error sending your message. Please try again.');
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Email validation function
+    function isValidEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    // Error display function
+    function showError(message) {
+      // Remove any existing error messages
+      const existingError = document.querySelector('.error-message');
+      if (existingError) existingError.remove();
+      
+      // Create error element
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message bg-red-100 text-red-700 p-4 rounded-lg mb-4 border-l-4 border-red-500';
+      errorDiv.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i>${message}`;
+      
+      // Insert after form title
+      const formContainer = document.querySelector('.form-container');
+      const formTitle = document.querySelector('.form-container .section-title');
+      formContainer.insertBefore(errorDiv, formTitle.nextElementSibling);
+      
+      // Scroll to error
+      errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // Remove after 5 seconds
+      setTimeout(() => errorDiv.remove(), 5000);
+    }
+
+    // Continue button functionality
+    document.getElementById('continueBtn').addEventListener('click', function() {
+      document.getElementById('successModal').style.display = 'none';
+      window.location.href = 'index.html';
+    });
+
+    // Close modal when clicking outside
+    document.getElementById('successModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.style.display = 'none';
+      }
+    });
+
+    // Add animation to elements on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const sections = document.querySelectorAll('.contact-section');
+        sections.forEach((section, index) => {
+          section.style.animationDelay = `${index * 0.2}s`;
+        });
+      }, 300);
+    });
+  </script>
+
 </body>
 </html>
+
+
+
+
+
+
