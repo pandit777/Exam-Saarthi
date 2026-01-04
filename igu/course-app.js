@@ -322,7 +322,7 @@ backHomeDiv.style.marginBottom = '1.5rem';
 backHomeDiv.style.textAlign = 'left';
 
 const backHomeBtn = document.createElement('a');
-backHomeBtn.href = '/University.html';
+backHomeBtn.href = '/Universities.html';
 backHomeBtn.className = 'back-home-btn';
 backHomeBtn.style.display = 'inline-block';
 backHomeBtn.style.background = 'var(--gradient-accent)';
@@ -815,4 +815,5 @@ document.head.appendChild(googleFonts2);
 const interFont = document.createElement('link');
 interFont.rel = 'stylesheet';
 interFont.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap';
+
 document.head.appendChild(interFont);
