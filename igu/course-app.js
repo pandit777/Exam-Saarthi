@@ -93,7 +93,7 @@ headerContent.style.zIndex = '100';
 
 // Logo Area
 const logoArea = document.createElement('a');
-logoArea.href = 'https://pandit777.github.io/pyq/index.html';
+logoArea.href = 'https://examsaarthi.com/';
 logoArea.className = 'logo-area';
 logoArea.style.display = 'flex';
 logoArea.style.alignItems = 'center';
@@ -817,3 +817,4 @@ interFont.rel = 'stylesheet';
 interFont.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap';
 
 document.head.appendChild(interFont);
+
