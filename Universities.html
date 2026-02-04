@@ -12,8 +12,6 @@
   
   <link data-default-icon="https://examsaarthi.com/logo.png" rel="icon" sizes="192x192" href="https://examsaarthi.com/logo.png" />
   
-  <script src="https://cdn.tailwindcss.com"></script>
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -58,7 +56,7 @@
     }
 
     /* ---------------------------------------------------------------------- */
-    /* HEADER & NAVIGATION STYLES ONLY - COURSES PAGE STYLE */
+    /* HEADER & NAVIGATION STYLES (UPDATED LIKE COURSES PAGE) - UNCHANGED */
     /* ---------------------------------------------------------------------- */
     header {
       background: var(--gradient-primary);
@@ -259,9 +257,518 @@
     }
 
     /* ---------------------------------------------------------------------- */
-    /* DESKTOP MEDIA QUERY FOR HEADER ONLY */
+    /* GENERAL ANIMATION STYLES (ENHANCED) */
     /* ---------------------------------------------------------------------- */
-    @media (min-width: 768px) {
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .content-section {
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* MAIN CONTENT CONTAINER - OPTIMIZED */
+    /* ---------------------------------------------------------------------- */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+      flex: 1;
+      width: 100%;
+    }
+    
+    /* ---------------------------------------------------------------------- */
+    /* BACK TO HOME BUTTON - OPTIMIZED */
+    /* ---------------------------------------------------------------------- */
+    .back-home-btn {
+      display: inline-flex;
+      align-items: center;
+      background: var(--gradient-accent);
+      color: var(--primary-dark-navy);
+      padding: 0.85rem 1.8rem;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      margin-bottom: 2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+      border: none;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      font-size: 1rem;
+      gap: 0.5rem;
+    }
+
+    .back-home-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* SEARCH CONTAINER - OPTIMIZED */
+    /* ---------------------------------------------------------------------- */
+    .search-container {
+      margin: 2.5rem auto 3rem;
+      position: relative;
+      max-width: 700px;
+      width: 100%;
+    }
+
+    #universitySearch {
+      width: 100%;
+      padding: 1.1rem 1.8rem 1.1rem 4rem;
+      border-radius: 50px;
+      border: 2px solid var(--primary-medium-blue);
+      box-shadow: var(--shadow-soft);
+      font-size: 1.05rem;
+      transition: all 0.3s ease;
+      background: white;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #universitySearch:focus {
+      outline: none;
+      border-color: var(--accent-yellow);
+      box-shadow: 0 0 25px rgba(255, 193, 7, 0.4);
+      transform: scale(1.01);
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 1.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-medium-blue);
+      font-size: 1.2rem;
+      z-index: 2;
+    }
+    
+    /* ---------------------------------------------------------------------- */
+    /* UNIVERSITY GRID - OPTIMIZED */
+    /* ---------------------------------------------------------------------- */
+    .university-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 3rem;
+    }
+    
+    .university-card {
+      background: var(--gradient-card);
+      padding: 2rem 1.8rem;
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: fadeIn 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .university-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--gradient-accent);
+      z-index: 1;
+    }
+
+    .university-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .university-icon {
+      font-size: 3rem;
+      color: var(--accent-yellow);
+      margin-bottom: 1.2rem;
+      display: inline-block;
+      transition: all 0.4s ease;
+      text-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+      position: relative;
+      z-index: 2;
+    }
+
+    .university-card:hover .university-icon {
+      transform: scale(1.15) rotate(8deg);
+      color: var(--accent-gold);
+    }
+
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--primary-dark-navy);
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .card-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    .view-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gradient-primary);
+      color: white;
+      padding: 0.9rem 2rem;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      margin-top: auto;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      border: none;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      font-size: 1rem;
+      gap: 0.5rem;
+      min-height: 48px;
+    }
+
+    .view-btn::after {
+      content: '→';
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.3s ease;
+    }
+
+    .view-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      padding-right: 1.8rem;
+    }
+
+    .view-btn:hover::after {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* REQUEST SECTION - OPTIMIZED */
+    /* ---------------------------------------------------------------------- */
+    .request-section {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: white;
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(0,0,0,0.05);
+      margin: 3rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .request-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--gradient-accent);
+    }
+
+    .request-icon {
+      font-size: 3.5rem;
+      color: var(--accent-yellow);
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      text-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+    }
+
+    .request-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-dark-navy);
+      margin-bottom: 1rem;
+    }
+
+    .request-text {
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .request-btn {
+      display: inline-flex;
+      align-items: center;
+      background: var(--primary-medium-blue);
+      color: white;
+      padding: 1rem 2.5rem;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      margin-top: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(40, 53, 147, 0.3);
+      gap: 0.7rem;
+    }
+
+    .request-btn:hover {
+      background: var(--primary-dark-navy);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(26, 35, 126, 0.4);
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* STATS SECTION - OPTIMIZED */
+    /* ---------------------------------------------------------------------- */
+    .stats-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.8rem;
+      margin: 3rem 0;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 2.2rem 1.8rem;
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0,0,0,0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-accent);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-medium);
+    }
+    
+    .stat-icon {
+      font-size: 3rem;
+      margin-bottom: 1.2rem;
+      display: inline-block;
+    }
+    
+    .stat-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.8rem;
+    }
+    
+    .stat-card p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* MAIN TITLE SECTION - OPTIMIZED */
+    /* ---------------------------------------------------------------------- */
+    .main-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      text-align: center;
+      color: var(--primary-dark-navy);
+      margin-bottom: 0.8rem;
+      line-height: 1.2;
+    }
+
+    .main-subtitle {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 1.2rem;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* RESPONSIVE DESIGN - OPTIMIZED */
+    /* ---------------------------------------------------------------------- */
+    @media (max-width: 1024px) {
+      .university-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+      
+      .main-title {
+        font-size: 2.4rem;
+      }
+      
+      .main-subtitle {
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 1.2rem 1rem;
+      }
+      
+      .header-content {
+        padding: 1rem;
+      }
+      
+      .logo-img {
+        width: 50px;
+        height: 50px;
+        margin-right: 0.75rem;
+      }
+      
+      .header-title {
+        font-size: 1.5rem;
+      }
+      
+      /* Show Desktop Nav and Hide Mobile Button on Desktop */
+      .desktop-nav {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .search-container {
+        margin: 2rem auto;
+      }
+      
+      #universitySearch {
+        padding: 1rem 1.5rem 1rem 3.5rem;
+        font-size: 1rem;
+      }
+      
+      .search-icon {
+        left: 1.5rem;
+      }
+      
+      .university-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+      
+      .university-card {
+        padding: 1.8rem 1.5rem;
+      }
+      
+      .main-title {
+        font-size: 2rem;
+      }
+      
+      .main-subtitle {
+        font-size: 1rem;
+        padding: 0 0.5rem;
+      }
+      
+      .request-section {
+        padding: 2.5rem 1.5rem;
+      }
+      
+      .request-title {
+        font-size: 1.5rem;
+      }
+      
+      .stats-section {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+      
+      .back-home-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.95rem;
+      }
+      
+      footer {
+        padding: 1.2rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-title {
+        font-size: 1.4rem;
+      }
+      
+      .logo-img {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .main-title {
+        font-size: 1.8rem;
+      }
+      
+      .search-icon {
+        left: 1.2rem;
+      }
+      
+      #universitySearch {
+        padding: 0.9rem 1.2rem 0.9rem 3rem;
+      }
+      
+      .university-card {
+        padding: 1.5rem 1.2rem;
+      }
+      
+      .card-title {
+        font-size: 1.2rem;
+      }
+      
+      .view-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.95rem;
+      }
+      
+      .request-section {
+        padding: 2rem 1.2rem;
+      }
+      
+      .request-title {
+        font-size: 1.3rem;
+      }
+      
+      .request-btn {
+        padding: 0.9rem 2rem;
+      }
+    }
+
+    @media (min-width: 769px) {
       .header-content {
         padding: 1rem 2rem;
       }
@@ -288,17 +795,6 @@
       footer {
         padding: 2rem;
         font-size: 1rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .header-title {
-        font-size: 1.4rem;
-      }
-      
-      .logo-img {
-        width: 45px;
-        height: 45px;
       }
     }
   </style>
@@ -341,26 +837,26 @@
     </div>
   </header>
 
-  <main class="container mx-auto p-4 md:p-6 flex flex-col items-center">
+  <main>
     
     <!-- Back to Home Button -->
-    <div class="w-full max-w-6xl mb-6 text-left">
+    <div>
       <a href="https://examsaarthi.com/" class="back-home-btn">
-        <i class="fas fa-arrow-left mr-2"></i> Back to Home
+        <i class="fas fa-arrow-left"></i> Back to Home
       </a>
     </div>
 
     <!-- Universities Content -->
-    <div class="content-section max-w-6xl w-full">
-        <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-2">Explore Universities</h1>
-        <p class="text-center text-xl text-gray-600 mb-8">Select your university or <strong>search instantly</strong> to find PYQs.</p>
+    <div class="content-section">
+        <h1 class="main-title">Explore Universities</h1>
+        <p class="main-subtitle">Select your university or <strong>search instantly</strong> to find PYQs.</p>
         
         <div class="search-container">
             <i class="fas fa-search search-icon"></i>
             <input type="text" id="universitySearch" placeholder="Search University Name (e.g., IGU, KUK, DU)" onkeyup="filterUniversities()">
         </div>
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="universityGrid">
+        <div class="university-grid" id="universityGrid">
             
             <!-- IGU University Card - Course.html Link Added -->
             <div class="university-card">
@@ -473,31 +969,33 @@
             
         </div>
         
-        <div class="text-center mt-12 p-8 bg-white rounded-2xl shadow-lg border border-gray-100">
-            <i class="fas fa-university text-5xl text-yellow-500 mb-4"></i>
-            <h3 class="text-2xl font-semibold text-gray-700 mb-3">Can't Find Your University?</h3>
-            <p class="text-gray-500 mt-2 text-lg mb-4">We are constantly adding new universities. Contact us to request papers for your university or course.</p>
-            <a href="Contact.html" class="inline-block bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition">
-                Request University
+        <div class="request-section">
+            <i class="fas fa-university request-icon"></i>
+            <h3 class="request-title">Can't Find Your University?</h3>
+            <p class="request-text">
+              We are constantly adding new universities. Contact us to request papers for your university or course.
+            </p>
+            <a href="Contact.html" class="request-btn">
+                <i class="fas fa-paper-plane"></i> Request University
             </a>
         </div>
 
         <!-- Quick Stats -->
-        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white p-6 rounded-xl shadow-md text-center">
-                <i class="fas fa-graduation-cap text-3xl text-blue-500 mb-3"></i>
-                <h3 class="text-xl font-bold text-gray-800">All UG/PG Courses</h3>
-                <p class="text-gray-600 mt-2">Complete coverage of undergraduate and postgraduate programs</p>
+        <div class="stats-section">
+            <div class="stat-card">
+                <i class="fas fa-graduation-cap stat-icon" style="color: #2563eb;"></i>
+                <h3>All UG/PG Courses</h3>
+                <p>Complete coverage of undergraduate and postgraduate programs</p>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md text-center">
-                <i class="fas fa-file-pdf text-3xl text-red-500 mb-3"></i>
-                <h3 class="text-xl font-bold text-gray-800">Downloadable PDFs</h3>
-                <p class="text-gray-600 mt-2">Easy download options for all question papers</p>
+            <div class="stat-card">
+                <i class="fas fa-file-pdf stat-icon" style="color: #dc2626;"></i>
+                <h3>Downloadable PDFs</h3>
+                <p>Easy download options for all question papers</p>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md text-center">
-                <i class="fas fa-search text-3xl text-green-500 mb-3"></i>
-                <h3 class="text-xl font-bold text-gray-800">Advanced Search</h3>
-                <p class="text-gray-600 mt-2">Find papers by year, course, or university</p>
+            <div class="stat-card">
+                <i class="fas fa-search stat-icon" style="color: #059669;"></i>
+                <h3>Advanced Search</h3>
+                <p>Find papers by year, course, or university</p>
             </div>
         </div>
     </div>
@@ -529,11 +1027,6 @@
           cards[i].style.display = 'none'; 
         }
       }
-    }
-
-    // Show coming soon message for other universities
-    function showComingSoon(universityName) {
-      alert(`Papers for ${universityName} will be available soon!\nWe're working on adding all papers.\n\nCurrently available: Indira Gandhi University (IGU)`);
     }
 
     // Mobile menu toggle functionality
@@ -578,7 +1071,7 @@
       }
     });
 
-    // Responsive navigation check (like courses page)
+    // Responsive navigation check
     function checkMobileViewport() {
       const desktopNav = document.querySelector('.desktop-nav');
       const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -611,6 +1104,44 @@
     window.addEventListener('resize', checkMobileViewport);
   </script>
 
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
 </body>
 
 </html>
