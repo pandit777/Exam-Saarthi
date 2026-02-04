@@ -53,10 +53,12 @@
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
+      margin: 0;
+      padding: 0;
     }
 
     /* ---------------------------------------------------------------------- */
-    /* HEADER & NAVIGATION STYLES (ENHANCED) */
+    /* HEADER & NAVIGATION STYLES (UPDATED LIKE COURSES PAGE) */
     /* ---------------------------------------------------------------------- */
     header {
       background: var(--gradient-primary);
@@ -72,7 +74,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1rem 2rem;
+      padding: 1rem;
       position: relative;
       z-index: 100;
     }
@@ -83,15 +85,15 @@
       cursor: pointer;
       padding: 0.5rem 0;
       transition: all 0.3s ease;
+      text-decoration: none;
     }
 
     .logo-img {
-        width: 60px;
-        height: 60px;
-        margin-right: 1rem;
+        width: 50px;
+        height: 50px;
+        margin-right: 0.75rem;
         border-radius: 12px;
         object-fit: contain;
-        transition: transform 0s ease;
         filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
         background: white;
         padding: 5px;
@@ -102,7 +104,7 @@
     }
 
     .header-title {
-        font-size: 2.2rem;
+        font-size: 1.5rem;
         font-weight: 900;
         letter-spacing: 0.5px;
         background: linear-gradient(135deg, #ffffff 0%, #ffeb3b 100%);
@@ -111,6 +113,11 @@
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
     
+    /* Desktop Navigation - Hidden on Mobile */
+    .desktop-nav {
+      display: none;
+    }
+
     .desktop-nav ul {
       display: flex;
       list-style: none;
@@ -133,21 +140,6 @@
       overflow: hidden;
     }
 
-    .desktop-nav ul li a:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s;
-    }
-
-    .desktop-nav ul li a:hover:before {
-      left: 100%;
-    }
-
     .desktop-nav ul li a:hover {
       background-color: rgba(255,255,255,0.1); 
       color: var(--accent-yellow); 
@@ -162,16 +154,15 @@
         box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3) !important;
     }
     
-    /* Mobile Menu Button */
+    /* Mobile Menu Button - Visible on Mobile */
     .mobile-menu-btn {
-      display: none; 
-      background: none;
+      display: block; 
+      background: rgba(255,255,255,0.1);
       border: none;
       color: white;
       font-size: 1.5rem;
       cursor: pointer;
       z-index: 100;
-      background-color: rgba(255,255,255,0.1);
       border-radius: 8px;
       padding: 8px 12px;
       transition: all 0.3s ease;
@@ -186,7 +177,7 @@
     .mobile-nav {
       display: none; 
       background: var(--gradient-primary);
-      padding: 1.5rem;
+      padding: 1rem;
       box-shadow: var(--shadow-strong);
       width: 100%; 
       position: absolute; 
@@ -207,7 +198,7 @@
     }
 
     .mobile-nav ul li {
-      margin: 12px 0;
+      margin: 10px 0;
     }
 
     .mobile-nav ul li a {
@@ -232,9 +223,9 @@
     marquee {
       background: var(--gradient-accent);
       color: var(--primary-dark-navy);
-      padding: 12px 0; 
+      padding: 10px 0; 
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.9rem;
       width: 100%;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       line-height: 1; 
@@ -248,12 +239,13 @@
       background: var(--gradient-primary); 
       color: white;
       text-align: center;
-      padding: 2rem;
+      padding: 1.5rem;
       width: 100%;
       font-weight: 500;
       letter-spacing: 0.5px;
       box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
       position: relative;
+      font-size: 0.9rem;
     }
 
     footer:before {
@@ -293,30 +285,14 @@
     .welcome-section {
       background: var(--gradient-card);
       border-radius: 20px;
-      padding: 3rem; 
+      padding: 2rem 1.5rem; 
       box-shadow: var(--shadow-soft);
-      margin-top: 2rem;
+      margin-top: 1.5rem;
       border: 1px solid rgba(255, 255, 255, 0.8);
       transition: all 0.4s ease;
       text-align: center;
       position: relative;
       overflow: hidden;
-    }
-
-    .welcome-section:before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-      opacity: 0;
-      transition: opacity 0.5s;
-    }
-
-    .welcome-section:hover:before {
-      opacity: 1;
     }
 
     .welcome-section:hover {
@@ -325,28 +301,29 @@
     }
     
     .hero-title {
-      font-size: 3rem;
+      font-size: 2rem;
       font-weight: 900;
       background: linear-gradient(135deg, var(--primary-dark-navy) 0%, var(--primary-medium-blue) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .hero-subtitle {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       line-height: 1.6;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
     }
 
     .explore-btn {
       background: var(--gradient-accent);
       color: var(--primary-dark-navy);
-      padding: 1rem 2.5rem;
+      padding: 0.9rem 2rem;
       border-radius: 12px;
       font-weight: 800; 
-      font-size: 1.1rem;
+      font-size: 1rem;
       transition: all 0.3s ease;
       box-shadow: 0 6px 15px rgba(255, 193, 7, 0.4); 
       cursor: pointer;
@@ -354,21 +331,7 @@
       position: relative;
       overflow: hidden;
       display: inline-block;
-    }
-    
-    .explore-btn:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      transition: left 0.5s;
-    }
-    
-    .explore-btn:hover:before {
-      left: 100%;
+      text-decoration: none;
     }
     
     .explore-btn:hover {
@@ -379,15 +342,15 @@
     /* Enhanced Feature Cards */
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
     }
 
     .feature-card {
       background: var(--gradient-card);
       border-radius: 16px;
-      padding: 2rem;
+      padding: 1.5rem;
       box-shadow: var(--shadow-soft);
       text-align: center;
       transition: all 0.4s ease;
@@ -412,8 +375,8 @@
     }
 
     .feature-icon {
-      font-size: 3.5rem;
-      margin-bottom: 1.5rem;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
       background: var(--gradient-primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -423,10 +386,10 @@
     /* Team Image Card Styles (ENHANCED) */
     .team-images-container {
       display: flex;
-      justify-content: center;
-      gap: 2.5rem; 
-      margin-top: 3rem;
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem; 
+      margin-top: 2rem;
     }
 
     .team-image-card {
@@ -438,7 +401,7 @@
       max-width: 300px;
       width: 100%;
       text-align: center;
-      padding: 2rem 1.5rem; 
+      padding: 1.5rem; 
       border: 1px solid rgba(255, 255, 255, 0.8);
       display: flex;
       flex-direction: column;
@@ -462,12 +425,12 @@
     }
     
     .team-image {
-      width: 160px; 
-      height: 160px; 
+      width: 140px; 
+      height: 140px; 
       object-fit: cover;
       display: block;
       border-radius: 50%;
-      margin-bottom: 1.5rem; 
+      margin-bottom: 1rem; 
       border: 5px solid var(--accent-yellow); 
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
       transition: transform 0.3s ease;
@@ -478,14 +441,14 @@
     }
 
     .image-title {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--primary-dark-navy);
       margin-bottom: 0.5rem;
     }
 
     .image-role {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: var(--text-light);
       font-weight: 600;
       background: var(--gradient-primary);
@@ -495,21 +458,19 @@
 
     /* Stats Section */
     .stats-container {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 3rem 0;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin: 2rem 0;
     }
 
     .stat-card {
       background: var(--gradient-card);
       border-radius: 16px;
-      padding: 2rem;
+      padding: 1.5rem 1rem;
       text-align: center;
       box-shadow: var(--shadow-soft);
       transition: all 0.3s ease;
-      min-width: 180px;
     }
 
     .stat-card:hover {
@@ -518,7 +479,7 @@
     }
 
     .stat-number {
-      font-size: 2.5rem;
+      font-size: 2rem;
       font-weight: 800;
       background: linear-gradient(135deg, var(--primary-dark-navy) 0%, var(--primary-medium-blue) 100%);
       -webkit-background-clip: text;
@@ -528,78 +489,112 @@
     }
 
     .stat-label {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: var(--text-light);
       font-weight: 600;
     }
     
+    /* Main Content Container */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+      flex: 1;
+      width: 100%;
+    }
+    
     /* ---------------------------------------------------------------------- */
-    /* MOBILE MEDIA QUERY (ENHANCED) */
+    /* DESKTOP MEDIA QUERY */
     /* ---------------------------------------------------------------------- */
-    @media (max-width: 768px) {
+    @media (min-width: 768px) {
       .header-content {
-        padding: 1rem;
+        padding: 1rem 2rem;
       }
+      
       .logo-img {
-        width: 50px;
-        height: 50px;
-        margin-right: 0.8rem;
+        width: 60px;
+        height: 60px;
+        margin-right: 1rem;
       }
+      
       .header-title {
-        font-size: 1.6rem;
-      }
-      
-      /* Hide Desktop Nav and Show Mobile Button */
-      .desktop-nav { 
-        display: none; 
-      }
-      
-      .mobile-menu-btn {
-        display: block;
-      }
-      
-      .welcome-section {
-        padding: 2rem 1.5rem;
-        border-radius: 16px;
-      }
-      
-      .hero-title {
         font-size: 2.2rem;
       }
       
+      /* Show Desktop Nav and Hide Mobile Button on Desktop */
+      .desktop-nav {
+        display: block;
+      }
+      
+      .mobile-menu-btn {
+        display: none;
+      }
+      
+      .welcome-section {
+        padding: 3rem;
+        margin-top: 2rem;
+      }
+      
+      .hero-title {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+      }
+      
       .hero-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+      }
+      
+      .explore-btn {
+        padding: 1rem 2.5rem;
         font-size: 1.1rem;
       }
       
-      .team-images-container {
-        gap: 1.5rem;
-      }
-      
-      .team-image-card {
-        max-width: 90%;
-        padding: 1.5rem 1rem;
-      }
-      
-      .team-image {
-        width: 130px;
-        height: 130px;
-      }
-      
       .feature-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+      
+      .feature-card {
+        padding: 2rem;
+      }
+      
+      .feature-icon {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .team-images-container {
+        flex-direction: row;
+        justify-content: center;
+        gap: 2.5rem;
+        margin-top: 3rem;
       }
       
       .stats-container {
-        gap: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin: 3rem 0;
       }
       
       .stat-card {
-        min-width: 140px;
-        padding: 1.5rem 1rem;
+        min-width: 180px;
+        padding: 2rem;
       }
       
       .stat-number {
-        font-size: 2rem;
+        font-size: 2.5rem;
+      }
+      
+      .stat-label {
+        font-size: 1rem;
+      }
+      
+      footer {
+        padding: 2rem;
+        font-size: 1rem;
       }
     }
 
@@ -617,13 +612,8 @@
         font-size: 1.8rem;
       }
       
-      .team-images-container {
-        flex-direction: column;
-        align-items: center;
-      }
-      
-      .team-image-card {
-        max-width: 100%;
+      .stats-container {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -633,7 +623,7 @@
   <header>
     <div class="header-content">
       
-      <a href="https://pandit777.github.io/Exam-Saarthi/logo.png" class="logo-area">
+      <a href="https://www.examsaarthi.com/" class="logo-area">
         <img src="https://pandit777.github.io/Exam-Saarthi/logo.png" alt="University PYQ Portal Logo" class="logo-img"> 
         <h1 class="header-title">Exam Saarthi</h1>
       </a>
@@ -662,19 +652,18 @@
         <li><a href="Universities.html">Universities</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="Contact.html">Contact</a></li>
-
       </ul>
     </div>
   </header>
 
-  <main class="container mx-auto p-4 md:p-6 flex flex-col items-center">
+  <main>
     
     <!-- Home Content -->
-    <div class="content-section max-w-5xl w-full">
+    <div class="content-section">
       
-      <div class="welcome-section max-w-4xl mx-auto">
+      <div class="welcome-section">
         <h1 class="hero-title">Welcome to University PYQ Portal 🏆</h1>
-        <p class="hero-subtitle mb-8 text-lg text-gray-700">
+        <p class="hero-subtitle">
           **Explore previous year question papers (PYQs) for all universities and their courses.** Our goal is to make your exam preparation simple, organized, and effective.
         </p>
         <a href="Universities.html" class="explore-btn">Explore Universities</a>
@@ -700,35 +689,35 @@
         </div>
       </div>
 
-      <div class="welcome-section max-w-5xl mt-10 text-left">
-        <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">✅ What You'll Find Here</h2>
+      <div class="welcome-section mt-10">
+        <h2 style="font-size: 1.8rem; font-weight: bold; margin-bottom: 1.5rem; text-align: center; color: var(--text-main);">✅ What You'll Find Here</h2>
         <div class="feature-grid">
           <div class="feature-card">
             <i class="fas fa-book-open feature-icon"></i>
-            <h3 class="text-xl font-bold mb-3 text-gray-800">Comprehensive PYQs</h3>
-            <p class="text-gray-600">All UG and PG Courses PYQs in one place from multiple universities.</p>
+            <h3 style="font-size: 1.2rem; font-weight: bold; margin-bottom: 0.75rem; color: var(--text-main);">Comprehensive PYQs</h3>
+            <p style="color: var(--text-light);">All UG and PG Courses PYQs in one place from multiple universities.</p>
           </div>
           <div class="feature-card">
             <i class="fas fa-mobile-alt feature-icon"></i>
-            <h3 class="text-xl font-bold mb-3 text-gray-800">Mobile Friendly</h3>
-            <p class="text-gray-600">Easy navigation and modern responsive design for all devices.</p>
+            <h3 style="font-size: 1.2rem; font-weight: bold; margin-bottom: 0.75rem; color: var(--text-main);">Mobile Friendly</h3>
+            <p style="color: var(--text-light);">Easy navigation and modern responsive design for all devices.</p>
           </div>
           <div class="feature-card">
             <i class="fas fa-check-circle feature-icon"></i>
-            <h3 class="text-xl font-bold mb-3 text-gray-800">Verified Content</h3>
-            <p class="text-gray-600">Accurate papers collected from verified university sources.</p>
+            <h3 style="font-size: 1.2rem; font-weight: bold; margin-bottom: 0.75rem; color: var(--text-main);">Verified Content</h3>
+            <p style="color: var(--text-light);">Accurate papers collected from verified university sources.</p>
           </div>
           <div class="feature-card">
             <i class="fas fa-graduation-cap feature-icon"></i>
-            <h3 class="text-xl font-bold mb-3 text-gray-800">Free Access</h3>
-            <p class="text-gray-600">Completely free and accessible for every student.</p>
+            <h3 style="font-size: 1.2rem; font-weight: bold; margin-bottom: 0.75rem; color: var(--text-main);">Free Access</h3>
+            <p style="color: var(--text-light);">Completely free and accessible for every student.</p>
           </div>
         </div>
       </div>
 
-      <div class="welcome-section max-w-5xl mt-10 text-center">
-        <h2 class="text-3xl font-bold mb-6 text-gray-800">🎯 Our Mission</h2>
-        <p class="text-gray-700 leading-relaxed text-lg mb-6">
+      <div class="welcome-section mt-10">
+        <h2 style="font-size: 1.8rem; font-weight: bold; margin-bottom: 1.5rem; text-align: center; color: var(--text-main);">🎯 Our Mission</h2>
+        <p style="color: var(--text-main); line-height: 1.6; margin-bottom: 1.5rem;">
           To empower all students with easy access to academic materials and promote smart learning.  
           With our portal, you can focus on understanding and revising instead of searching endlessly for papers.
         </p>
@@ -736,40 +725,14 @@
         <div class="team-images-container">
           <div class="team-image-card floating">
             <img src="https://pandit777.github.io/Exam-Saarthi/Dev.jpg" alt="Developer Image" class="team-image">
-            <div class="image-overlay">
-              <div class="image-title">Gourav Sharma</div>
-              <div class="image-role">Developer & Founder</div>
-            </div>
+            <div class="image-title">Gourav Sharma</div>
+            <div class="image-role">Developer & Founder</div>
           </div>
           
           <div class="team-image-card floating" style="animation-delay: 2s;">
             <img src="https://pandit777.github.io/Exam-Saarthi/Edit.jpeg" alt="Editor Image" class="team-image">
-            <div class="image-overlay">
-              <div class="image-title">Mahesh Verma</div>
-              <div class="image-role">Developer & Founder</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mobile-specific section -->
-      <div class="welcome-section max-w-5xl mt-10 text-center md:hidden">
-        <h2 class="text-2xl font-bold mb-3 text-gray-800">📱 Mobile Friendly</h2>
-        <p class="text-gray-700 leading-relaxed">
-          This portal is fully optimized for mobile devices. Access your PYQs anytime, anywhere with our responsive design.
-        </p>
-        <div class="flex justify-center mt-4 space-x-4">
-          <div class="text-center">
-            <i class="fas fa-mobile-alt text-3xl text-blue-500 mb-2"></i>
-            <p class="text-sm">Easy Navigation</p>
-          </div>
-          <div class="text-center">
-            <i class="fas fa-search text-3xl text-green-500 mb-2"></i>
-            <p class="text-sm">Quick Search</p>
-          </div>
-          <div class="text-center">
-            <i class="fas fa-download text-3xl text-purple-500 mb-2"></i>
-            <p class="text-sm">Easy Downloads</p>
+            <div class="image-title">Mahesh Verma</div>
+            <div class="image-role">Developer & Founder</div>
           </div>
         </div>
       </div>
@@ -833,11 +796,29 @@
         });
       }, 500);
     });
+
+    // Responsive navigation check (like courses page)
+    function checkMobileViewport() {
+      const desktopNav = document.querySelector('.desktop-nav');
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      
+      if (window.innerWidth <= 768) {
+        mobileMenuBtn.style.display = 'block';
+        desktopNav.style.display = 'none';
+      } else {
+        mobileMenuBtn.style.display = 'none';
+        desktopNav.style.display = 'block';
+        mobileNav.style.display = 'none';
+        if (mobileMenuBtn.querySelector('i')) {
+          mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+        }
+      }
+    }
+
+    // Initial check
+    checkMobileViewport();
+    window.addEventListener('resize', checkMobileViewport);
   </script>
 
 </body>
 </html>
-
-
-
-
