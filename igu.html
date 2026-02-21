@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +16,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* --- same professional styles as homepage (preserved) --- */
+    /* --- same professional styles as homepage (preserved) - FIXED --- */
     :root {
       --primary-deep-blue: #0b1e4a;
       --primary-rich-blue: #142b6e;
@@ -37,7 +36,9 @@
       --shadow-strong: 0 30px 45px -15px rgba(0, 20, 60, 0.25);
       --footer-text: #ffffff;
       --marquee-text: #0b1e4a;
+      --marquee-bg: linear-gradient(145deg, #fbbf24 0%, #f59e0b 100%);
     }
+    
     [data-theme="dark"] {
       --primary-deep-blue: #0f172a;
       --primary-rich-blue: #1e2b4f;
@@ -55,9 +56,12 @@
       --shadow-medium: 0 25px 40px -12px rgba(0, 0, 0, 0.8);
       --shadow-strong: 0 35px 55px -15px rgba(0, 0, 0, 0.9);
       --footer-text: #e2e8f0;
-      --marquee-text: #fbbf24;
+      --marquee-text: #0b1e4a;
+      --marquee-bg: linear-gradient(145deg, #fbbf24 0%, #d97706 100%);
     }
+    
     html { scroll-behavior: smooth; }
+    
     body {
       font-family: 'Inter', sans-serif;
       color: var(--text-main);
@@ -69,7 +73,8 @@
       margin: 0;
       transition: background 0.3s ease, color 0.2s ease;
     }
-    /* header & nav identical to homepage */
+    
+    /* header & nav identical to homepage - FIXED */
     header {
       background: var(--gradient-primary);
       color: white;
@@ -77,22 +82,24 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      backdrop-filter: blur(8px);
+      width: 100%;
     }
+    
     .header-content {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 1rem;
     }
+    
     .logo-area {
       display: flex;
       align-items: center;
       cursor: pointer;
       padding: 0.5rem 0;
-      transition: all 0.3s ease;
       text-decoration: none;
     }
+    
     .logo-img {
       width: 50px;
       height: 50px;
@@ -103,20 +110,30 @@
       background: white;
       padding: 5px;
     }
+    
     .header-title {
       font-size: 1.5rem;
       font-weight: 900;
       background: linear-gradient(135deg, #ffffff 0%, #ffeb3b 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .desktop-nav { display: none; }
+    
+    .desktop-nav { 
+      display: none; 
+      align-items: center;
+    }
+    
     .desktop-nav ul {
       display: flex;
       list-style: none;
       gap: 5px;
       align-items: center;
+      margin: 0;
+      padding: 0;
     }
+    
     .desktop-nav ul li a {
       color: white;
       text-decoration: none;
@@ -126,17 +143,20 @@
       transition: all 0.3s ease;
       border: 1px solid transparent;
     }
+    
     .desktop-nav ul li a:hover {
       background-color: rgba(255,255,255,0.15);
       color: var(--accent-bright-yellow);
       transform: translateY(-2px);
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
     }
+    
     .active-nav-link {
       background-color: rgba(255,255,255,0.2) !important;
       color: var(--accent-bright-yellow) !important;
       border: 1px solid var(--accent-bright-yellow) !important;
     }
+    
     .theme-toggle {
       background: rgba(255,255,255,0.15);
       border: 1px solid rgba(255,255,255,0.3);
@@ -152,10 +172,12 @@
       transition: all 0.3s ease;
       font-size: 1.2rem;
     }
+    
     .theme-toggle:hover {
       background: rgba(255,255,255,0.3);
       transform: rotate(20deg) scale(1.05);
     }
+    
     .mobile-menu-btn {
       display: block;
       background: rgba(255,255,255,0.15);
@@ -167,6 +189,7 @@
       padding: 8px 16px;
       transition: all 0.3s ease;
     }
+    
     .mobile-nav {
       display: none;
       background: var(--gradient-primary);
@@ -178,18 +201,24 @@
       left: 0;
       z-index: 99;
       animation: slideDown 0.3s ease-out;
+      box-sizing: border-box;
     }
+    
     @keyframes slideDown {
       from { opacity: 0; transform: translateY(-12px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    
     .mobile-nav ul {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
+    
     .mobile-nav ul li {
       margin: 12px 0;
     }
+    
     .mobile-nav ul li a {
       color: white;
       text-decoration: none;
@@ -200,12 +229,45 @@
       border: 1px solid transparent;
       font-weight: 600;
     }
+    
     .mobile-nav ul li a:hover {
       background-color: rgba(255,255,255,0.15);
       transform: translateX(8px);
     }
+    
+    /* Mobile theme toggle - FIXED */
+    .mobile-theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+      color: white;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      margin-top: 10px;
+    }
+    
+    .mobile-theme-toggle span {
+      font-weight: 600;
+    }
+    
+    .mobile-theme-toggle button {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid white;
+      color: white;
+      border-radius: 40px;
+      padding: 8px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .mobile-theme-toggle button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    
+    /* Marquee - FIXED */
     marquee {
-      background: var(--gradient-accent);
+      background: var(--marquee-bg);
       color: var(--marquee-text);
       padding: 12px 0;
       font-weight: 700;
@@ -213,6 +275,8 @@
       width: 100%;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
+    
+    /* Footer - FIXED */
     footer {
       margin-top: auto;
       background: var(--gradient-primary);
@@ -223,7 +287,9 @@
       font-weight: 500;
       box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.2);
       position: relative;
+      box-sizing: border-box;
     }
+    
     footer:before {
       content: '';
       position: absolute;
@@ -233,13 +299,25 @@
       height: 4px;
       background: var(--gradient-accent);
     }
+    
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    
     .content-section { animation: fadeIn 0.7s ease-out; }
+    
+    /* Container - FIXED */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.2rem;
+      flex: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
 
-    /* --- IGU specific styles with LOGO emphasis --- */
+    /* --- IGU specific styles with LOGO emphasis - FIXED --- */
     .uni-header-card {
       background: var(--gradient-card-light);
       border-radius: 40px;
@@ -254,6 +332,7 @@
       overflow: hidden;
       border: 2px solid rgba(251, 191, 36, 0.2);
     }
+    
     /* subtle background decoration */
     .uni-header-card::after {
       content: "🏛️";
@@ -265,6 +344,7 @@
       pointer-events: none;
       transform: rotate(10deg);
     }
+    
     .uni-logo-container {
       background: white;
       border-radius: 30px;
@@ -277,18 +357,22 @@
       transition: transform 0.4s ease;
       max-width: 140px;
     }
+    
     .uni-logo-container:hover {
       transform: scale(1.05) rotate(2deg);
     }
+    
     .uni-logo {
       width: 120px;
       height: auto;
       object-fit: contain;
       border-radius: 20px;
     }
+    
     .uni-header-info {
       flex: 1;
     }
+    
     .uni-header-info h1 {
       font-size: 2.4rem;
       font-weight: 900;
@@ -296,6 +380,7 @@
       margin-bottom: 0.5rem;
       line-height: 1.2;
     }
+    
     .uni-location-badge {
       display: inline-block;
       background: var(--gradient-accent);
@@ -307,14 +392,18 @@
       margin: 0.8rem 0;
       box-shadow: 0 4px 10px rgba(251,191,36,0.3);
     }
+    
     [data-theme="dark"] .uni-location-badge {
       color: #0f172a;
     }
+    
     .uni-meta-stats {
       display: flex;
       gap: 1.5rem;
       margin-top: 1rem;
+      flex-wrap: wrap;
     }
+    
     .uni-stat {
       display: flex;
       align-items: center;
@@ -325,6 +414,7 @@
       box-shadow: var(--shadow-soft);
       border: 1px solid rgba(251,191,36,0.2);
     }
+    
     .uni-stat i {
       color: var(--accent-deep-gold);
       font-size: 1.2rem;
@@ -336,6 +426,7 @@
       gap: 1.5rem;
       margin: 2.5rem 0 4rem;
     }
+    
     .course-card {
       background: var(--gradient-card-light);
       border-radius: 30px;
@@ -352,6 +443,7 @@
       text-decoration: none;
       color: inherit;
     }
+    
     .course-card:before {
       content: '';
       position: absolute;
@@ -361,26 +453,31 @@
       height: 100%;
       background: var(--gradient-accent);
     }
+    
     .course-card:hover {
       transform: translateY(-8px) scale(1.01);
       box-shadow: var(--shadow-strong);
       border-color: rgba(251, 191, 36, 0.4);
     }
+    
     .course-icon {
       font-size: 2.8rem;
       min-width: 60px;
       text-align: center;
       filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
     }
+    
     .course-info {
       flex: 1;
     }
+    
     .course-name {
       font-size: 1.5rem;
       font-weight: 800;
       color: var(--text-main);
       margin-bottom: 0.25rem;
     }
+    
     .course-meta {
       display: flex;
       gap: 1.5rem;
@@ -390,6 +487,7 @@
       align-items: center;
       flex-wrap: wrap;
     }
+    
     .course-badge {
       background: var(--gradient-accent);
       color: #0b1e4a;
@@ -399,16 +497,47 @@
       font-size: 0.8rem;
       white-space: nowrap;
     }
+    
     [data-theme="dark"] .course-badge {
       color: #0f172a;
     }
-
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2.5rem 0 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .section-header h2 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    
+    .section-header h2 i {
+      color: var(--accent-deep-gold);
+      margin-right: 0.75rem;
+    }
+    
+    .course-count {
+      background: var(--gradient-primary);
+      color: white;
+      padding: 0.5rem 1.5rem;
+      border-radius: 40px;
+      font-weight: 600;
+    }
+    
     @media (min-width: 640px) {
       .course-grid { grid-template-columns: repeat(2, 1fr); }
     }
+    
     @media (min-width: 1024px) {
       .course-grid { grid-template-columns: repeat(3, 1fr); }
     }
+    
     @media (min-width: 768px) {
       .header-content { padding: 1rem 2.2rem; }
       .logo-img { width: 60px; height: 60px; }
@@ -416,10 +545,44 @@
       .desktop-nav { display: flex; }
       .mobile-menu-btn { display: none; }
     }
+    
+    @media (max-width: 767px) {
+      .desktop-nav { display: none !important; }
+    }
+    
     @media (max-width: 640px) {
-      .uni-header-card { flex-direction: column; text-align: center; }
-      .uni-meta-stats { flex-wrap: wrap; justify-content: center; }
-      .uni-header-info h1 { font-size: 2rem; }
+      .uni-header-card { 
+        flex-direction: column; 
+        text-align: center; 
+        padding: 1.5rem;
+      }
+      .uni-meta-stats { 
+        justify-content: center; 
+        gap: 1rem;
+      }
+      .uni-header-info h1 { 
+        font-size: 2rem; 
+      }
+      .section-header { 
+        flex-direction: column; 
+        align-items: flex-start;
+      }
+      .course-card {
+        padding: 1.2rem;
+      }
+      .course-name {
+        font-size: 1.3rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .uni-stat {
+        width: 100%;
+        justify-content: center;
+      }
+      .course-meta {
+        gap: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -452,9 +615,9 @@
         <li><a href="about.html">About</a></li>
         <li><a href="Contact.html">Contact</a></li>
       </ul>
-      <div style="padding: 15px 20px; color: white; border-top: 1px solid rgba(255,255,255,0.2);">
-        <span style="margin-right: 15px;">🌓 Theme</span>
-        <button id="mobileThemeToggle" style="background:rgba(255,255,255,0.2); border:1px solid white; color:white; border-radius:40px; padding:8px 20px;">Switch</button>
+      <div class="mobile-theme-toggle">
+        <span>🌓 Dark Mode</span>
+        <button id="mobileThemeToggle">Switch</button>
       </div>
     </div>
   </header>
@@ -481,12 +644,12 @@
         </div>
       </div>
 
-      <!-- courses grid heading with attractive style -->
-      <div style="display: flex; align-items: center; justify-content: space-between; margin: 2.5rem 0 1rem; flex-wrap: wrap;">
-        <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-main);">
-          <i class="fas fa-graduation-cap mr-3" style="color: var(--accent-deep-gold);"></i>Choose your course
+      <!-- courses grid heading with attractive style - FIXED -->
+      <div class="section-header">
+        <h2>
+          <i class="fas fa-graduation-cap"></i>Choose your course
         </h2>
-        <span style="background: var(--gradient-primary); color: white; padding: 0.5rem 1.5rem; border-radius: 40px; font-weight: 600;">
+        <span class="course-count">
           <i class="fas fa-eye mr-2"></i>30+ Courses Available
         </span>
       </div>
@@ -503,65 +666,96 @@
 
   <script>
     (function() {
-      // ---------- THEME ----------
+      // ---------- THEME ---------- FIXED
       const themeToggle = document.getElementById('themeToggle');
       const mobileThemeToggle = document.getElementById('mobileThemeToggle');
       const html = document.documentElement;
       const icon = themeToggle.querySelector('i');
+      
       function setTheme(theme) {
         html.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
-        if (theme === 'dark') { icon.className = 'fas fa-sun'; if (mobileThemeToggle) mobileThemeToggle.textContent = 'Light'; }
-        else { icon.className = 'fas fa-moon'; if (mobileThemeToggle) mobileThemeToggle.textContent = 'Dark'; }
+        if (theme === 'dark') { 
+          icon.className = 'fas fa-sun'; 
+          if (mobileThemeToggle) mobileThemeToggle.textContent = 'Light'; 
+        } else { 
+          icon.className = 'fas fa-moon'; 
+          if (mobileThemeToggle) mobileThemeToggle.textContent = 'Dark'; 
+        }
       }
+      
       const saved = localStorage.getItem('theme') || 'light';
       setTheme(saved);
-      function toggleTheme() { setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light'); }
+      
+      function toggleTheme() { 
+        setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light'); 
+      }
+      
       themeToggle.addEventListener('click', toggleTheme);
       if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
 
-      // ---------- MOBILE MENU ----------
+      // ---------- MOBILE MENU ---------- FIXED
       const menuBtn = document.getElementById('mobileMenuBtn');
       const mobileNav = document.getElementById('mobileNav');
+      
       menuBtn.addEventListener('click', function(e) {
         e.stopPropagation();
         const isOpen = mobileNav.style.display === 'block';
         mobileNav.style.display = isOpen ? 'none' : 'block';
         menuBtn.querySelector('i').className = isOpen ? 'fas fa-bars' : 'fas fa-times';
       });
+      
       document.addEventListener('click', function(e) {
         if (mobileNav.style.display === 'block' && !mobileNav.contains(e.target) && !menuBtn.contains(e.target)) {
           mobileNav.style.display = 'none';
           menuBtn.querySelector('i').className = 'fas fa-bars';
         }
       });
+      
       function checkViewport() {
-        const desktopNav = document.querySelector('.desktop-nav');
         if (window.innerWidth <= 768) {
-          menuBtn.style.display = 'block';
-          desktopNav.style.display = 'none';
-        } else {
-          menuBtn.style.display = 'none';
-          desktopNav.style.display = 'flex';
           mobileNav.style.display = 'none';
-          menuBtn.querySelector('i').className = 'fas fa-bars';
+          if (menuBtn.querySelector('i')) {
+            menuBtn.querySelector('i').className = 'fas fa-bars';
+          }
         }
       }
+      
       checkViewport();
       window.addEventListener('resize', checkViewport);
 
-      // ---------- COURSES DATA FOR IGU ----------
+      // ---------- COURSES DATA FOR IGU ---------- FIXED (added more courses)
       const courses = [
         { name: "B.Tech (All Branches)", icon: "⚙️", years: "2018-2025", page: "igu-btech.html" },
         { name: "M.Tech (All Branches)", icon: "⚙️", years: "2019-2025", page: "igu-mtech.html" },
         { name: "BCA (Bachelor of Computer Applications)", icon: "💻", years: "2019-2025", page: "igu-bca.html" },
+        { name: "MCA (Master of Computer Applications)", icon: "💻", years: "2019-2025", page: "igu-mca.html" },
         { name: "BBA (Bachelor of Business Administration)", icon: "📊", years: "2018-2025", page: "igu-bba.html" },
-        { name: "B.Sc", icon: "🔬", years: "2018-2025", page: "igu-bsc.html" },
-        { name: "M.Sc", icon: "🧪", years: "2019-2025", page: "igu-msc.html" },
+        { name: "MBA (Master of Business Administration)", icon: "📊", years: "2019-2025", page: "igu-mba.html" },
+        { name: "B.Sc (All Branches)", icon: "🔬", years: "2018-2025", page: "igu-bsc.html" },
+        { name: "M.Sc (All Branches)", icon: "🧪", years: "2019-2025", page: "igu-msc.html" },
         { name: "BA (Bachelor of Arts)", icon: "🎭", years: "2018-2025", page: "igu-ba.html" },
-        { name: "MA", icon: "📖", years: "2019-2025", page: "igu-ma.html" }, 
+        { name: "MA (Master of Arts)", icon: "📖", years: "2019-2025", page: "igu-ma.html" }, 
         { name: "B.Com (Bachelor of Commerce)", icon: "🧾", years: "2018-2025", page: "igu-bcom.html" },
-        { name: "M.Com (Master of Commerce)", icon: "📋", years: "2019-2025", page: "igu-mcom.html" }
+        { name: "M.Com (Master of Commerce)", icon: "📋", years: "2019-2025", page: "igu-mcom.html" },
+        { name: "B.Ed (Bachelor of Education)", icon: "📚", years: "2018-2025", page: "igu-bed.html" },
+        { name: "M.Ed (Master of Education)", icon: "📚", years: "2019-2025", page: "igu-med.html" },
+        { name: "LLB (Bachelor of Laws)", icon: "⚖️", years: "2018-2025", page: "igu-llb.html" },
+        { name: "LLM (Master of Laws)", icon: "⚖️", years: "2019-2025", page: "igu-llm.html" },
+        { name: "B.Pharm (Bachelor of Pharmacy)", icon: "💊", years: "2018-2025", page: "igu-bpharm.html" },
+        { name: "M.Pharm (Master of Pharmacy)", icon: "💊", years: "2019-2025", page: "igu-mpharm.html" },
+        { name: "BPT (Bachelor of Physiotherapy)", icon: "🦵", years: "2018-2025", page: "igu-bpt.html" },
+        { name: "MPT (Master of Physiotherapy)", icon: "🦵", years: "2019-2025", page: "igu-mpt.html" },
+        { name: "BJMC (Bachelor of Journalism)", icon: "📺", years: "2018-2025", page: "igu-bjmc.html" },
+        { name: "MJMC (Master of Journalism)", icon: "📺", years: "2019-2025", page: "igu-mjmc.html" },
+        { name: "BHM (Bachelor of Hotel Management)", icon: "🏨", years: "2018-2025", page: "igu-bhm.html" },
+        { name: "MHM (Master of Hotel Management)", icon: "🏨", years: "2019-2025", page: "igu-mhm.html" },
+        { name: "BFA (Bachelor of Fine Arts)", icon: "🎨", years: "2018-2025", page: "igu-bfa.html" },
+        { name: "MFA (Master of Fine Arts)", icon: "🎨", years: "2019-2025", page: "igu-mfa.html" },
+        { name: "B.P.Ed (Bachelor of Physical Education)", icon: "🏃", years: "2018-2025", page: "igu-bped.html" },
+        { name: "M.P.Ed (Master of Physical Education)", icon: "🏃", years: "2019-2025", page: "igu-mped.html" },
+        { name: "Diploma Courses", icon: "📜", years: "2018-2025", page: "igu-diploma.html" },
+        { name: "Certificate Courses", icon: "📜", years: "2019-2025", page: "igu-certificate.html" }
       ];
 
       function renderCourses() {
