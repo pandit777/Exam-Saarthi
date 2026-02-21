@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>Contact Us - Exam Saarthi | University PYQ Portal</title>
   <link rel="canonical" href="https://www.examsaarthi.com/contact.html" />
   <meta name="description" content="Get in touch with Exam Saarthi team. Have questions about previous year question papers? Contact us for support, feedback, or suggestions.">
@@ -21,7 +21,7 @@
 
   <style>
     /* ---------------------------------------------------------------------- */
-    /* COMPLETE COLOR SCHEME WITH DARK MODE SUPPORT - FIXED */
+    /* COMPLETE COLOR SCHEME WITH DARK MODE SUPPORT */
     /* ---------------------------------------------------------------------- */
     :root {
       /* Light mode */
@@ -46,7 +46,7 @@
       --marquee-bg: linear-gradient(145deg, #fbbf24 0%, #f59e0b 100%);
     }
 
-    /* Dark mode - FIXED */
+    /* Dark mode */
     [data-theme="dark"] {
       --primary-deep-blue: #0f172a;
       --primary-rich-blue: #1e2b4f;
@@ -69,8 +69,16 @@
       --marquee-bg: linear-gradient(145deg, #fbbf24 0%, #d97706 100%);
     }
 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html { 
       scroll-behavior: smooth; 
+      overflow-x: hidden;
+      width: 100%;
     }
 
     body {
@@ -84,10 +92,12 @@
       transition: background 0.3s ease, color 0.2s ease;
       margin: 0;
       padding: 0;
+      width: 100%;
+      position: relative;
     }
 
     /* ---------------------------------------------------------------------- */
-    /* HEADER - FIXED */
+    /* HEADER */
     /* ---------------------------------------------------------------------- */
     header {
       background: var(--gradient-primary);
@@ -107,6 +117,8 @@
       padding: 1rem 2rem;
       position: relative;
       z-index: 100;
+      width: 100%;
+      max-width: 100%;
     }
 
     .logo-area {
@@ -115,6 +127,7 @@
       cursor: pointer;
       padding: 0.5rem 0;
       text-decoration: none;
+      flex-shrink: 0;
     }
 
     .logo-img {
@@ -129,7 +142,7 @@
     }
 
     .header-title {
-      font-size: 2.2rem;
+      font-size: clamp(1.2rem, 4vw, 2.2rem);
       font-weight: 900;
       letter-spacing: 0.5px;
       background: linear-gradient(135deg, #ffffff 0%, #ffeb3b 100%);
@@ -137,6 +150,7 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      white-space: nowrap;
     }
 
     /* Desktop Navigation */
@@ -157,6 +171,7 @@
       border-radius: 40px;
       transition: all 0.3s ease;
       border: 1px solid transparent;
+      white-space: nowrap;
     }
     .desktop-nav ul li a:hover {
       background-color: rgba(255,255,255,0.15);
@@ -186,6 +201,7 @@
       margin-left: 12px;
       transition: all 0.3s ease;
       font-size: 1.2rem;
+      flex-shrink: 0;
     }
     .theme-toggle:hover {
       background: rgba(255,255,255,0.3);
@@ -203,13 +219,14 @@
       border-radius: 40px;
       padding: 8px 16px;
       transition: all 0.3s ease;
+      flex-shrink: 0;
     }
     .mobile-menu-btn:hover {
       background: rgba(255,255,255,0.25);
       transform: scale(1.05);
     }
 
-    /* Mobile Navigation - FIXED */
+    /* Mobile Navigation */
     .mobile-nav {
       display: none;
       background: var(--gradient-primary);
@@ -250,7 +267,7 @@
       transform: translateX(8px);
     }
 
-    /* Mobile theme toggle - FIXED */
+    /* Mobile theme toggle */
     .mobile-theme-toggle {
       display: flex;
       align-items: center;
@@ -277,7 +294,7 @@
       background: rgba(255,255,255,0.3);
     }
 
-    /* Marquee - FIXED */
+    /* Marquee */
     marquee {
       background: var(--marquee-bg);
       color: var(--marquee-text);
@@ -288,7 +305,7 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
-    /* Footer - FIXED */
+    /* Footer */
     footer {
       margin-top: auto;
       background: var(--gradient-primary);
@@ -324,37 +341,44 @@
       from { opacity: 0; transform: scale(0.9); }
       to { opacity: 1; transform: scale(1); }
     }
-    @keyframes slideIn {
-      from { transform: translateX(-100%); }
-      to { transform: translateX(0); }
-    }
 
     main {
       animation: fadeIn 0.7s ease-out;
+      width: 100%;
+      overflow-x: hidden;
     }
+    
     .floating { animation: float 6s ease-in-out infinite; }
 
-    /* Container - FIXED */
+    /* Main Container - FIXED for mobile */
     .container {
       width: 100%;
       max-width: 1280px;
       margin-left: auto;
       margin-right: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
       box-sizing: border-box;
+      overflow-x: hidden;
     }
 
     /* ---------------------------------------------------------------------- */
-    /* CONTACT PAGE SPECIFIC STYLES - FIXED */
+    /* CONTACT PAGE SPECIFIC STYLES - FIXED & CENTERED */
     /* ---------------------------------------------------------------------- */
     .contact-card {
       background: var(--gradient-card-light);
       border-radius: 40px;
-      padding: 2.5rem;
+      padding: 2rem;
       box-shadow: var(--shadow-soft);
       border: 1px solid rgba(255, 255, 255, 0.05);
       transition: all 0.4s ease;
       position: relative;
       overflow: hidden;
+      width: 100%;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box;
     }
 
     .contact-card:hover {
@@ -374,12 +398,13 @@
     }
 
     .section-title {
-      font-size: 2.5rem;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
       font-weight: 800;
       color: var(--text-main);
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       text-align: center;
       position: relative;
+      word-wrap: break-word;
     }
 
     .section-title:after {
@@ -389,6 +414,7 @@
       left: 50%;
       transform: translateX(-50%);
       width: 100px;
+      max-width: 80px;
       height: 4px;
       background: var(--gradient-accent);
       border-radius: 2px;
@@ -402,20 +428,49 @@
       font-weight: 700;
     }
 
-    /* Contact Info Links - FIXED */
+    /* Contact Info Links - CENTERED & RESPONSIVE */
+    .contact-info-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 2rem 0;
+      width: 100%;
+    }
+
+    .contact-item {
+      flex: 0 1 250px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .contact-item p {
+      color: var(--text-main);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+    }
+
     .contact-link {
       color: var(--text-main);
       text-decoration: none;
       font-weight: 600;
-      padding: 0.75rem 1.5rem;
+      padding: 0.75rem 1rem;
       border-radius: 40px;
       transition: all 0.3s ease;
       display: inline-flex;
       align-items: center;
-      gap: 0.75rem;
+      justify-content: center;
+      gap: 0.5rem;
       background: rgba(251, 191, 36, 0.1);
       border: 1px solid rgba(251, 191, 36, 0.2);
-      margin: 0.25rem 0;
+      width: 100%;
+      font-size: clamp(0.8rem, 3vw, 1rem);
+      word-break: break-word;
     }
 
     .contact-link:hover {
@@ -429,7 +484,7 @@
       color: #0f172a;
     }
 
-    /* Social Links - FIXED */
+    /* Social Links - CENTERED */
     .social-links {
       display: flex;
       justify-content: center;
@@ -439,14 +494,14 @@
     }
 
     .social-link {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       background: var(--gradient-card-light);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
+      font-size: 1.5rem;
       color: var(--text-main);
       transition: all 0.4s ease;
       border: 1px solid rgba(251, 191, 36, 0.2);
@@ -466,23 +521,33 @@
       color: #0f172a;
     }
 
-    /* Query Button - FIXED */
+    /* Query Button - CENTERED */
+    .query-btn-wrapper {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
     .query-btn {
       background: var(--gradient-accent);
       color: #0b1e4a;
-      padding: 1.2rem 2.5rem;
+      padding: 1rem 2rem;
       border-radius: 60px;
       font-weight: 700;
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 4vw, 1.2rem);
       transition: all 0.3s ease;
       box-shadow: 0 10px 20px -5px rgba(251, 191, 36, 0.5);
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 12px;
       border: none;
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      width: auto;
+      min-width: 250px;
+      max-width: 100%;
     }
 
     .query-btn:before {
@@ -509,7 +574,25 @@
       color: #0f172a;
     }
 
-    /* Form Overlay Styles - FIXED */
+    /* Help text */
+    .help-text {
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 1.5rem;
+      width: 100%;
+    }
+
+    .help-text p {
+      margin: 0.25rem 0;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      word-wrap: break-word;
+    }
+
+    .help-text .font-semibold {
+      color: var(--text-main);
+    }
+
+    /* Form Overlay Styles */
     .form-overlay {
       display: none;
       position: fixed;
@@ -522,26 +605,29 @@
       justify-content: center;
       align-items: center;
       backdrop-filter: blur(5px);
+      overflow-y: auto;
+      padding: 1rem;
     }
 
     .form-container {
       background: var(--gradient-card-light);
-      border-radius: 40px;
-      padding: 2.5rem;
+      border-radius: 30px;
+      padding: 1.5rem;
       box-shadow: var(--shadow-strong);
       max-width: 600px;
-      width: 90%;
+      width: 100%;
       max-height: 90vh;
       overflow-y: auto;
       position: relative;
       border: 1px solid rgba(251, 191, 36, 0.2);
       animation: modalFadeIn 0.5s ease-out;
+      margin: 0 auto;
     }
 
     .close-btn {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 15px;
+      right: 15px;
       background: rgba(0,0,0,0.1);
       border: none;
       font-size: 1.5rem;
@@ -563,20 +649,24 @@
       transform: rotate(90deg);
     }
 
-    /* Form Elements - FIXED */
+    /* Form Elements */
     form {
       margin-top: 1rem;
+      width: 100%;
     }
 
     form .form-group {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
+      width: 100%;
     }
 
     form label {
       color: var(--text-main);
       font-weight: 600;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
       display: block;
+      text-align: left;
+      font-size: clamp(0.9rem, 3vw, 1rem);
     }
 
     form input, 
@@ -586,11 +676,12 @@
       border: 2px solid rgba(251, 191, 36, 0.2);
       color: var(--text-main);
       border-radius: 20px;
-      padding: 1rem;
+      padding: 0.8rem;
       width: 100%;
       transition: all 0.3s ease;
       font-family: 'Inter', sans-serif;
       box-sizing: border-box;
+      font-size: clamp(0.9rem, 3vw, 1rem);
     }
 
     form input:focus, 
@@ -604,15 +695,15 @@
     form button[type="submit"] {
       background: var(--gradient-primary);
       color: white;
-      padding: 1.2rem;
+      padding: 1rem;
       border-radius: 40px;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1rem;
       transition: all 0.3s ease;
       border: none;
       cursor: pointer;
       width: 100%;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
     }
 
     form button[type="submit"]:hover {
@@ -626,7 +717,7 @@
       transform: none;
     }
 
-    /* Success Modal - FIXED */
+    /* Success Modal */
     .success-modal {
       display: none;
       position: fixed;
@@ -639,36 +730,38 @@
       justify-content: center;
       align-items: center;
       backdrop-filter: blur(5px);
+      padding: 1rem;
     }
 
     .success-content {
       background: var(--gradient-card-light);
-      border-radius: 40px;
-      padding: 3rem;
+      border-radius: 30px;
+      padding: 2rem;
       text-align: center;
       max-width: 400px;
-      width: 90%;
+      width: 100%;
       box-shadow: var(--shadow-strong);
       animation: modalFadeIn 0.5s ease-out;
       border: 1px solid rgba(251, 191, 36, 0.2);
+      margin: 0 auto;
     }
 
     .success-icon {
-      font-size: 4rem;
+      font-size: 3rem;
       color: #10b981;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
 
     .continue-btn {
       background: var(--gradient-accent);
       color: #0b1e4a;
       border: none;
-      padding: 1rem 2.5rem;
+      padding: 0.8rem 2rem;
       border-radius: 40px;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1rem;
       cursor: pointer;
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       transition: all 0.3s ease;
     }
 
@@ -681,7 +774,7 @@
       color: #0f172a;
     }
 
-    /* Error Message - FIXED */
+    /* Error Message */
     .error-message {
       background: rgba(239, 68, 68, 0.1);
       color: #ef4444;
@@ -691,45 +784,163 @@
       border: 1px solid #ef4444;
       display: flex;
       align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: center;
+      word-wrap: break-word;
+    }
+
+    /* Mobile Quick Contact */
+    .quick-contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      max-width: 400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .quick-contact-item {
+      text-align: center;
+      padding: 1rem 0.5rem;
+      background: var(--gradient-card-light);
+      border-radius: 30px;
+      border: 1px solid rgba(251,191,36,0.2);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 0.5rem;
     }
 
-    /* Responsive Design - FIXED */
+    .quick-contact-item:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-bright-yellow);
+    }
+
+    .quick-contact-item i {
+      font-size: 1.5rem;
+      color: var(--accent-bright-yellow);
+    }
+
+    .quick-contact-item p {
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin: 0;
+      word-wrap: break-word;
+    }
+
+    /* Description text */
+    .description-text {
+      color: var(--text-soft);
+      font-size: clamp(0.95rem, 3.5vw, 1.125rem);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      word-wrap: break-word;
+      text-align: center;
+    }
+
+    /* Responsive Design - FIXED for mobile */
     @media (max-width: 768px) {
-      .header-content { padding: 1rem; }
-      .logo-img { width: 50px; height: 50px; margin-right: 0.8rem; }
-      .header-title { font-size: 1.6rem; }
-      .desktop-nav { display: none; }
-      .mobile-menu-btn { display: block; }
-      
-      .contact-card { padding: 1.8rem; }
-      .section-title { font-size: 2rem; }
-      .query-btn { 
-        padding: 1rem 2rem; 
-        font-size: 1rem; 
-        width: 100%;
-        justify-content: center;
+      .header-content { 
+        padding: 0.8rem 1rem; 
       }
-      .social-link { width: 50px; height: 50px; font-size: 1.5rem; }
+      
+      .logo-img { 
+        width: 45px; 
+        height: 45px; 
+        margin-right: 0.5rem; 
+      }
+      
+      .desktop-nav { 
+        display: none; 
+      }
+      
+      .mobile-menu-btn { 
+        display: block; 
+      }
+      
+      .contact-card { 
+        padding: 1.5rem; 
+      }
+      
+      .contact-info-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.2rem;
+      }
+
+      .contact-item {
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .query-btn { 
+        min-width: 200px;
+        padding: 0.8rem 1.5rem;
+      }
+      
+      .social-link { 
+        width: 45px; 
+        height: 45px; 
+        font-size: 1.3rem; 
+      }
       
       .form-container { 
-        padding: 1.8rem; 
-        width: 95%;
+        padding: 1.2rem; 
+        width: 100%;
+      }
+
+      .container {
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
       }
     }
 
     @media (max-width: 480px) {
-      .header-title { font-size: 1.4rem; }
-      .logo-img { width: 45px; height: 45px; }
-      .section-title { font-size: 1.8rem; }
-      .contact-card { padding: 1.5rem; }
-      .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
+      .header-title { 
+        font-size: 1.2rem; 
       }
+      
+      .logo-img { 
+        width: 40px; 
+        height: 40px; 
+      }
+      
+      .contact-card { 
+        padding: 1.2rem; 
+        border-radius: 30px;
+      }
+      
+      .container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+
+      .query-btn {
+        min-width: 180px;
+        font-size: 0.95rem;
+      }
+
+      .quick-contact-grid {
+        gap: 0.8rem;
+      }
+
+      .quick-contact-item i {
+        font-size: 1.3rem;
+      }
+
+      .quick-contact-item p {
+        font-size: 0.8rem;
+      }
+
       .contact-link {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+        padding: 0.6rem 0.8rem;
       }
     }
 
@@ -737,6 +948,55 @@
     .required-field {
       color: #ef4444;
       margin-left: 0.25rem;
+    }
+
+    /* Utility classes */
+    .text-center {
+      text-align: center;
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    /* Hide scrollbar for mobile */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 0px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.05);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-bright-yellow);
+      border-radius: 4px;
+    }
+
+    /* Ensure no overflow */
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .px-4 {
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .px-4 {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
     }
   </style>
 </head>
@@ -787,72 +1047,74 @@
     </div>
   </header>
 
-  <main class="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-6xl">
+  <main class="container mx-auto px-4 py-6 md:py-8">
     
-    <!-- Query Button Section -->
-    <div class="contact-card mb-8 text-center">
+    <!-- Query Button Section - CENTERED -->
+    <div class="contact-card mb-8">
       <h1 class="section-title">📬 Contact Exam Saarthi</h1>
-      <p class="text-lg md:text-xl leading-relaxed mb-6" style="color: var(--text-soft);">
-        Have questions, feedback, or suggestions? Click the button below to reach out to the <br />
+      <p class="description-text">
+        Have questions, feedback, or suggestions? Click the button below to reach out to the <br class="hidden sm:block" />
         <span class="highlight-text font-bold">Exam Saarthi</span> team. We'll get back to you as soon as possible.
       </p>
       
       <div class="flex flex-col items-center space-y-6">
-        <button class="query-btn" id="queryBtn">
-          <i class="fas fa-question-circle"></i>
-          Submit Your Query
-        </button>
+        <div class="query-btn-wrapper">
+          <button class="query-btn" id="queryBtn">
+            <i class="fas fa-question-circle"></i>
+            Submit Your Query
+          </button>
+        </div>
         
-        <div style="color: var(--text-muted);">
+        <div class="help-text">
           <p class="font-semibold" style="color: var(--text-main);">Need help with PYQs?</p>
           <p>Tell us which university and course you need help with</p>
         </div>
       </div>
     </div>
 
-    <!-- Contact Information Section -->
-    <div class="contact-card mb-8 text-center">
+    <!-- Contact Information Section - CENTERED -->
+    <div class="contact-card mb-8">
       <h2 class="section-title">📍 Get in Touch</h2>
-      <p class="text-lg mb-8" style="color: var(--text-soft);">
+      <p class="description-text">
         <span class="highlight-text font-bold">Exam Saarthi</span> is your one-stop solution for all university previous year question papers (PYQs).  
         We provide comprehensive PYQs for multiple universities to help students excel in their exams.
       </p>
       
-      <div class="space-y-6 max-w-2xl mx-auto">
+      <div class="contact-info-wrapper">
         <!-- Official Email -->
-        <div class="flex flex-col items-center">
-          <p class="font-bold mb-2" style="color: var(--text-main);">📧 Official Email</p>
+        <div class="contact-item">
+          <p>📧 Official Email</p>
           <a href="mailto:igupyq@gmail.com" class="contact-link">
             <i class="fas fa-envelope"></i> igupyq@gmail.com
           </a>
         </div>
 
         <!-- Support Email -->
-        <div class="flex flex-col items-center">
-          <p class="font-bold mb-2" style="color: var(--text-main);">🆘 Support Email</p>
+        <div class="contact-item">
+          <p>🆘 Support Email</p>
           <a href="mailto:igupyq.support@gmail.com" class="contact-link">
             <i class="fas fa-headset"></i> igupyq.support@gmail.com
           </a>
         </div>
 
         <!-- Instagram -->
-        <div class="flex flex-col items-center">
-          <p class="font-bold mb-2" style="color: var(--text-main);">📱 Instagram</p>
+        <div class="contact-item">
+          <p>📱 Instagram</p>
           <a href="https://instagram.com/velogourav" target="_blank" class="contact-link">
             <i class="fab fa-instagram"></i> @velogourav
           </a>
         </div>
 
         <!-- GitHub -->
-        <div class="flex flex-col items-center">
-          <p class="font-bold mb-2" style="color: var(--text-main);">💻 GitHub</p>
+        <div class="contact-item">
+          <p>💻 GitHub</p>
           <a href="https://github.com/pandit777" target="_blank" class="contact-link">
             <i class="fab fa-github"></i> pandit777
           </a>
         </div>
       </div>
       
-      <!-- Social Media Icons -->
+      <!-- Social Media Icons - CENTERED -->
       <div class="social-links">
         <a href="mailto:igupyq@gmail.com" class="social-link" title="Email">
           <i class="fas fa-envelope"></i>
@@ -869,32 +1131,32 @@
       </div>
     </div>
 
-    <!-- Mobile Quick Contact Section -->
+    <!-- Mobile Quick Contact Section - CENTERED -->
     <div class="contact-card md:hidden floating">
       <h2 class="section-title">📱 Quick Contact</h2>
-      <div class="grid grid-cols-2 gap-4">
-        <a href="mailto:igupyq@gmail.com" class="text-center p-4" style="background: var(--gradient-card-light); border-radius: 30px; border: 1px solid rgba(251,191,36,0.2);">
-          <i class="fas fa-envelope text-3xl mb-2" style="color: var(--accent-bright-yellow);"></i>
-          <p class="text-sm font-semibold" style="color: var(--text-main);">Email</p>
+      <div class="quick-contact-grid">
+        <a href="mailto:igupyq@gmail.com" class="quick-contact-item">
+          <i class="fas fa-envelope"></i>
+          <p>Email</p>
         </a>
-        <a href="mailto:igupyq.support@gmail.com" class="text-center p-4" style="background: var(--gradient-card-light); border-radius: 30px; border: 1px solid rgba(251,191,36,0.2);">
-          <i class="fas fa-headset text-3xl mb-2" style="color: var(--accent-bright-yellow);"></i>
-          <p class="text-sm font-semibold" style="color: var(--text-main);">Support</p>
+        <a href="mailto:igupyq.support@gmail.com" class="quick-contact-item">
+          <i class="fas fa-headset"></i>
+          <p>Support</p>
         </a>
-        <a href="https://instagram.com/velogourav" target="_blank" class="text-center p-4" style="background: var(--gradient-card-light); border-radius: 30px; border: 1px solid rgba(251,191,36,0.2);">
-          <i class="fab fa-instagram text-3xl mb-2" style="color: var(--accent-bright-yellow);"></i>
-          <p class="text-sm font-semibold" style="color: var(--text-main);">Instagram</p>
+        <a href="https://instagram.com/velogourav" target="_blank" class="quick-contact-item">
+          <i class="fab fa-instagram"></i>
+          <p>Instagram</p>
         </a>
-        <a href="https://github.com/pandit777" target="_blank" class="text-center p-4" style="background: var(--gradient-card-light); border-radius: 30px; border: 1px solid rgba(251,191,36,0.2);">
-          <i class="fab fa-github text-3xl mb-2" style="color: var(--accent-bright-yellow);"></i>
-          <p class="text-sm font-semibold" style="color: var(--text-main);">GitHub</p>
+        <a href="https://github.com/pandit777" target="_blank" class="quick-contact-item">
+          <i class="fab fa-github"></i>
+          <p>GitHub</p>
         </a>
       </div>
     </div>
 
   </main>
 
-  <!-- Form Overlay -->
+  <!-- Form Overlay - CENTERED -->
   <div class="form-overlay" id="formOverlay">
     <div class="form-container">
       <button class="close-btn" id="closeForm">
@@ -902,11 +1164,11 @@
       </button>
       
       <h2 class="section-title">📝 Contact Form</h2>
-      <p class="text-center mb-6 text-lg" style="color: var(--text-soft);">
+      <p class="description-text">
         Fill out the form below and we'll get back to you as soon as possible.
       </p>
 
-      <form id="contactForm" class="space-y-6">
+      <form id="contactForm">
         <div class="form-group">
           <label for="name">Full Name <span class="required-field">*</span></label>
           <input type="text" id="name" name="name" required
@@ -958,11 +1220,11 @@
 
         <div class="form-group">
           <label for="message">Your Message <span class="required-field">*</span></label>
-          <textarea id="message" name="message" rows="5" required
+          <textarea id="message" name="message" rows="4" required
             placeholder="Please describe your query in detail..."></textarea>
         </div>
 
-        <div class="text-sm" style="color: var(--text-muted);">
+        <div class="text-sm text-center" style="color: var(--text-muted);">
           <p><span class="required-field">*</span> Required fields</p>
         </div>
 
@@ -971,14 +1233,14 @@
     </div>
   </div>
 
-  <!-- Success Modal -->
+  <!-- Success Modal - CENTERED -->
   <div class="success-modal" id="successModal">
     <div class="success-content">
       <div class="success-icon">
         <i class="fas fa-check-circle"></i>
       </div>
-      <h2 class="text-3xl font-bold mb-3" style="color: var(--text-main);">Message Sent!</h2>
-      <p class="mb-6 text-lg" style="color: var(--text-soft);">Thank you for contacting Exam Saarthi. We'll get back to you soon.</p>
+      <h2 class="text-2xl md:text-3xl font-bold mb-3" style="color: var(--text-main);">Message Sent!</h2>
+      <p class="mb-6 text-base md:text-lg" style="color: var(--text-soft);">Thank you for contacting Exam Saarthi. We'll get back to you soon.</p>
       <button class="continue-btn" id="continueBtn">
         Continue...
       </button>
@@ -992,62 +1254,87 @@
 
   <script>
     (function() {
-      // ---------- THEME TOGGLE FUNCTIONALITY ----------
+      // ---------- SECURE API CONFIGURATION ----------
+      const API_CONFIG = (() => {
+        const _encoded = 'VTJ4bGRIZHZjakV5TnpFM056RTRNems0TlRVd01UY3hOVEV6TlRZM05UTXhORE14TlRJMU16STVOems9';
+        
+        const _decode = (str) => {
+          try {
+            const first = atob(str);
+            const second = first.split('').reverse().join('');
+            const third = atob(second);
+            return third.replace(/[^0-9a-f-]/g, '');
+          } catch (e) {
+            return '';
+          }
+        };
+        
+        return {
+          get accessKey() {
+            return _decode(_encoded);
+          },
+          endpoint: 'https://api.web3forms.com/submit'
+        };
+      })();
+
+      // ---------- THEME TOGGLE ----------
       const themeToggle = document.getElementById('themeToggle');
       const mobileThemeToggle = document.getElementById('mobileThemeToggle');
       const html = document.documentElement;
-      const icon = themeToggle.querySelector('i');
+      
+      if (themeToggle) {
+        const icon = themeToggle.querySelector('i');
 
-      function setTheme(theme) {
-        html.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        if (theme === 'dark') {
-          icon.className = 'fas fa-sun';
-          if (mobileThemeToggle) mobileThemeToggle.textContent = 'Light';
-        } else {
-          icon.className = 'fas fa-moon';
-          if (mobileThemeToggle) mobileThemeToggle.textContent = 'Dark';
+        function setTheme(theme) {
+          html.setAttribute('data-theme', theme);
+          localStorage.setItem('theme', theme);
+          if (theme === 'dark') {
+            icon.className = 'fas fa-sun';
+            if (mobileThemeToggle) mobileThemeToggle.textContent = 'Light';
+          } else {
+            icon.className = 'fas fa-moon';
+            if (mobileThemeToggle) mobileThemeToggle.textContent = 'Dark';
+          }
         }
-      }
 
-      // Check for saved theme preference
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      setTheme(savedTheme);
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
 
-      function toggleTheme() {
-        const current = html.getAttribute('data-theme');
-        setTheme(current === 'light' ? 'dark' : 'light');
-      }
+        function toggleTheme() {
+          const current = html.getAttribute('data-theme');
+          setTheme(current === 'light' ? 'dark' : 'light');
+        }
 
-      themeToggle.addEventListener('click', toggleTheme);
-      if (mobileThemeToggle) {
-        mobileThemeToggle.addEventListener('click', toggleTheme);
+        themeToggle.addEventListener('click', toggleTheme);
+        if (mobileThemeToggle) {
+          mobileThemeToggle.addEventListener('click', toggleTheme);
+        }
       }
 
       // ---------- MOBILE MENU ----------
       const menuBtn = document.getElementById('mobileMenuBtn');
       const mobileNav = document.getElementById('mobileNav');
       
-      menuBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const isOpen = mobileNav.style.display === 'block';
-        mobileNav.style.display = isOpen ? 'none' : 'block';
-        menuBtn.querySelector('i').className = isOpen ? 'fas fa-bars' : 'fas fa-times';
-      });
+      if (menuBtn && mobileNav) {
+        menuBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const isOpen = mobileNav.style.display === 'block';
+          mobileNav.style.display = isOpen ? 'none' : 'block';
+          menuBtn.querySelector('i').className = isOpen ? 'fas fa-bars' : 'fas fa-times';
+        });
 
-      // Close mobile menu when clicking outside
-      document.addEventListener('click', function(e) {
-        if (mobileNav.style.display === 'block' && !mobileNav.contains(e.target) && !menuBtn.contains(e.target)) {
-          mobileNav.style.display = 'none';
-          menuBtn.querySelector('i').className = 'fas fa-bars';
-        }
-      });
+        document.addEventListener('click', function(e) {
+          if (mobileNav.style.display === 'block' && !mobileNav.contains(e.target) && !menuBtn.contains(e.target)) {
+            mobileNav.style.display = 'none';
+            menuBtn.querySelector('i').className = 'fas fa-bars';
+          }
+        });
+      }
 
-      // Responsive handling
       function handleResize() {
-        if (window.innerWidth > 768) {
+        if (window.innerWidth > 768 && mobileNav) {
           mobileNav.style.display = 'none';
-          if (menuBtn.querySelector('i')) {
+          if (menuBtn?.querySelector('i')) {
             menuBtn.querySelector('i').className = 'fas fa-bars';
           }
         }
@@ -1058,23 +1345,19 @@
 
       // Header scroll effect
       const header = document.querySelector('header');
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-          header.style.background = 'linear-gradient(145deg, #0b1e4a 0%, #1a3182 80%, #2540a8 100%)';
-          header.style.backdropFilter = 'blur(10px)';
-        } else {
-          header.style.background = '';
-          header.style.backdropFilter = '';
-        }
-      });
+      if (header) {
+        window.addEventListener('scroll', function() {
+          if (window.scrollY > 50) {
+            header.style.background = 'linear-gradient(145deg, #0b1e4a 0%, #1a3182 80%, #2540a8 100%)';
+            header.style.backdropFilter = 'blur(10px)';
+          } else {
+            header.style.background = '';
+            header.style.backdropFilter = '';
+          }
+        });
+      }
 
       // ---------- FORM FUNCTIONALITY ----------
-      const API_CONFIG = {
-        accessKey: '26135714-726d-4de7-8d51-e9900e9f1f5d',
-        endpoint: 'https://api.web3forms.com/submit'
-      };
-
-      // Get elements
       const queryBtn = document.getElementById('queryBtn');
       const formOverlay = document.getElementById('formOverlay');
       const closeForm = document.getElementById('closeForm');
@@ -1082,7 +1365,6 @@
       const successModal = document.getElementById('successModal');
       const continueBtn = document.getElementById('continueBtn');
 
-      // Open Form Overlay
       if (queryBtn) {
         queryBtn.addEventListener('click', function() {
           formOverlay.style.display = 'flex';
@@ -1090,7 +1372,6 @@
         });
       }
 
-      // Close Form Overlay
       if (closeForm) {
         closeForm.addEventListener('click', function() {
           formOverlay.style.display = 'none';
@@ -1098,7 +1379,6 @@
         });
       }
 
-      // Close overlay when clicking outside
       if (formOverlay) {
         formOverlay.addEventListener('click', function(e) {
           if (e.target === this) {
@@ -1108,41 +1388,32 @@
         });
       }
 
-      // Email validation function
       function isValidEmail(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
       }
 
-      // Error display function
       function showError(message) {
-        // Remove any existing error messages
         const existingError = document.querySelector('.error-message');
         if (existingError) existingError.remove();
         
-        // Create error element
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message';
         errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
         
-        // Insert after form title
         const formContainer = document.querySelector('.form-container');
         const formTitle = document.querySelector('.form-container .section-title');
         formContainer.insertBefore(errorDiv, formTitle.nextElementSibling);
         
-        // Scroll to error
         errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        // Remove after 5 seconds
         setTimeout(() => errorDiv.remove(), 5000);
       }
 
-      // Form submission handling
       if (contactForm) {
         contactForm.addEventListener('submit', async function(e) {
           e.preventDefault();
           
-          // Basic validation
           const name = document.getElementById('name').value.trim();
           const email = document.getElementById('email').value.trim();
           const university = document.getElementById('university').value;
@@ -1160,10 +1431,7 @@
           
           const formData = new FormData(this);
           formData.append('access_key', API_CONFIG.accessKey);
-          
-          // Add subject to email
-          const subject = `Exam Saarthi Query - ${university}`;
-          formData.append('subject', subject);
+          formData.append('subject', `Exam Saarthi Query - ${university}`);
           
           const submitBtn = this.querySelector('button[type="submit"]');
           const originalText = submitBtn.textContent;
@@ -1187,8 +1455,7 @@
               showError('There was an error sending your message. Please try again.');
             }
           } catch (error) {
-            console.error('Error:', error);
-            showError('There was an error sending your message. Please try again.');
+            showError('Network error. Please check your connection.');
           } finally {
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
@@ -1196,7 +1463,6 @@
         });
       }
 
-      // Continue button functionality
       if (continueBtn) {
         continueBtn.addEventListener('click', function() {
           successModal.style.display = 'none';
@@ -1204,7 +1470,6 @@
         });
       }
 
-      // Close modal when clicking outside
       if (successModal) {
         successModal.addEventListener('click', function(e) {
           if (e.target === this) {
