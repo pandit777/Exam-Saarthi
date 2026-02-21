@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>About Us - Exam Saarthi | University PYQ Portal</title>
   <link rel="canonical" href="https://www.examsaarthi.com/about.html" />
   <meta name="description" content="Learn about Exam Saarthi - your trusted platform for university previous year question papers. Our mission is to make exam preparation simple and accessible for all students.">
@@ -65,11 +65,21 @@
       --shadow-medium: 0 25px 40px -12px rgba(0, 0, 0, 0.8);
       --shadow-strong: 0 35px 55px -15px rgba(0, 0, 0, 0.9);
       --footer-text: #e2e8f0;
-      --marquee-text: #0b1e4a; /* Fixed: Dark mode mein bhi text dark rahega for contrast */
+      --marquee-text: #0b1e4a;
       --marquee-bg: linear-gradient(145deg, #fbbf24 0%, #d97706 100%);
     }
 
-    html { scroll-behavior: smooth; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html { 
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      width: 100%;
+    }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -82,6 +92,8 @@
       transition: background 0.3s ease, color 0.2s ease;
       margin: 0;
       padding: 0;
+      width: 100%;
+      position: relative;
     }
 
     /* ---------------------------------------------------------------------- */
@@ -105,6 +117,8 @@
       padding: 1rem 2rem;
       position: relative;
       z-index: 100;
+      width: 100%;
+      max-width: 100%;
     }
 
     .logo-area {
@@ -114,6 +128,7 @@
       padding: 0.5rem 0;
       transition: all 0.3s ease;
       text-decoration: none;
+      flex-shrink: 0;
     }
 
     .logo-img {
@@ -128,7 +143,7 @@
     }
 
     .header-title {
-      font-size: 2.2rem;
+      font-size: clamp(1.2rem, 4vw, 2.2rem);
       font-weight: 900;
       letter-spacing: 0.5px;
       background: linear-gradient(135deg, #ffffff 0%, #ffeb3b 100%);
@@ -136,6 +151,7 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      white-space: nowrap;
     }
 
     /* Desktop Navigation */
@@ -156,6 +172,7 @@
       border-radius: 40px;
       transition: all 0.3s ease;
       border: 1px solid transparent;
+      white-space: nowrap;
     }
     .desktop-nav ul li a:hover {
       background-color: rgba(255,255,255,0.15);
@@ -185,6 +202,7 @@
       margin-left: 12px;
       transition: all 0.3s ease;
       font-size: 1.2rem;
+      flex-shrink: 0;
     }
     .theme-toggle:hover {
       background: rgba(255,255,255,0.3);
@@ -202,6 +220,7 @@
       border-radius: 40px;
       padding: 8px 16px;
       transition: all 0.3s ease;
+      flex-shrink: 0;
     }
     .mobile-menu-btn:hover {
       background: rgba(255,255,255,0.25);
@@ -328,8 +347,20 @@
     .content-section { animation: fadeIn 0.7s ease-out; }
     .floating { animation: float 6s ease-in-out infinite; }
 
+    /* Main Container - FIXED */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+
     /* ---------------------------------------------------------------------- */
-    /* ABOUT PAGE SPECIFIC STYLES - FIXED */
+    /* ABOUT PAGE SPECIFIC STYLES - FIXED & CENTERED */
     /* ---------------------------------------------------------------------- */
     .about-card {
       background: var(--gradient-card-light);
@@ -340,6 +371,11 @@
       transition: all 0.4s ease;
       position: relative;
       overflow: hidden;
+      width: 100%;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box;
     }
 
     .about-card:hover {
@@ -359,12 +395,13 @@
     }
 
     .section-title {
-      font-size: 2.5rem;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
       font-weight: 800;
       color: var(--text-main);
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       text-align: center;
       position: relative;
+      word-wrap: break-word;
     }
 
     .section-title:after {
@@ -374,6 +411,7 @@
       left: 50%;
       transform: translateX(-50%);
       width: 100px;
+      max-width: 80px;
       height: 4px;
       background: var(--gradient-accent);
       border-radius: 2px;
@@ -387,6 +425,18 @@
       font-weight: 700;
     }
 
+    .description-text {
+      color: var(--text-soft);
+      font-size: clamp(1rem, 3.5vw, 1.125rem);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      word-wrap: break-word;
+    }
+
     .mission-vision-card {
       background: var(--gradient-card-light);
       border-radius: 30px;
@@ -394,6 +444,7 @@
       height: 100%;
       transition: all 0.3s ease;
       border: 1px solid rgba(251, 191, 36, 0.1);
+      text-align: center;
     }
 
     .mission-vision-card:hover {
@@ -402,7 +453,7 @@
     }
 
     .feature-icon {
-      font-size: 3rem;
+      font-size: clamp(2.5rem, 5vw, 3rem);
       background: var(--gradient-primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -410,7 +461,7 @@
       margin-bottom: 1.2rem;
     }
 
-    /* Team Cards with Images - FIXED */
+    /* Team Cards - CENTERED */
     .team-card {
       background: var(--gradient-card-light);
       border-radius: 30px;
@@ -424,6 +475,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      width: 100%;
+      max-width: 350px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .team-card:before {
@@ -444,8 +499,8 @@
     }
 
     .team-image {
-      width: 150px;
-      height: 150px;
+      width: clamp(100px, 25vw, 150px);
+      height: clamp(100px, 25vw, 150px);
       object-fit: cover;
       border-radius: 50%;
       margin-bottom: 1.2rem;
@@ -462,14 +517,15 @@
     }
 
     .team-name {
-      font-size: 1.5rem;
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
       font-weight: 800;
       color: var(--text-main);
       margin-bottom: 0.3rem;
+      text-align: center;
     }
 
     .team-role {
-      font-size: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
       color: var(--text-muted);
       font-weight: 600;
       background: var(--gradient-primary);
@@ -477,30 +533,35 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
       margin-bottom: 0.8rem;
+      text-align: center;
     }
 
     .team-bio {
       color: var(--text-soft);
-      font-size: 0.95rem;
+      font-size: clamp(0.9rem, 3vw, 0.95rem);
       line-height: 1.5;
+      text-align: center;
     }
 
     .back-home-btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 0.8rem;
       background: var(--gradient-accent);
       color: #0b1e4a;
       padding: 1rem 2.5rem;
       border-radius: 60px;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: clamp(1rem, 4vw, 1.1rem);
       transition: all 0.3s ease;
       box-shadow: 0 10px 20px -5px rgba(251, 191, 36, 0.5);
       text-decoration: none;
       margin-bottom: 2rem;
       border: none;
       cursor: pointer;
+      width: auto;
+      min-width: 200px;
     }
 
     .back-home-btn:hover {
@@ -512,13 +573,14 @@
       color: #0f172a;
     }
 
+    /* Statistics - CENTERED */
     .stat-item {
       text-align: center;
       padding: 1.5rem;
     }
 
     .stat-number {
-      font-size: 2.5rem;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
       font-weight: 900;
       background: var(--gradient-primary);
       -webkit-background-clip: text;
@@ -538,41 +600,189 @@
     .stat-label {
       color: var(--stat-label-light);
       font-weight: 600;
-      font-size: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
     }
 
-    /* Container fixes */
-    .container {
-      width: 100%;
-      max-width: 1280px;
+    /* Feature Grid - CENTERED */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    @media (min-width: 768px) {
+      .feature-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .feature-item {
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    /* Check List - CENTERED */
+    .check-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      max-width: 600px;
+      margin: 1.5rem auto;
+    }
+
+    @media (min-width: 768px) {
+      .check-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text-soft);
+      font-size: clamp(0.95rem, 3vw, 1rem);
+    }
+
+    .check-item i {
+      color: var(--accent-bright-yellow);
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    /* Team Grid - CENTERED */
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      max-width: 800px;
+      margin: 2rem auto;
+    }
+
+    @media (min-width: 768px) {
+      .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Goal Box */
+    .goal-box {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      border-radius: 2rem;
+      background: linear-gradient(145deg, rgba(251,191,36,0.1), rgba(251,191,36,0.05));
+      text-align: center;
+      max-width: 800px;
       margin-left: auto;
       margin-right: auto;
-      box-sizing: border-box;
+    }
+
+    .goal-box p {
+      color: var(--text-main);
+      font-size: clamp(1rem, 3.5vw, 1.125rem);
+      font-weight: 600;
+      line-height: 1.6;
     }
 
     /* Responsive Design - FIXED */
     @media (max-width: 768px) {
-      .header-content { padding: 1rem; }
-      .logo-img { width: 50px; height: 50px; margin-right: 0.8rem; }
-      .header-title { font-size: 1.6rem; }
-      .desktop-nav { display: none; }
-      .mobile-menu-btn { display: block; }
+      .header-content { 
+        padding: 0.8rem 1rem; 
+      }
       
-      .about-card { padding: 1.8rem; }
-      .section-title { font-size: 2rem; }
-      .back-home-btn { padding: 0.8rem 2rem; font-size: 1rem; }
-      .team-image { width: 120px; height: 120px; }
+      .logo-img { 
+        width: 45px; 
+        height: 45px; 
+        margin-right: 0.5rem; 
+      }
+      
+      .desktop-nav { 
+        display: none; 
+      }
+      
+      .mobile-menu-btn { 
+        display: block; 
+      }
+      
+      .about-card { 
+        padding: 1.5rem; 
+        border-radius: 30px;
+      }
+      
+      .back-home-btn { 
+        padding: 0.8rem 2rem; 
+        width: 100%;
+        max-width: 280px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .container {
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
+      }
+
+      .mission-vision-card {
+        padding: 1.5rem;
+      }
     }
 
     @media (max-width: 480px) {
-      .header-title { font-size: 1.4rem; }
-      .logo-img { width: 45px; height: 45px; }
-      .section-title { font-size: 1.8rem; }
-      .team-image { width: 100px; height: 100px; }
-      .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
+      .header-title { 
+        font-size: 1.2rem; 
       }
+      
+      .logo-img { 
+        width: 40px; 
+        height: 40px; 
+      }
+      
+      .about-card { 
+        padding: 1.2rem; 
+      }
+      
+      .container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+
+      .stat-item {
+        padding: 1rem;
+      }
+
+      .team-card {
+        padding: 1.5rem 1rem;
+      }
+    }
+
+    /* Utility classes */
+    .text-center {
+      text-align: center;
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Hide scrollbar for mobile */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 0px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.05);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-bright-yellow);
+      border-radius: 4px;
     }
   </style>
 </head>
@@ -623,29 +833,29 @@
     </div>
   </header>
 
-  <main class="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-6xl">
+  <main class="container mx-auto py-6 md:py-8">
 
-    <!-- Back to Home Button -->
-    <div class="mb-8">
+    <!-- Back to Home Button - CENTERED -->
+    <div class="flex justify-center mb-8">
       <a href="index.html" class="back-home-btn">
         <i class="fas fa-arrow-left"></i> Back to Home
       </a>
     </div>
 
-    <!-- Main About Section -->
+    <!-- Main About Section - CENTERED -->
     <div class="about-card mb-8">
       <h1 class="section-title">About Exam Saarthi</h1>
-      <div class="max-w-3xl mx-auto text-center">
-        <p class="text-lg md:text-xl leading-relaxed mb-6" style="color: var(--text-soft);">
+      <div class="description-text">
+        <p class="mb-4">
           <span class="highlight-text font-bold">Exam Saarthi</span> is a student-driven initiative created to help university students access previous year question papers (PYQs) for all programs — undergraduate, postgraduate, and research — in one organized place.
         </p>
-        <p class="text-lg leading-relaxed" style="color: var(--text-soft);">
+        <p>
           We aim to simplify the process of finding study materials and provide a digital space for academic preparation that's fast, free, and reliable.
         </p>
       </div>
 
-      <!-- Quick Stats -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+      <!-- Quick Stats - CENTERED -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
         <div class="stat-item">
           <span class="stat-number">50+</span>
           <span class="stat-label">Universities</span>
@@ -665,84 +875,81 @@
       </div>
     </div>
 
-    <!-- Vision & Mission -->
-    <div class="grid md:grid-cols-2 gap-6 mb-8">
+    <!-- Vision & Mission - CENTERED -->
+    <div class="grid md:grid-cols-2 gap-6 mb-8 max-w-4xl mx-auto">
       <div class="mission-vision-card floating">
-        <div class="text-center">
-          <i class="fas fa-bullseye feature-icon"></i>
-          <h2 class="text-2xl font-bold mb-4" style="color: var(--text-main);">Our Vision</h2>
-          <p style="color: var(--text-soft);">
-            To become the most trusted platform for university students to access academic resources and enhance their learning experience across India.
-          </p>
-        </div>
+        <i class="fas fa-bullseye feature-icon"></i>
+        <h2 class="text-2xl font-bold mb-4" style="color: var(--text-main);">Our Vision</h2>
+        <p class="description-text" style="font-size: 1rem;">
+          To become the most trusted platform for university students to access academic resources and enhance their learning experience across India.
+        </p>
       </div>
 
       <div class="mission-vision-card floating" style="animation-delay: 0.5s;">
-        <div class="text-center">
-          <i class="fas fa-flag feature-icon"></i>
-          <h2 class="text-2xl font-bold mb-4" style="color: var(--text-main);">Our Mission</h2>
-          <p style="color: var(--text-soft);">
-            To empower students with easy access to quality study materials and promote smart digital learning across all universities, completely free of cost.
-          </p>
-        </div>
+        <i class="fas fa-flag feature-icon"></i>
+        <h2 class="text-2xl font-bold mb-4" style="color: var(--text-main);">Our Mission</h2>
+        <p class="description-text" style="font-size: 1rem;">
+          To empower students with easy access to quality study materials and promote smart digital learning across all universities, completely free of cost.
+        </p>
       </div>
     </div>
 
-    <!-- Core Values / Why Choose Us -->
+    <!-- Core Values / Why Choose Us - CENTERED -->
     <div class="about-card mb-8">
       <h2 class="section-title">✨ Why Choose Exam Saarthi?</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="text-center p-4">
+      
+      <div class="feature-grid">
+        <div class="feature-item">
           <div class="feature-icon mb-4">
             <i class="fas fa-university"></i>
           </div>
           <h3 class="text-xl font-bold mb-2" style="color: var(--text-main);">Multiple Universities</h3>
-          <p style="color: var(--text-soft);">PYQs from various universities all in one platform</p>
+          <p class="description-text" style="font-size: 0.95rem;">PYQs from various universities all in one platform</p>
         </div>
-        <div class="text-center p-4">
+        <div class="feature-item">
           <div class="feature-icon mb-4">
             <i class="fas fa-mobile-alt"></i>
           </div>
           <h3 class="text-xl font-bold mb-2" style="color: var(--text-main);">Mobile Friendly</h3>
-          <p style="color: var(--text-soft);">Access your papers anytime, anywhere on any device</p>
+          <p class="description-text" style="font-size: 0.95rem;">Access your papers anytime, anywhere on any device</p>
         </div>
-        <div class="text-center p-4">
+        <div class="feature-item">
           <div class="feature-icon mb-4">
             <i class="fas fa-lock-open"></i>
           </div>
           <h3 class="text-xl font-bold mb-2" style="color: var(--text-main);">Completely Free</h3>
-          <p style="color: var(--text-soft);">No charges, no subscriptions - education for everyone</p>
+          <p class="description-text" style="font-size: 0.95rem;">No charges, no subscriptions - education for everyone</p>
         </div>
       </div>
 
-      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="flex items-start gap-3">
-          <i class="fas fa-check-circle text-2xl" style="color: var(--accent-bright-yellow);"></i>
-          <span style="color: var(--text-soft);">Make university learning more efficient and accessible</span>
+      <div class="check-list">
+        <div class="check-item">
+          <i class="fas fa-check-circle"></i>
+          <span>Make university learning more efficient and accessible</span>
         </div>
-        <div class="flex items-start gap-3">
-          <i class="fas fa-check-circle text-2xl" style="color: var(--accent-bright-yellow);"></i>
-          <span style="color: var(--text-soft);">Centralized platform for all course-related PYQs</span>
+        <div class="check-item">
+          <i class="fas fa-check-circle"></i>
+          <span>Centralized platform for all course-related PYQs</span>
         </div>
-        <div class="flex items-start gap-3">
-          <i class="fas fa-check-circle text-2xl" style="color: var(--accent-bright-yellow);"></i>
-          <span style="color: var(--text-soft);">Promote smart and digital learning in university community</span>
+        <div class="check-item">
+          <i class="fas fa-check-circle"></i>
+          <span>Promote smart and digital learning in university community</span>
         </div>
-        <div class="flex items-start gap-3">
-          <i class="fas fa-check-circle text-2xl" style="color: var(--accent-bright-yellow);"></i>
-          <span style="color: var(--text-soft);">Quality materials accessible to every student</span>
+        <div class="check-item">
+          <i class="fas fa-check-circle"></i>
+          <span>Quality materials accessible to every student</span>
         </div>
       </div>
     </div>
 
-    <!-- Team Section with Actual Images -->
+    <!-- Team Section - CENTERED -->
     <div class="about-card">
       <h2 class="section-title">💻 Meet Our Team</h2>
-      <p class="text-center text-lg mb-8" style="color: var(--text-soft);">
+      <p class="description-text">
         <span class="highlight-text font-bold">Exam Saarthi</span> is developed and maintained by passionate students and tech enthusiasts who believe in open access to education.
       </p>
 
-      <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+      <div class="team-grid">
         <!-- Gourav Sharma - Developer & Founder -->
         <div class="team-card floating">
           <img src="https://examsaarthi.com/Dev.jpg" 
@@ -766,8 +973,8 @@
         </div>
       </div>
 
-      <div class="mt-8 p-6 rounded-2xl text-center" style="background: linear-gradient(145deg, rgba(251,191,36,0.1), rgba(251,191,36,0.05));">
-        <p class="text-lg font-semibold" style="color: var(--text-main);">
+      <div class="goal-box">
+        <p>
           🎯 Our Goal: To make quality study materials available to every student in a clean, modern, and user-friendly interface.
         </p>
       </div>
@@ -799,7 +1006,6 @@
         }
       }
 
-      // Check for saved theme preference
       const savedTheme = localStorage.getItem('theme') || 'light';
       setTheme(savedTheme);
 
@@ -824,7 +1030,6 @@
         menuBtn.querySelector('i').className = isOpen ? 'fas fa-bars' : 'fas fa-times';
       });
 
-      // Close mobile menu when clicking outside
       document.addEventListener('click', function(e) {
         if (mobileNav.style.display === 'block' && !mobileNav.contains(e.target) && !menuBtn.contains(e.target)) {
           mobileNav.style.display = 'none';
@@ -832,9 +1037,8 @@
         }
       });
 
-      // Responsive handling
       function handleResize() {
-        if (window.innerWidth > 768) {
+        if (window.innerWidth > 768 && mobileNav) {
           mobileNav.style.display = 'none';
           if (menuBtn.querySelector('i')) {
             menuBtn.querySelector('i').className = 'fas fa-bars';
@@ -847,15 +1051,17 @@
 
       // Header scroll effect
       const header = document.querySelector('header');
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-          header.style.background = 'linear-gradient(145deg, #0b1e4a 0%, #1a3182 80%, #2540a8 100%)';
-          header.style.backdropFilter = 'blur(10px)';
-        } else {
-          header.style.background = '';
-          header.style.backdropFilter = '';
-        }
-      });
+      if (header) {
+        window.addEventListener('scroll', function() {
+          if (window.scrollY > 50) {
+            header.style.background = 'linear-gradient(145deg, #0b1e4a 0%, #1a3182 80%, #2540a8 100%)';
+            header.style.backdropFilter = 'blur(10px)';
+          } else {
+            header.style.background = '';
+            header.style.backdropFilter = '';
+          }
+        });
+      }
     })();
   </script>
 </body>
