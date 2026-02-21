@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Exam Saarthi | University PYQ Portal</title>
+  <link rel="canonical" href="https://www.examsaarthi.com/about.html" />
+  <meta name="description" content="Learn about Exam Saarthi - your trusted platform for university previous year question papers. Our mission is to make exam preparation simple and accessible for all students.">
+  <meta name="keywords" content="about exam saarthi, university pyq portal team, educational initiative, free pyq platform">
+  <meta name="author" content="Exam Saarthi">
+  
+  <!-- Favicon -->
+  <link data-default-icon="https://examsaarthi.com/logo.png" rel="icon" sizes="192x192" href="https://pandit777.github.io/Exam-Saarthi/logo.png" />
+  
+  <!-- Tailwind & Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ---------------------------------------------------------------------- */
+    /* COMPLETE COLOR SCHEME WITH DARK MODE SUPPORT */
+    /* ---------------------------------------------------------------------- */
+    :root {
+      /* Light mode */
+      --primary-deep-blue: #0b1e4a;
+      --primary-rich-blue: #142b6e;
+      --accent-bright-yellow: #fbbf24;
+      --accent-deep-gold: #f59e0b;
+      --gradient-primary: linear-gradient(145deg, #0b1e4a 0%, #1a3182 60%, #2540a8 100%);
+      --gradient-accent: linear-gradient(145deg, #fbbf24 0%, #f59e0b 100%);
+      --gradient-card-light: linear-gradient(145deg, #ffffff 0%, #f2f6fc 100%);
+      --text-main: #1e293b;
+      --text-soft: #334155;
+      --text-muted: #64748b;
+      --bg-soft-gradient: linear-gradient(145deg, #f1f5f9 0%, #d9e2ef 100%);
+      --card-bg-light: #ffffff;
+      --stat-label-light: #334155;
+      --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+      --shadow-medium: 0 20px 30px -10px rgba(0, 20, 60, 0.15);
+      --shadow-strong: 0 30px 45px -15px rgba(0, 20, 60, 0.25);
+      --footer-text: #ffffff;
+      --marquee-text: #0b1e4a;
+    }
+
+    /* Dark mode */
+    [data-theme="dark"] {
+      --primary-deep-blue: #0f172a;
+      --primary-rich-blue: #1e2b4f;
+      --accent-bright-yellow: #fcd34d;
+      --accent-deep-gold: #fbbf24;
+      --gradient-primary: linear-gradient(145deg, #0b1324 0%, #1a2442 60%, #25365e 100%);
+      --gradient-accent: linear-gradient(145deg, #fbbf24 0%, #d97706 100%);
+      --gradient-card-light: linear-gradient(145deg, #1e2538 0%, #2c3349 100%);
+      --text-main: #edf2f7;
+      --text-soft: #cbd5e1;
+      --text-muted: #9aa9bc;
+      --bg-soft-gradient: linear-gradient(145deg, #0f1422 0%, #1a1f32 100%);
+      --card-bg-light: transparent;
+      --stat-label-light: #b9c7da;
+      --shadow-soft: 0 15px 30px -10px rgba(0, 0, 0, 0.6);
+      --shadow-medium: 0 25px 40px -12px rgba(0, 0, 0, 0.8);
+      --shadow-strong: 0 35px 55px -15px rgba(0, 0, 0, 0.9);
+      --footer-text: #e2e8f0;
+      --marquee-text: #fbbf24;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+      background: var(--bg-soft-gradient);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      transition: background 0.3s ease, color 0.2s ease;
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* HEADER - WITH DARK MODE SUPPORT */
+    /* ---------------------------------------------------------------------- */
+    header {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-medium);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      position: relative;
+      z-index: 100;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      width: 60px;
+      height: 60px;
+      margin-right: 1rem;
+      border-radius: 12px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      background: white;
+      padding: 5px;
+      transition: none;  /* Removed all hover effects */
+    }
+
+    /* No hover effect on logo */
+    .logo-area:hover .logo-img {
+      transform: none;
+    }
+
+    .header-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #ffeb3b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Desktop Navigation */
+    .desktop-nav { display: flex; align-items: center; }
+    .desktop-nav ul {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      gap: 5px;
+      align-items: center;
+    }
+    .desktop-nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 40px;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    .desktop-nav ul li a:hover {
+      background-color: rgba(255,255,255,0.15);
+      color: var(--accent-bright-yellow);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+    }
+    .active-nav-link {
+      background-color: rgba(255,255,255,0.2) !important;
+      color: var(--accent-bright-yellow) !important;
+      border: 1px solid var(--accent-bright-yellow) !important;
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.3) !important;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-left: 12px;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+    }
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.3);
+      transform: rotate(20deg) scale(1.05);
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      border-radius: 40px;
+      padding: 8px 16px;
+      transition: all 0.3s ease;
+    }
+    .mobile-menu-btn:hover {
+      background: rgba(255,255,255,0.25);
+      transform: scale(1.05);
+    }
+
+    /* Mobile Navigation */
+    .mobile-nav {
+      display: none;
+      background: var(--gradient-primary);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-strong);
+      width: 100%;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 99;
+      animation: slideDown 0.3s ease-out;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .mobile-nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    .mobile-nav ul li {
+      margin: 12px 0;
+    }
+    .mobile-nav ul li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 12px 20px;
+      border-radius: 40px;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+      font-weight: 600;
+    }
+    .mobile-nav ul li a:hover {
+      background-color: rgba(255,255,255,0.15);
+      transform: translateX(8px);
+    }
+
+    /* Mobile theme toggle */
+    .mobile-theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+      color: white;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      margin-top: 10px;
+    }
+    .mobile-theme-toggle span {
+      font-weight: 600;
+    }
+    .mobile-theme-toggle button {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid white;
+      color: white;
+      border-radius: 40px;
+      padding: 8px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .mobile-theme-toggle button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Marquee */
+    marquee {
+      background: var(--gradient-accent);
+      color: var(--marquee-text);
+      padding: 12px 0;
+      font-weight: 700;
+      font-size: 0.95rem;
+      width: 100%;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      background: var(--gradient-primary);
+      color: var(--footer-text);
+      text-align: center;
+      padding: 2rem;
+      width: 100%;
+      font-weight: 500;
+      box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+    footer:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-accent);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4), 0 12px 25px rgba(0,0,0,0.2); }
+      50% { box-shadow: 0 0 22px 10px rgba(251, 191, 36, 0.35), 0 18px 35px rgba(0,0,0,0.3); }
+      100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4), 0 12px 25px rgba(0,0,0,0.2); }
+    }
+
+    .content-section { animation: fadeIn 0.7s ease-out; }
+    .floating { animation: float 6s ease-in-out infinite; }
+
+    /* ---------------------------------------------------------------------- */
+    /* ABOUT PAGE SPECIFIC STYLES - DARK MODE COMPATIBLE */
+    /* ---------------------------------------------------------------------- */
+    .about-card {
+      background: var(--gradient-card-light);
+      border-radius: 40px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-strong);
+      border-color: rgba(251, 191, 36, 0.2);
+    }
+
+    .about-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: var(--gradient-accent);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: var(--gradient-accent);
+      border-radius: 2px;
+    }
+
+    .highlight-text {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
+    .mission-vision-card {
+      background: var(--gradient-card-light);
+      border-radius: 30px;
+      padding: 2rem;
+      height: 100%;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(251, 191, 36, 0.1);
+    }
+
+    .mission-vision-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-bright-yellow);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.2rem;
+    }
+
+    /* Team Cards with Images */
+    .team-card {
+      background: var(--gradient-card-light);
+      border-radius: 30px;
+      padding: 2rem 1.5rem 1.8rem;
+      text-align: center;
+      transition: all 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      overflow: visible;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .team-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 4px;
+      background: var(--gradient-accent);
+      border-radius: 0 0 10px 10px;
+    }
+
+    .team-card:hover {
+      transform: translateY(-16px) scale(1.02);
+      box-shadow: var(--shadow-strong);
+      border-color: rgba(251, 191, 36, 0.4);
+    }
+
+    .team-image {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 1.2rem;
+      border: 5px solid var(--accent-bright-yellow);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      transition: all 0.5s ease;
+    }
+
+    .team-card:hover .team-image {
+      transform: scale(1.1) rotate(3deg);
+      border-color: #fbbf24;
+      box-shadow: 0 20px 35px rgba(251, 191, 36, 0.4);
+      animation: glowPulse 2s infinite;
+    }
+
+    .team-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.3rem;
+    }
+
+    .team-role {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.8rem;
+    }
+
+    .team-bio {
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .back-home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: var(--gradient-accent);
+      color: #0b1e4a;
+      padding: 1rem 2.5rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px -5px rgba(251, 191, 36, 0.5);
+      text-decoration: none;
+      margin-bottom: 2rem;
+    }
+
+    .back-home-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 30px -5px rgba(251, 191, 36, 0.7);
+    }
+
+    [data-theme="dark"] .back-home-btn {
+      color: #0f172a;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+      line-height: 1.2;
+    }
+
+    [data-theme="dark"] .stat-number {
+      background: linear-gradient(145deg, #fcd34d, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      color: var(--stat-label-light);
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .header-content { padding: 1rem; }
+      .logo-img { width: 50px; height: 50px; margin-right: 0.8rem; }
+      .header-title { font-size: 1.6rem; }
+      .desktop-nav { display: none; }
+      .mobile-menu-btn { display: block; }
+      
+      .about-card { padding: 1.8rem; }
+      .section-title { font-size: 2rem; }
+      .back-home-btn { padding: 0.8rem 2rem; font-size: 1rem; }
+      .team-image { width: 120px; height: 120px; }
+    }
+
+    @media (max-width: 480px) {
+      .header-title { font-size: 1.4rem; }
+      .logo-img { width: 45px; height: 45px; }
+      .section-title { font-size: 1.8rem; }
+      .team-image { width: 100px; height: 100px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header - With Dark Mode Support -->
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo-area">
+        <img src="https://examsaarthi.com/logo.png" alt="Exam Saarthi Logo" class="logo-img">
+        <h1 class="header-title">Exam Saarthi</h1>
+      </a>
+      
+      <nav class="desktop-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="Universities.html">Universities</a></li>
+          <li><a href="about.html" class="active-nav-link">About</a></li>
+          <li><a href="Contact.html">Contact</a></li>
+          <li>
+            <div class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+              <i class="fas fa-moon"></i>
+            </div>
+          </li>
+        </ul>
+      </nav>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
+    <marquee behavior="scroll" direction="left" scrollamount="6">
+      <i class="fas fa-bullhorn mr-2"></i> 📚 About Exam Saarthi - Your Trusted Partner in Academic Excellence! Free PYQs for All Universities.
+    </marquee>
+
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Universities.html">Universities</a></li>
+        <li><a href="about.html" class="active-nav-link">About</a></li>
+        <li><a href="Contact.html">Contact</a></li>
+      </ul>
+      <div class="mobile-theme-toggle">
+        <span>🌓 Dark Mode</span>
+        <button id="mobileThemeToggle">Switch</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-6xl">
+
+    <!-- Back to Home Button -->
+    <div class="mb-8">
+      <a href="index.html" class="back-home-btn">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+    </div>
+
+    <!-- Main About Section -->
+    <div class="about-card mb-8">
+      <h1 class="section-title">About Exam Saarthi</h1>
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="text-lg md:text-xl leading-relaxed mb-6" style="color: var(--text-soft);">
+          <span class="highlight-text font-bold">Exam Saarthi</span> is a student-driven initiative created to help university students access previous year question papers (PYQs) for all programs — undergraduate, postgraduate, and research — in one organized place.
+        </p>
+        <p class="text-lg leading-relaxed" style="color: var(--text-soft);">
+          We aim to simplify the process of finding study materials and provide a digital space for academic preparation that's fast, free, and reliable.
+        </p>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+        <div class="stat-item">
+          <span class="stat-number">50+</span>
+          <span class="stat-label">Universities</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">5000+</span>
+          <span class="stat-label">PYQs</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">100+</span>
+          <span class="stat-label">Courses</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">24/7</span>
+          <span class="stat-label">Free Access</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vision & Mission -->
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+      <div class="mission-vision-card floating">
+        <div class="text-center">
+          <i class="fas fa-bullseye feature-icon"></i>
+          <h2 class="text-2xl font-bold mb-4" style="color: var(--text-main);">Our Vision</h2>
+          <p style="color: var(--text-soft);">
+            To become the most trusted platform for university students to access academic resources and enhance their learning experience across India.
+          </p>
+        </div>
+      </div>
+
+      <div class="mission-vision-card floating" style="animation-delay: 0.5s;">
+        <div class="text-center">
+          <i class="fas fa-flag feature-icon"></i>
+          <h2 class="text-2xl font-bold mb-4" style="color: var(--text-main);">Our Mission</h2>
+          <p style="color: var(--text-soft);">
+            To empower students with easy access to quality study materials and promote smart digital learning across all universities, completely free of cost.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Core Values / Why Choose Us -->
+    <div class="about-card mb-8">
+      <h2 class="section-title">✨ Why Choose Exam Saarthi?</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center p-4">
+          <div class="feature-icon mb-4">
+            <i class="fas fa-university"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2" style="color: var(--text-main);">Multiple Universities</h3>
+          <p style="color: var(--text-soft);">PYQs from various universities all in one platform</p>
+        </div>
+        <div class="text-center p-4">
+          <div class="feature-icon mb-4">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2" style="color: var(--text-main);">Mobile Friendly</h3>
+          <p style="color: var(--text-soft);">Access your papers anytime, anywhere on any device</p>
+        </div>
+        <div class="text-center p-4">
+          <div class="feature-icon mb-4">
+            <i class="fas fa-lock-open"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2" style="color: var(--text-main);">Completely Free</h3>
+          <p style="color: var(--text-soft);">No charges, no subscriptions - education for everyone</p>
+        </div>
+      </div>
+
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="flex items-start gap-3">
+          <i class="fas fa-check-circle text-2xl" style="color: var(--accent-bright-yellow);"></i>
+          <span style="color: var(--text-soft);">Make university learning more efficient and accessible</span>
+        </div>
+        <div class="flex items-start gap-3">
+          <i class="fas fa-check-circle text-2xl" style="color: var(--accent-bright-yellow);"></i>
+          <span style="color: var(--text-soft);">Centralized platform for all course-related PYQs</span>
+        </div>
+        <div class="flex items-start gap-3">
+          <i class="fas fa-check-circle text-2xl" style="color: var(--accent-bright-yellow);"></i>
+          <span style="color: var(--text-soft);">Promote smart and digital learning in university community</span>
+        </div>
+        <div class="flex items-start gap-3">
+          <i class="fas fa-check-circle text-2xl" style="color: var(--accent-bright-yellow);"></i>
+          <span style="color: var(--text-soft);">Quality materials accessible to every student</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Section with Actual Images -->
+    <div class="about-card">
+      <h2 class="section-title">💻 Meet Our Team</h2>
+      <p class="text-center text-lg mb-8" style="color: var(--text-soft);">
+        <span class="highlight-text font-bold">Exam Saarthi</span> is developed and maintained by passionate students and tech enthusiasts who believe in open access to education.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        <!-- Gourav Sharma - Developer & Founder -->
+        <div class="team-card floating">
+          <img src="https://examsaarthi.com/Dev.jpg" 
+               alt="Gourav Sharma" 
+               class="team-image"
+               onerror="this.onerror=null; this.src='https://via.placeholder.com/150/0b1e4a/ffffff?text=GS';">
+          <div class="team-name">Gourav Sharma</div>
+          <div class="team-role">Developer & Founder</div>
+          <p class="team-bio">Passionate about creating educational tools that make learning accessible to all students.</p>
+        </div>
+
+        <!-- Mahesh Verma - Developer & Founder -->
+        <div class="team-card floating" style="animation-delay: 0.5s;">
+          <img src="https://examsaarthi.com/Edit.jpeg" 
+               alt="Mahesh Verma" 
+               class="team-image"
+               onerror="this.onerror=null; this.src='https://via.placeholder.com/150/142b6e/ffffff?text=MV';">
+          <div class="team-name">Mahesh Verma</div>
+          <div class="team-role">Editor & Founder</div>
+          <p class="team-bio">Dedicated to curating and organizing academic content for maximum student benefit.</p>
+        </div>
+      </div>
+
+      <div class="mt-8 p-6 rounded-2xl text-center" style="background: linear-gradient(145deg, rgba(251,191,36,0.1), rgba(251,191,36,0.05));">
+        <p class="text-lg font-semibold" style="color: var(--text-main);">
+          🎯 Our Goal: To make quality study materials available to every student in a clean, modern, and user-friendly interface.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Exam Saarthi | Designed by Gourav Sharma
+  </footer>
+
+  <script>
+    (function() {
+      // ---------- THEME TOGGLE FUNCTIONALITY ----------
+      const themeToggle = document.getElementById('themeToggle');
+      const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+      const html = document.documentElement;
+      const icon = themeToggle.querySelector('i');
+
+      function setTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        if (theme === 'dark') {
+          icon.className = 'fas fa-sun';
+          if (mobileThemeToggle) mobileThemeToggle.textContent = 'Light';
+        } else {
+          icon.className = 'fas fa-moon';
+          if (mobileThemeToggle) mobileThemeToggle.textContent = 'Dark';
+        }
+      }
+
+      // Check for saved theme preference
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      setTheme(savedTheme);
+
+      function toggleTheme() {
+        const current = html.getAttribute('data-theme');
+        setTheme(current === 'light' ? 'dark' : 'light');
+      }
+
+      themeToggle.addEventListener('click', toggleTheme);
+      if (mobileThemeToggle) {
+        mobileThemeToggle.addEventListener('click', toggleTheme);
+      }
+
+      // ---------- MOBILE MENU ----------
+      const menuBtn = document.getElementById('mobileMenuBtn');
+      const mobileNav = document.getElementById('mobileNav');
+      
+      menuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isOpen = mobileNav.style.display === 'block';
+        mobileNav.style.display = isOpen ? 'none' : 'block';
+        menuBtn.querySelector('i').className = isOpen ? 'fas fa-bars' : 'fas fa-times';
+      });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (mobileNav.style.display === 'block' && !mobileNav.contains(e.target) && !menuBtn.contains(e.target)) {
+          mobileNav.style.display = 'none';
+          menuBtn.querySelector('i').className = 'fas fa-bars';
+        }
+      });
+
+      // Responsive handling
+      function handleResize() {
+        if (window.innerWidth > 768) {
+          mobileNav.style.display = 'none';
+          if (menuBtn.querySelector('i')) {
+            menuBtn.querySelector('i').className = 'fas fa-bars';
+          }
+        }
+      }
+      
+      window.addEventListener('resize', handleResize);
+      handleResize();
+
+      // Header scroll effect
+      const header = document.querySelector('header');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+          header.style.background = 'linear-gradient(145deg, #0b1e4a 0%, #1a3182 80%, #2540a8 100%)';
+          header.style.backdropFilter = 'blur(10px)';
+        } else {
+          header.style.background = '';
+          header.style.backdropFilter = '';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

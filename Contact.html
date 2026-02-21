@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Exam Saarthi | University PYQ Portal</title>
+  <link rel="canonical" href="https://www.examsaarthi.com/contact.html" />
+  <meta name="description" content="Get in touch with Exam Saarthi team. Have questions about previous year question papers? Contact us for support, feedback, or suggestions.">
+  <meta name="keywords" content="contact exam saarthi, university pyq support, exam help, pyq questions">
+  <meta name="author" content="Exam Saarthi">
+
+  <!-- Favicon -->
+  <link data-default-icon="https://examsaarthi.com/logo.png" rel="icon" sizes="192x192" href="https://pandit777.github.io/Exam-Saarthi/logo.png" />
+  
+  <!-- Tailwind & Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ---------------------------------------------------------------------- */
+    /* COMPLETE COLOR SCHEME WITH DARK MODE SUPPORT */
+    /* ---------------------------------------------------------------------- */
+    :root {
+      /* Light mode */
+      --primary-deep-blue: #0b1e4a;
+      --primary-rich-blue: #142b6e;
+      --accent-bright-yellow: #fbbf24;
+      --accent-deep-gold: #f59e0b;
+      --gradient-primary: linear-gradient(145deg, #0b1e4a 0%, #1a3182 60%, #2540a8 100%);
+      --gradient-accent: linear-gradient(145deg, #fbbf24 0%, #f59e0b 100%);
+      --gradient-card-light: linear-gradient(145deg, #ffffff 0%, #f2f6fc 100%);
+      --text-main: #1e293b;
+      --text-soft: #334155;
+      --text-muted: #64748b;
+      --bg-soft-gradient: linear-gradient(145deg, #f1f5f9 0%, #d9e2ef 100%);
+      --card-bg-light: #ffffff;
+      --stat-label-light: #334155;
+      --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+      --shadow-medium: 0 20px 30px -10px rgba(0, 20, 60, 0.15);
+      --shadow-strong: 0 30px 45px -15px rgba(0, 20, 60, 0.25);
+      --footer-text: #ffffff;
+      --marquee-text: #0b1e4a;
+    }
+
+    /* Dark mode */
+    [data-theme="dark"] {
+      --primary-deep-blue: #0f172a;
+      --primary-rich-blue: #1e2b4f;
+      --accent-bright-yellow: #fcd34d;
+      --accent-deep-gold: #fbbf24;
+      --gradient-primary: linear-gradient(145deg, #0b1324 0%, #1a2442 60%, #25365e 100%);
+      --gradient-accent: linear-gradient(145deg, #fbbf24 0%, #d97706 100%);
+      --gradient-card-light: linear-gradient(145deg, #1e2538 0%, #2c3349 100%);
+      --text-main: #edf2f7;
+      --text-soft: #cbd5e1;
+      --text-muted: #9aa9bc;
+      --bg-soft-gradient: linear-gradient(145deg, #0f1422 0%, #1a1f32 100%);
+      --card-bg-light: transparent;
+      --stat-label-light: #b9c7da;
+      --shadow-soft: 0 15px 30px -10px rgba(0, 0, 0, 0.6);
+      --shadow-medium: 0 25px 40px -12px rgba(0, 0, 0, 0.8);
+      --shadow-strong: 0 35px 55px -15px rgba(0, 0, 0, 0.9);
+      --footer-text: #e2e8f0;
+      --marquee-text: #fbbf24;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+      background: var(--bg-soft-gradient);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      transition: background 0.3s ease, color 0.2s ease;
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* HEADER - WITH DARK MODE SUPPORT */
+    /* ---------------------------------------------------------------------- */
+    header {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-medium);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      position: relative;
+      z-index: 100;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      width: 60px;
+      height: 60px;
+      margin-right: 1rem;
+      border-radius: 12px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      background: white;
+      padding: 5px;
+      transition: none;  /* No hover effect on logo */
+    }
+
+    /* No hover effect on logo */
+    .logo-area:hover .logo-img {
+      transform: none;
+    }
+
+    .header-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #ffeb3b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Desktop Navigation */
+    .desktop-nav { display: flex; align-items: center; }
+    .desktop-nav ul {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      gap: 5px;
+      align-items: center;
+    }
+    .desktop-nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 40px;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    .desktop-nav ul li a:hover {
+      background-color: rgba(255,255,255,0.15);
+      color: var(--accent-bright-yellow);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+    }
+    .active-nav-link {
+      background-color: rgba(255,255,255,0.2) !important;
+      color: var(--accent-bright-yellow) !important;
+      border: 1px solid var(--accent-bright-yellow) !important;
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.3) !important;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-left: 12px;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+    }
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.3);
+      transform: rotate(20deg) scale(1.05);
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      border-radius: 40px;
+      padding: 8px 16px;
+      transition: all 0.3s ease;
+    }
+    .mobile-menu-btn:hover {
+      background: rgba(255,255,255,0.25);
+      transform: scale(1.05);
+    }
+
+    /* Mobile Navigation */
+    .mobile-nav {
+      display: none;
+      background: var(--gradient-primary);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-strong);
+      width: 100%;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 99;
+      animation: slideDown 0.3s ease-out;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .mobile-nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    .mobile-nav ul li {
+      margin: 12px 0;
+    }
+    .mobile-nav ul li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 12px 20px;
+      border-radius: 40px;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+      font-weight: 600;
+    }
+    .mobile-nav ul li a:hover {
+      background-color: rgba(255,255,255,0.15);
+      transform: translateX(8px);
+    }
+
+    /* Mobile theme toggle */
+    .mobile-theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+      color: white;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      margin-top: 10px;
+    }
+    .mobile-theme-toggle span {
+      font-weight: 600;
+    }
+    .mobile-theme-toggle button {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid white;
+      color: white;
+      border-radius: 40px;
+      padding: 8px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .mobile-theme-toggle button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Marquee */
+    marquee {
+      background: var(--gradient-accent);
+      color: var(--marquee-text);
+      padding: 12px 0;
+      font-weight: 700;
+      font-size: 0.95rem;
+      width: 100%;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      background: var(--gradient-primary);
+      color: var(--footer-text);
+      text-align: center;
+      padding: 2rem;
+      width: 100%;
+      font-weight: 500;
+      box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+    footer:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-accent);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    main {
+      animation: fadeIn 0.7s ease-out;
+    }
+    .floating { animation: float 6s ease-in-out infinite; }
+
+    /* ---------------------------------------------------------------------- */
+    /* CONTACT PAGE SPECIFIC STYLES - DARK MODE COMPATIBLE */
+    /* ---------------------------------------------------------------------- */
+    .contact-card {
+      background: var(--gradient-card-light);
+      border-radius: 40px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-strong);
+      border-color: rgba(251, 191, 36, 0.2);
+    }
+
+    .contact-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: var(--gradient-accent);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: var(--gradient-accent);
+      border-radius: 2px;
+    }
+
+    .highlight-text {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
+    /* Contact Info Links */
+    .contact-link {
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+    }
+
+    .contact-link:hover {
+      background: var(--gradient-accent);
+      color: #0b1e4a;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.3);
+    }
+
+    [data-theme="dark"] .contact-link:hover {
+      color: #0f172a;
+    }
+
+    /* Social Links */
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--gradient-card-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--text-main);
+      transition: all 0.4s ease;
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      box-shadow: var(--shadow-soft);
+      text-decoration: none;
+    }
+
+    .social-link:hover {
+      transform: translateY(-8px) scale(1.1);
+      background: var(--gradient-accent);
+      color: #0b1e4a;
+      border-color: transparent;
+      box-shadow: 0 15px 30px rgba(251, 191, 36, 0.4);
+    }
+
+    [data-theme="dark"] .social-link:hover {
+      color: #0f172a;
+    }
+
+    /* Query Button */
+    .query-btn {
+      background: var(--gradient-accent);
+      color: #0b1e4a;
+      padding: 1.2rem 2.5rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px -5px rgba(251, 191, 36, 0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .query-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.5s;
+    }
+    
+    .query-btn:hover:before {
+      left: 100%;
+    }
+
+    .query-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 30px -5px rgba(251, 191, 36, 0.7);
+    }
+
+    [data-theme="dark"] .query-btn {
+      color: #0f172a;
+    }
+
+    /* Form Overlay Styles */
+    .form-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .form-container {
+      background: var(--gradient-card-light);
+      border-radius: 40px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-strong);
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      animation: modalFadeIn 0.5s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.1);
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background: var(--gradient-accent);
+      color: #0b1e4a;
+      transform: rotate(90deg);
+    }
+
+    /* Form Elements */
+    form input, form select, form textarea {
+      background: var(--gradient-card-light);
+      border: 2px solid rgba(251, 191, 36, 0.2);
+      color: var(--text-main);
+      border-radius: 20px;
+      padding: 1rem;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    form input:focus, form select:focus, form textarea:focus {
+      border-color: var(--accent-bright-yellow);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+    }
+
+    form label {
+      color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    form button[type="submit"] {
+      background: var(--gradient-primary);
+      color: white;
+      padding: 1.2rem;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    form button[type="submit"]:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Success Modal */
+    .success-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .success-content {
+      background: var(--gradient-card-light);
+      border-radius: 40px;
+      padding: 3rem;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: var(--shadow-strong);
+      animation: modalFadeIn 0.5s ease-out;
+      border: 1px solid rgba(251, 191, 36, 0.2);
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      color: #10b981;
+      margin-bottom: 1.5rem;
+    }
+
+    .continue-btn {
+      background: var(--gradient-accent);
+      color: #0b1e4a;
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .continue-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4);
+    }
+
+    [data-theme="dark"] .continue-btn {
+      color: #0f172a;
+    }
+
+    .error-message {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      padding: 1rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      border: 1px solid #ef4444;
+    }
+
+    @media (max-width: 768px) {
+      .header-content { padding: 1rem; }
+      .logo-img { width: 50px; height: 50px; margin-right: 0.8rem; }
+      .header-title { font-size: 1.6rem; }
+      .desktop-nav { display: none; }
+      .mobile-menu-btn { display: block; }
+      
+      .contact-card { padding: 1.8rem; }
+      .section-title { font-size: 2rem; }
+      .query-btn { padding: 1rem 2rem; font-size: 1rem; }
+      .social-link { width: 50px; height: 50px; font-size: 1.5rem; }
+    }
+
+    @media (max-width: 480px) {
+      .header-title { font-size: 1.4rem; }
+      .logo-img { width: 45px; height: 45px; }
+      .section-title { font-size: 1.8rem; }
+      .contact-card { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header with Dark Mode Support -->
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo-area">
+        <img src="https://examsaarthi.com/logo.png" alt="Exam Saarthi Logo" class="logo-img"> 
+        <h1 class="header-title">Exam Saarthi</h1>
+      </a>
+      
+      <nav class="desktop-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="Universities.html">Universities</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html" class="active-nav-link">Contact</a></li>
+          <li>
+            <div class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+              <i class="fas fa-moon"></i>
+            </div>
+          </li>
+        </ul>
+      </nav>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    
+    <marquee behavior="scroll" direction="left" scrollamount="6">
+      <i class="fas fa-bullhorn mr-2"></i> 📬 Get in touch with us — We'd love to hear from you! | Exam Saarthi - Your Complete PYQ Solution
+    </marquee>
+    
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Universities.html">Universities</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="active-nav-link">Contact</a></li>
+      </ul>
+      <div class="mobile-theme-toggle">
+        <span>🌓 Dark Mode</span>
+        <button id="mobileThemeToggle">Switch</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-6xl">
+    
+    <!-- Query Button Section -->
+    <div class="contact-card mb-8 text-center">
+      <h1 class="section-title">📬 Contact Exam Saarthi</h1>
+      <p class="text-lg md:text-xl leading-relaxed mb-6" style="color: var(--text-soft);">
+        Have questions, feedback, or suggestions? Click the button below to reach out to the <br />
+        <span class="highlight-text font-bold">Exam Saarthi</span> team. We'll get back to you as soon as possible.
+      </p>
+      
+      <div class="flex flex-col items-center space-y-6">
+        <button class="query-btn" id="queryBtn">
+          <i class="fas fa-question-circle"></i>
+          Submit Your Query
+        </button>
+        
+        <div style="color: var(--text-muted);">
+          <p class="font-semibold" style="color: var(--text-main);">Need help with PYQs?</p>
+          <p>Tell us which university and course you need help with</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Information Section -->
+    <div class="contact-card mb-8 text-center">
+      <h2 class="section-title">📍 Get in Touch</h2>
+      <p class="text-lg mb-8" style="color: var(--text-soft);">
+        <span class="highlight-text font-bold">Exam Saarthi</span> is your one-stop solution for all university previous year question papers (PYQs).  
+        We provide comprehensive PYQs for multiple universities to help students excel in their exams.
+      </p>
+      
+      <div class="space-y-6 max-w-2xl mx-auto">
+        <!-- Official Email -->
+        <div class="flex flex-col items-center">
+          <p class="font-bold mb-2" style="color: var(--text-main);">📧 Official Email</p>
+          <a href="mailto:igupyq@gmail.com" class="contact-link">
+            <i class="fas fa-envelope"></i> igupyq@gmail.com
+          </a>
+        </div>
+
+        <!-- Support Email -->
+        <div class="flex flex-col items-center">
+          <p class="font-bold mb-2" style="color: var(--text-main);">🆘 Support Email</p>
+          <a href="mailto:igupyq.support@gmail.com" class="contact-link">
+            <i class="fas fa-headset"></i> igupyq.support@gmail.com
+          </a>
+        </div>
+
+        <!-- Instagram -->
+        <div class="flex flex-col items-center">
+          <p class="font-bold mb-2" style="color: var(--text-main);">📱 Instagram</p>
+          <a href="https://instagram.com/velogourav" target="_blank" class="contact-link">
+            <i class="fab fa-instagram"></i> @velogourav
+          </a>
+        </div>
+
+        <!-- GitHub -->
+        <div class="flex flex-col items-center">
+          <p class="font-bold mb-2" style="color: var(--text-main);">💻 GitHub</p>
+          <a href="https://github.com/pandit777" target="_blank" class="contact-link">
+            <i class="fab fa-github"></i> pandit777
+          </a>
+        </div>
+      </div>
+      
+      <!-- Social Media Icons -->
+      <div class="social-links">
+        <a href="mailto:igupyq@gmail.com" class="social-link" title="Email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href="mailto:igupyq.support@gmail.com" class="social-link" title="Support Email">
+          <i class="fas fa-headset"></i>
+        </a>
+        <a href="https://instagram.com/velogourav" target="_blank" class="social-link" title="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://github.com/pandit777" target="_blank" class="social-link" title="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Quick Contact Section -->
+    <div class="contact-card md:hidden floating">
+      <h2 class="section-title">📱 Quick Contact</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <a href="mailto:igupyq@gmail.com" class="text-center p-4" style="background: var(--gradient-card-light); border-radius: 30px; border: 1px solid rgba(251,191,36,0.2);">
+          <i class="fas fa-envelope text-3xl mb-2" style="color: var(--accent-bright-yellow);"></i>
+          <p class="text-sm font-semibold" style="color: var(--text-main);">Email</p>
+        </a>
+        <a href="mailto:igupyq.support@gmail.com" class="text-center p-4" style="background: var(--gradient-card-light); border-radius: 30px; border: 1px solid rgba(251,191,36,0.2);">
+          <i class="fas fa-headset text-3xl mb-2" style="color: var(--accent-bright-yellow);"></i>
+          <p class="text-sm font-semibold" style="color: var(--text-main);">Support</p>
+        </a>
+        <a href="https://instagram.com/velogourav" target="_blank" class="text-center p-4" style="background: var(--gradient-card-light); border-radius: 30px; border: 1px solid rgba(251,191,36,0.2);">
+          <i class="fab fa-instagram text-3xl mb-2" style="color: var(--accent-bright-yellow);"></i>
+          <p class="text-sm font-semibold" style="color: var(--text-main);">Instagram</p>
+        </a>
+        <a href="https://github.com/pandit777" target="_blank" class="text-center p-4" style="background: var(--gradient-card-light); border-radius: 30px; border: 1px solid rgba(251,191,36,0.2);">
+          <i class="fab fa-github text-3xl mb-2" style="color: var(--accent-bright-yellow);"></i>
+          <p class="text-sm font-semibold" style="color: var(--text-main);">GitHub</p>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Form Overlay -->
+  <div class="form-overlay" id="formOverlay">
+    <div class="form-container">
+      <button class="close-btn" id="closeForm">
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <h2 class="section-title">📝 Contact Form</h2>
+      <p class="text-center mb-6 text-lg" style="color: var(--text-soft);">
+        Fill out the form below and we'll get back to you as soon as possible.
+      </p>
+
+      <form id="contactForm" class="space-y-6">
+        <div>
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" required
+            placeholder="Enter your full name">
+        </div>
+
+        <div>
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" required
+            placeholder="Enter your email address">
+        </div>
+
+        <div>
+          <label for="university">University *</label>
+          <select id="university" name="university" required>
+            <option value="" disabled selected>Select your university</option>
+            <option value="IGU">🏛️ Indira Gandhi University (IGU)</option>
+            <option value="DU">📚 University of Delhi (DU)</option>
+            <option value="PU">🎓 Punjab University (PU)</option>
+            <option value="JMI">🏫 Jamia Millia Islamia (JMI)</option>
+            <option value="AMU">🌙 Aligarh Muslim University (AMU)</option>
+            <option value="BHU">🕉️ Banaras Hindu University (BHU)</option>
+            <option value="MU">🏝️ University of Mumbai</option>
+            <option value="CU">🎭 Calcutta University (CU)</option>
+            <option value="AU">⚙️ Anna University</option>
+            <option value="OU">🌆 Osmania University</option>
+            <option value="SPPU">📖 Savitribai Phule Pune University</option>
+            <option value="GU">🦁 Gujarat University</option>
+            <option value="RU">🏜️ Rajasthan University (RU)</option>
+            <option value="Panjab">📜 Panjab University</option>
+            <option value="KUK">⚔️ Kurukshetra University</option>
+            <option value="MDU">🧘 Maharshi Dayanand University (MDU)</option>
+            <option value="CCSU">🌾 Chaudhary Charan Singh University (CCSU)</option>
+            <option value="DBRAU">🏯 Dr. Bhimrao Ambedkar University</option>
+            <option value="HNBGU">⛰️ HNB Garhwal University</option>
+            <option value="LU">🍂 University of Lucknow</option>
+            <option value="AU-Prayag">🕊️ Allahabad University</option>
+            <option value="JNU">🌍 Jawaharlal Nehru University (JNU)</option>
+            <option value="IGNOU">📡 IGNOU</option>
+            <option value="Alagappa">📦 Alagappa University</option>
+            <option value="Andhra">🌊 Andhra University</option>
+            <option value="Assam">🐘 Assam University</option>
+            <option value="BU-BLR">🌳 Bangalore University</option>
+            <option value="Barkatullah">🌺 Barkatullah University</option>
+            <option value="Bharathiar">🌅 Bharathiar University</option>
+            <option value="BVP">🏥 Bharati Vidyapeeth</option>
+            <option value="Bundelkhand">⚔️ Bundelkhand University</option>
+            <option value="CUSAT">🔬 Cochin University (CUSAT)</option>
+            <option value="Gauhati">🦏 Gauhati University</option>
+            <option value="GGV">🌲 Guru Ghasidas Vishwavidyalaya</option>
+            <option value="GNDU">🛕 Guru Nanak Dev University (GNDU)</option>
+            <option value="HPU">🏔️ Himachal Pradesh University (HPU)</option>
+            <option value="JNVU">🏰 Jai Narain Vyas University</option>
+            <option value="JU">🏞️ Jammu University</option>
+            <option value="Kakatiya">🏯 Kakatiya University</option>
+            <option value="Kannur">🌴 Kannur University</option>
+            <option value="Kashi">📿 Kashi Vidyapith</option>
+            <option value="Kerala U">🥥 Kerala University</option>
+            <option value="LNMU">📜 Lalit Narayan Mithila University</option>
+            <option value="Madras">🎼 Madras University</option>
+            <option value="Magadh">☸️ Magadh University</option>
+            <option value="Manipur">🎋 Manipur University</option>
+            <option value="Mizoram">🏡 Mizoram University</option>
+            <option value="Nagaland">🏕️ Nagaland University</option>
+            <option value="NEHU">⛰️ North-Eastern Hill University (NEHU)</option>
+            <option value="Patna">🏛️ Patna University</option>
+            <option value="Pondicherry">🏖️ Pondicherry University</option>
+            <option value="Punjabi">🎤 Punjabi University</option>
+            <option value="Sambalpur">🏞️ Sambalpur University</option>
+            <option value="Sikkim">🏔️ Sikkim University</option>
+            <option value="SAU">🌐 South Asian University</option>
+            <option value="Tezpur">🍃 Tezpur University</option>
+            <option value="Tripura">🌺 Tripura University</option>
+            <option value="Utkal">🏯 Utkal University</option>
+            <option value="Vikram">⏳ Vikram University</option>
+            <option value="Vinoba">🌄 Vinoba Bhave University</option>
+            <option value="WBS University">🎭 West Bengal State University</option>
+            <option value="Other">🎓 Other University</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="course">Course/Subject</label>
+          <input type="text" id="course" name="course"
+            placeholder="e.g., B.Tech CSE, B.Com, M.A. English, etc.">
+        </div>
+
+        <div>
+          <label for="message">Your Message *</label>
+          <textarea id="message" name="message" rows="6" required
+            placeholder="Please describe your query in detail..."></textarea>
+        </div>
+
+        <div class="text-sm" style="color: var(--text-muted);">
+          <p><span style="color: #ef4444;">*</span> Required fields</p>
+        </div>
+
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="success-modal" id="successModal">
+    <div class="success-content">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h2 class="text-3xl font-bold mb-3" style="color: var(--text-main);">Message Sent!</h2>
+      <p class="mb-6 text-lg" style="color: var(--text-soft);">Thank you for contacting Exam Saarthi. We'll get back to you soon.</p>
+      <button class="continue-btn" id="continueBtn">
+        Continue...
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Exam Saarthi | Designed by Gourav Sharma
+  </footer>
+
+  <script>
+    (function() {
+      // ---------- THEME TOGGLE FUNCTIONALITY ----------
+      const themeToggle = document.getElementById('themeToggle');
+      const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+      const html = document.documentElement;
+      const icon = themeToggle.querySelector('i');
+
+      function setTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        if (theme === 'dark') {
+          icon.className = 'fas fa-sun';
+          if (mobileThemeToggle) mobileThemeToggle.textContent = 'Light';
+        } else {
+          icon.className = 'fas fa-moon';
+          if (mobileThemeToggle) mobileThemeToggle.textContent = 'Dark';
+        }
+      }
+
+      // Check for saved theme preference
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      setTheme(savedTheme);
+
+      function toggleTheme() {
+        const current = html.getAttribute('data-theme');
+        setTheme(current === 'light' ? 'dark' : 'light');
+      }
+
+      themeToggle.addEventListener('click', toggleTheme);
+      if (mobileThemeToggle) {
+        mobileThemeToggle.addEventListener('click', toggleTheme);
+      }
+
+      // ---------- MOBILE MENU ----------
+      const menuBtn = document.getElementById('mobileMenuBtn');
+      const mobileNav = document.getElementById('mobileNav');
+      
+      menuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isOpen = mobileNav.style.display === 'block';
+        mobileNav.style.display = isOpen ? 'none' : 'block';
+        menuBtn.querySelector('i').className = isOpen ? 'fas fa-bars' : 'fas fa-times';
+      });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (mobileNav.style.display === 'block' && !mobileNav.contains(e.target) && !menuBtn.contains(e.target)) {
+          mobileNav.style.display = 'none';
+          menuBtn.querySelector('i').className = 'fas fa-bars';
+        }
+      });
+
+      // Responsive handling
+      function handleResize() {
+        if (window.innerWidth > 768) {
+          mobileNav.style.display = 'none';
+          if (menuBtn.querySelector('i')) {
+            menuBtn.querySelector('i').className = 'fas fa-bars';
+          }
+        }
+      }
+      
+      window.addEventListener('resize', handleResize);
+      handleResize();
+
+      // Header scroll effect
+      const header = document.querySelector('header');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+          header.style.background = 'linear-gradient(145deg, #0b1e4a 0%, #1a3182 80%, #2540a8 100%)';
+          header.style.backdropFilter = 'blur(10px)';
+        } else {
+          header.style.background = '';
+          header.style.backdropFilter = '';
+        }
+      });
+
+      // ---------- FORM FUNCTIONALITY ----------
+      const API_CONFIG = {
+        accessKey: '26135714-726d-4de7-8d51-e9900e9f1f5d',
+        endpoint: 'https://api.web3forms.com/submit'
+      };
+
+      // Query Button - Open Form Overlay
+      document.getElementById('queryBtn').addEventListener('click', function() {
+        document.getElementById('formOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+
+      // Close Form Overlay
+      document.getElementById('closeForm').addEventListener('click', function() {
+        document.getElementById('formOverlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+      });
+
+      // Close overlay when clicking outside
+      document.getElementById('formOverlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }
+      });
+
+      // Email validation function
+      function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      }
+
+      // Error display function
+      function showError(message) {
+        // Remove any existing error messages
+        const existingError = document.querySelector('.error-message');
+        if (existingError) existingError.remove();
+        
+        // Create error element
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i>${message}`;
+        
+        // Insert after form title
+        const formContainer = document.querySelector('.form-container');
+        const formTitle = document.querySelector('.form-container .section-title');
+        formContainer.insertBefore(errorDiv, formTitle.nextElementSibling);
+        
+        // Scroll to error
+        errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Remove after 5 seconds
+        setTimeout(() => errorDiv.remove(), 5000);
+      }
+
+      // Form submission handling
+      document.getElementById('contactForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Basic validation
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const university = document.getElementById('university').value;
+        const message = document.getElementById('message').value.trim();
+        
+        if (!name || !email || !university || !message) {
+          showError('Please fill all required fields');
+          return;
+        }
+        
+        if (!isValidEmail(email)) {
+          showError('Please enter a valid email address');
+          return;
+        }
+        
+        const formData = new FormData(this);
+        formData.append('access_key', API_CONFIG.accessKey);
+        
+        // Add subject to email
+        const subject = `Exam Saarthi Query - ${university}`;
+        formData.append('subject', subject);
+        
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+        
+        try {
+          const response = await fetch(API_CONFIG.endpoint, {
+            method: 'POST',
+            body: formData
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            document.getElementById('formOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('successModal').style.display = 'flex';
+            this.reset();
+          } else {
+            showError('There was an error sending your message. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          showError('There was an error sending your message. Please try again.');
+        } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+
+      // Continue button functionality
+      document.getElementById('continueBtn').addEventListener('click', function() {
+        document.getElementById('successModal').style.display = 'none';
+        window.location.href = 'index.html';
+      });
+
+      // Close modal when clicking outside
+      document.getElementById('successModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.style.display = 'none';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
