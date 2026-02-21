@@ -21,7 +21,7 @@
 
   <style>
     /* ---------------------------------------------------------------------- */
-    /* COMPLETE COLOR SCHEME WITH DARK MODE SUPPORT */
+    /* COMPLETE COLOR SCHEME WITH DARK MODE SUPPORT - FIXED */
     /* ---------------------------------------------------------------------- */
     :root {
       /* Light mode */
@@ -43,9 +43,10 @@
       --shadow-strong: 0 30px 45px -15px rgba(0, 20, 60, 0.25);
       --footer-text: #ffffff;
       --marquee-text: #0b1e4a;
+      --marquee-bg: linear-gradient(145deg, #fbbf24 0%, #f59e0b 100%);
     }
 
-    /* Dark mode */
+    /* Dark mode - FIXED */
     [data-theme="dark"] {
       --primary-deep-blue: #0f172a;
       --primary-rich-blue: #1e2b4f;
@@ -64,7 +65,8 @@
       --shadow-medium: 0 25px 40px -12px rgba(0, 0, 0, 0.8);
       --shadow-strong: 0 35px 55px -15px rgba(0, 0, 0, 0.9);
       --footer-text: #e2e8f0;
-      --marquee-text: #fbbf24;
+      --marquee-text: #0b1e4a; /* Fixed: Dark mode mein bhi text dark rahega for contrast */
+      --marquee-bg: linear-gradient(145deg, #fbbf24 0%, #d97706 100%);
     }
 
     html { scroll-behavior: smooth; }
@@ -78,10 +80,12 @@
       flex-direction: column;
       overflow-x: hidden;
       transition: background 0.3s ease, color 0.2s ease;
+      margin: 0;
+      padding: 0;
     }
 
     /* ---------------------------------------------------------------------- */
-    /* HEADER - WITH DARK MODE SUPPORT */
+    /* HEADER - FIXED */
     /* ---------------------------------------------------------------------- */
     header {
       background: var(--gradient-primary);
@@ -90,8 +94,8 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      backdrop-filter: blur(8px);
       transition: all 0.3s ease;
+      width: 100%;
     }
 
     .header-content {
@@ -121,12 +125,6 @@
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
       background: white;
       padding: 5px;
-      transition: none;  /* Removed all hover effects */
-    }
-
-    /* No hover effect on logo */
-    .logo-area:hover .logo-img {
-      transform: none;
     }
 
     .header-title {
@@ -136,6 +134,7 @@
       background: linear-gradient(135deg, #ffffff 0%, #ffeb3b 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     }
 
@@ -209,7 +208,7 @@
       transform: scale(1.05);
     }
 
-    /* Mobile Navigation */
+    /* Mobile Navigation - FIXED */
     .mobile-nav {
       display: none;
       background: var(--gradient-primary);
@@ -221,6 +220,7 @@
       left: 0;
       z-index: 99;
       animation: slideDown 0.3s ease-out;
+      box-sizing: border-box;
     }
     @keyframes slideDown {
       from { opacity: 0; transform: translateY(-12px); }
@@ -229,6 +229,7 @@
     .mobile-nav ul {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
     .mobile-nav ul li {
       margin: 12px 0;
@@ -275,9 +276,9 @@
       background: rgba(255,255,255,0.3);
     }
 
-    /* Marquee */
+    /* Marquee - FIXED */
     marquee {
-      background: var(--gradient-accent);
+      background: var(--marquee-bg);
       color: var(--marquee-text);
       padding: 12px 0;
       font-weight: 700;
@@ -286,7 +287,7 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
-    /* Footer */
+    /* Footer - FIXED */
     footer {
       margin-top: auto;
       background: var(--gradient-primary);
@@ -297,6 +298,7 @@
       font-weight: 500;
       box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.2);
       position: relative;
+      box-sizing: border-box;
     }
     footer:before {
       content: '';
@@ -327,7 +329,7 @@
     .floating { animation: float 6s ease-in-out infinite; }
 
     /* ---------------------------------------------------------------------- */
-    /* ABOUT PAGE SPECIFIC STYLES - DARK MODE COMPATIBLE */
+    /* ABOUT PAGE SPECIFIC STYLES - FIXED */
     /* ---------------------------------------------------------------------- */
     .about-card {
       background: var(--gradient-card-light);
@@ -381,6 +383,7 @@
       background: var(--gradient-primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
       font-weight: 700;
     }
 
@@ -403,10 +406,11 @@
       background: var(--gradient-primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
       margin-bottom: 1.2rem;
     }
 
-    /* Team Cards with Images */
+    /* Team Cards with Images - FIXED */
     .team-card {
       background: var(--gradient-card-light);
       border-radius: 30px;
@@ -471,6 +475,7 @@
       background: var(--gradient-primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
       margin-bottom: 0.8rem;
     }
 
@@ -494,6 +499,8 @@
       box-shadow: 0 10px 20px -5px rgba(251, 191, 36, 0.5);
       text-decoration: none;
       margin-bottom: 2rem;
+      border: none;
+      cursor: pointer;
     }
 
     .back-home-btn:hover {
@@ -516,6 +523,7 @@
       background: var(--gradient-primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
       display: block;
       line-height: 1.2;
     }
@@ -524,6 +532,7 @@
       background: linear-gradient(145deg, #fcd34d, #fbbf24);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .stat-label {
@@ -532,6 +541,16 @@
       font-size: 1rem;
     }
 
+    /* Container fixes */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box;
+    }
+
+    /* Responsive Design - FIXED */
     @media (max-width: 768px) {
       .header-content { padding: 1rem; }
       .logo-img { width: 50px; height: 50px; margin-right: 0.8rem; }
@@ -550,6 +569,10 @@
       .logo-img { width: 45px; height: 45px; }
       .section-title { font-size: 1.8rem; }
       .team-image { width: 100px; height: 100px; }
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
     }
   </style>
 </head>
