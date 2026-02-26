@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${course.title} + ' | Exam Saarthi'">Course | Exam Saarthi</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<header>
+    <h1>Exam Saarthi</h1>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/signin}">Sign In</a>
+        <a th:href="@{/signup}">Sign Up</a>
+    </nav>
+</header>
+<main>
+    <article class="card detail">
+        <h2 th:text="${course.title}">Course Title</h2>
+        <p><strong>University:</strong> <span th:text="${course.university}">IGU</span></p>
+        <p th:text="${course.description}">Course description.</p>
+        <h3>Available Sets</h3>
+        <ul>
+            <li>Semester 1 PYQ Set</li>
+            <li>Semester 2 PYQ Set</li>
+            <li>Semester 3 PYQ Set</li>
+            <li>Semester 4 PYQ Set</li>
+        </ul>
+        <a th:href="@{/}">← Back to all courses</a>
+    </article>
+</main>
+</body>
+</html>

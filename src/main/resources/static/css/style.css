@@ -25,6 +25,10 @@ main { padding: 24px; }
     padding: 16px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
+.detail {
+    max-width: 700px;
+    margin: 0 auto;
+}
 .auth-wrap {
     max-width: 380px;
     margin: 40px auto;
