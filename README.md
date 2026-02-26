@@ -15,7 +15,8 @@ mvn spring-boot:run
 ```
 
 Open:
-- Home: `http://localhost:8080/`
+- Home (redirects): `http://localhost:8080/`
+- Primary landing path: `http://localhost:8080/src/main/resources/templates/index.html`
 - Sign in: `http://localhost:8080/signin`
 - Sign up: `http://localhost:8080/signup`
 
@@ -32,5 +33,6 @@ If you still use Vercel in front of this app, point Vercel routes to the actual 
 
 ## Production URL
 - Primary domain: `https://examsaarthi.com`
+- Primary landing path: `https://www.examsaarthi.com/src/main/resources/templates/index.html`
 - Configure DNS `A/AAAA` or `CNAME` to your hosting provider and map this domain in provider dashboard.
 - Keep HTTPS enabled and force redirect from `www` to apex (or vice-versa) consistently.

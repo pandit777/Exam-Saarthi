@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Controller
 public class HomeController {
 
+    private static final String TEMPLATE_INDEX_ROUTE = "/src/main/resources/templates/index.html";
+
     private final CourseRepository courseRepository;
 
     public HomeController(CourseRepository courseRepository) {
@@ -20,6 +22,11 @@ public class HomeController {
     }
 
     @GetMapping("/")
+    public String rootRedirect() {
+        return "redirect:" + TEMPLATE_INDEX_ROUTE;
+    }
+
+    @GetMapping(TEMPLATE_INDEX_ROUTE)
     public String home(Model model) {
         model.addAttribute("courses", courseRepository.findAll());
         return "index";
