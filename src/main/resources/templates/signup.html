@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Exam Saarthi - Previous year question papers" />
+    <link rel="canonical" href="https://examsaarthi.com" />
+    <title>Sign Up | Exam Saarthi</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<main class="auth-wrap">
+    <h2>Create Account</h2>
+    <p th:if="${emailError}" class="error" th:text="${emailError}"></p>
+    <form th:action="@{/signup}" th:object="${signupRequest}" method="post">
+        <label>Name</label>
+        <input type="text" th:field="*{name}" required />
+        <label>Email</label>
+        <input type="email" th:field="*{email}" required />
+        <label>Password</label>
+        <input type="password" th:field="*{password}" required />
+        <p class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+        <button type="submit">Sign Up</button>
+    </form>
+    <a th:href="@{/signin}">Already have an account?</a>
+</main>
+</body>
+</html>
