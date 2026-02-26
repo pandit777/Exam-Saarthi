@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam Saarthi</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<header>
+    <h1>Exam Saarthi</h1>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/signin}">Sign In</a>
+        <a th:href="@{/signup}">Sign Up</a>
+    </nav>
+</header>
+<main>
+    <p>Backend-driven portal for university previous year question papers.</p>
+    <section class="grid">
+        <article class="card" th:each="course : ${courses}">
+            <h3 th:text="${course.title}">Course Title</h3>
+            <p><strong>University:</strong> <span th:text="${course.university}">IGU</span></p>
+            <p th:text="${course.description}">Description</p>
+            <a th:href="${course.downloadUrl}" target="_blank">Open Papers</a>
+        </article>
+    </section>
+</main>
+</body>
+</html>
