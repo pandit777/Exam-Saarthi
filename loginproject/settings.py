@@ -1,12 +1,16 @@
 from pathlib import Path
+import os
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-your-secret-key-here'
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here')
 
-DEBUG = True
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['exam-saarthi.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'exam-saarthi.onrender.com,localhost,127.0.0.1').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -34,8 +38,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'templates',                       # Project-level templates
-            BASE_DIR / 'accounts/templates',              # App-level templates
+            BASE_DIR / 'templates',
+            BASE_DIR / 'accounts/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -50,11 +54,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'loginproject.wsgi.application'
 
+# ✅ Updated database settings for Render
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = []
@@ -64,11 +70,11 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files settings
+# ✅ Updated static files settings
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    BASE_DIR / "accounts/static",
+    # BASE_DIR / "accounts/static",  # ✅ Comment out if folder doesn't exist
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -79,10 +85,10 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# ✅ Email settings (add at the bottom)
+# ✅ Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'gs8901346287@gmail.com'  # ✅ Your Gmail
-EMAIL_HOST_PASSWORD = 'dihw oznv pwqa mbgo'  # ✅ App Password from Google
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'gs8901346287@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'dihw oznv pwqa mbgo')  # App Password
