@@ -10,5 +10,8 @@
       "src": "/(.*)",
       "dest": "loginproject/wsgi.py"
     }
-  ]
+  ],
+  "static": {
+    "https://exam-saarthi.vercel.app/static/*": "staticfiles/*"
+  }
 }
