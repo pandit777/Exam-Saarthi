@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGU B.Tech Previous Year Papers - Exam Saarthi</title>
+    <link rel="canonical" href="https://www.examsaarthi.com/igu-btech.html" />
+    <meta name="description" content="Download IGU B.Tech all semester previous year question papers. Branch-wise PYQ for CSE, ECE, ME, EE, CE.">
+    <meta name="keywords" content="igu btech pyq, igu btech papers, igu previous year papers, igu engineering papers">
+    
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- IGU Favicon (fallback logo) -->
+    <link data-default-icon="/static/images/logo.png" rel="icon" sizes="192x192" href="/static/images/logo.png" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f7fc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        /* Header with IGU branding */
+        .igu-header {
+            background: linear-gradient(145deg, #0b3d5f, #1a4b7a);
+            color: white;
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            box-shadow: 0 8px 20px rgba(0,40,80,0.2);
+        }
+
+        .igu-logo {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            padding: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .igu-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .igu-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .igu-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .back-link {
+            margin-left: auto;
+            background: rgba(255,255,255,0.15);
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: #fbbf24;
+            color: #0b1e4a;
+            border-color: #fbbf24;
+        }
+
+        /* Main container */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Search & filter bar */
+        .toolbar {
+            background: white;
+            border-radius: 60px;
+            padding: 0.6rem 0.6rem 0.6rem 2rem;
+            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            border: 1px solid #e9eef3;
+        }
+
+        .search-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            min-width: 250px;
+        }
+
+        .search-wrapper i {
+            color: #f59e0b;
+            font-size: 1.2rem;
+            margin-right: 0.8rem;
+        }
+
+        .search-wrapper input {
+            border: none;
+            padding: 0.8rem 0;
+            width: 100%;
+            font-size: 1rem;
+            outline: none;
+            background: transparent;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            padding: 0.3rem 0;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #d0deff;
+            background: #f0f5ff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1a4b7a;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            background: #1a4b7a;
+            color: white;
+            border-color: #1a4b7a;
+        }
+
+        .filter-btn:hover {
+            background: #1a4b7a;
+            color: white;
+        }
+
+        /* Year section cards */
+        .year-section {
+            background: white;
+            border-radius: 32px;
+            margin-bottom: 2rem;
+            box-shadow: 0 12px 30px -10px rgba(0,40,80,0.12);
+            overflow: hidden;
+            border: 1px solid rgba(0,70,150,0.08);
+        }
+
+        .section-header {
+            background: linear-gradient(145deg, #f8fbff, #ffffff);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ffd966;
+            cursor: pointer;
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0b3d5f;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-header h2 i {
+            color: #f59e0b;
+            font-size: 2rem;
+        }
+
+        .toggle-icon {
+            background: #0b3d5f;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        /* Table styling */
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            transition: all 0.3s;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+
+        th {
+            background: #e6f0fa;
+            color: #0b3d5f;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 1rem 0.8rem;
+            text-align: left;
+            border-radius: 16px 16px 0 0;
+        }
+
+        td {
+            padding: 1rem 0.8rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        tr:hover td {
+            background: #fcf9e9;
+        }
+
+        .download-btn {
+            background: linear-gradient(145deg, #0b3d5f, #1e5a85);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,60,120,0.2);
+        }
+
+        .download-btn:hover {
+            background: #fbbf24;
+            color: #0b1e4a;
+            transform: translateY(-2px);
+        }
+
+        .download-btn.disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* Mobile card view */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 1.2rem;
+            display: none;
+        }
+
+        .paper-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.2rem;
+            border: 1px solid #e9eef3;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.02);
+            transition: 0.2s;
+        }
+
+        .paper-card:hover {
+            border-color: #fbbf24;
+            box-shadow: 0 12px 24px -10px rgba(251,191,36,0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #0b3d5f;
+        }
+
+        .card-sem {
+            background: #ffe5b4;
+            color: #7a4b0e;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+
+        .card-detail {
+            display: flex;
+            margin: 0.6rem 0;
+            font-size: 0.9rem;
+        }
+
+        .card-label {
+            width: 80px;
+            color: #5f6b7a;
+        }
+
+        .card-value {
+            font-weight: 500;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 40px;
+            color: #6b7a8f;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #0b3d5f;
+            color: white;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .igu-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .back-link {
+                margin-left: 0;
+            }
+            .toolbar {
+                border-radius: 30px;
+                padding: 1rem;
+            }
+            .search-wrapper {
+                width: 100%;
+            }
+            .table-wrapper {
+                display: none;
+            }
+            .card-grid {
+                display: grid;
+            }
+            .section-header h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .card-grid {
+                display: none !important;
+            }
+            .table-wrapper {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- IGU Header with Logo & Navigation -->
+<div class="igu-header">
+    <div class="igu-logo">
+        <img src="/static/images/logo.png" alt="IGU Logo" onerror="this.src='/static/images/logo.png'">
+    </div>
+    <div>
+        <h1>IGU B.Tech PYQ Repository</h1>
+        <p>Indira Gandhi University, Rewari • All Branches • 2013-2025</p>
+    </div>
+    <a href="igu.html" class="back-link"><i class="fas fa-arrow-left"></i> All Courses</a>
+</div>
+
+<div class="container">
+    <!-- Search & Filter Toolbar -->
+    <div class="toolbar">
+        <div class="search-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search by paper name, ID, semester or year...">
+        </div>
+        <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="1st">1st Sem</button>
+            <button class="filter-btn" data-filter="2nd">2nd Sem</button>
+            <button class="filter-btn" data-filter="3rd">3rd Sem</button>
+            <button class="filter-btn" data-filter="4th">4th Sem</button>
+            <button class="filter-btn" data-filter="5th">5th Sem</button>
+            <button class="filter-btn" data-filter="6th">6th Sem</button>
+            <button class="filter-btn" data-filter="7th">7th Sem</button>
+        </div>
+    </div>
+
+    <!-- Years Sections (automatically populated from database) -->
+    <!-- 1st Year Section -->
+    <div class="year-section" id="section1">
+        <div class="section-header" onclick="toggleSection('1')">
+            <h2><i class="fas fa-book-open"></i> B.Tech 1st Year (Sem 1 & 2)</h2>
+            <span class="toggle-icon" id="icon1"><i class="fas fa-chevron-up"></i></span>
+        </div>
+        <!-- Table View (Desktop) -->
+        <div class="table-wrapper" id="table1">
+            <table id="table1-data">
+                <thead><tr><th>Paper ID</th><th>Paper Name</th><th>Course</th><th>Sem</th><th>Year</th><th>Download</th></tr></thead>
+                <tbody>
+                    {% if user.is_authenticated %}
+                        {% for paper in papers %}
+                            {% if paper.semester == '1st' or paper.semester == '2nd' %}
+                                <tr>
+                                    <td>{{ paper.paper_id }}</td>
+                                    <td>{{ paper.paper_name }}</td>
+                                    <td>{{ paper.course }}</td>
+                                    <td>{{ paper.semester }}</td>
+                                    <td>{{ paper.year }}</td>
+                                    <td>
+                                        <a href="{{ paper.pdf_link }}" class="download-btn" target="_blank">
+                                            <i class="fas fa-download"></i> PDF
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 20px;">
+                                <i class="fas fa-lock" style="color: #f59e0b; font-size: 1.2rem;"></i>
+                                <span style="font-weight: 600;">Please <a href="{% url 'login' %}" style="color: #1a4b7a; text-decoration: underline;">Login</a> to view and download papers</span>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <!-- Mobile Cards for 1st Year -->
+        <div class="card-grid" id="cards1">
+            {% if user.is_authenticated %}
+                {% for paper in papers %}
+                    {% if paper.semester == '1st' or paper.semester == '2nd' %}
+                        <div class="paper-card">
+                            <div class="card-header">
+                                <span class="card-title">{{ paper.paper_name }}</span>
+                                <span class="card-sem">{{ paper.semester }} Sem</span>
+                            </div>
+                            <div class="card-detail"><span class="card-label">Paper ID:</span> <span class="card-value">{{ paper.paper_id }}</span></div>
+                            <div class="card-detail"><span class="card-label">Course:</span> <span class="card-value">{{ paper.course }}</span></div>
+                            <div class="card-detail"><span class="card-label">Year:</span> <span class="card-value">{{ paper.year }}</span></div>
+                            <a href="{{ paper.pdf_link }}" class="download-btn" target="_blank"><i class="fas fa-download"></i> Download</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="paper-card" style="text-align: center; padding: 20px;">
+                    <i class="fas fa-lock" style="color: #f59e0b; font-size: 1.5rem;"></i>
+                    <p style="margin-top: 10px; font-weight: 600;">Please <a href="{% url 'login' %}" style="color: #1a4b7a; text-decoration: underline;">Login</a> to view and download papers</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 2nd Year Section (Sem 3 & 4) -->
+    <div class="year-section" id="section2">
+        <div class="section-header" onclick="toggleSection('2')">
+            <h2><i class="fas fa-laptop"></i> B.Tech 2nd Year (Sem 3 & 4)</h2>
+            <span class="toggle-icon" id="icon2"><i class="fas fa-chevron-up"></i></span>
+        </div>
+        <div class="table-wrapper" id="table2">
+            <table id="table2-data">
+                <thead><tr><th>Paper ID</th><th>Paper Name</th><th>Course</th><th>Sem</th><th>Year</th><th>Download</th></tr></thead>
+                <tbody>
+                    {% if user.is_authenticated %}
+                        {% for paper in papers %}
+                            {% if paper.semester == '3rd' or paper.semester == '4th' %}
+                                <tr>
+                                    <td>{{ paper.paper_id }}</td>
+                                    <td>{{ paper.paper_name }}</td>
+                                    <td>{{ paper.course }}</td>
+                                    <td>{{ paper.semester }}</td>
+                                    <td>{{ paper.year }}</td>
+                                    <td>
+                                        <a href="{{ paper.pdf_link }}" class="download-btn" target="_blank">
+                                            <i class="fas fa-download"></i> PDF
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 20px;">
+                                <i class="fas fa-lock" style="color: #f59e0b; font-size: 1.2rem;"></i>
+                                <span style="font-weight: 600;">Please <a href="{% url 'login' %}" style="color: #1a4b7a; text-decoration: underline;">Login</a> to view and download papers</span>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-grid" id="cards2">
+            {% if user.is_authenticated %}
+                {% for paper in papers %}
+                    {% if paper.semester == '3rd' or paper.semester == '4th' %}
+                        <div class="paper-card">
+                            <div class="card-header">
+                                <span class="card-title">{{ paper.paper_name }}</span>
+                                <span class="card-sem">{{ paper.semester }} Sem</span>
+                            </div>
+                            <div class="card-detail"><span class="card-label">Paper ID:</span> <span class="card-value">{{ paper.paper_id }}</span></div>
+                            <div class="card-detail"><span class="card-label">Course:</span> <span class="card-value">{{ paper.course }}</span></div>
+                            <div class="card-detail"><span class="card-label">Year:</span> <span class="card-value">{{ paper.year }}</span></div>
+                            <a href="{{ paper.pdf_link }}" class="download-btn" target="_blank"><i class="fas fa-download"></i> Download</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="paper-card" style="text-align: center; padding: 20px;">
+                    <i class="fas fa-lock" style="color: #f59e0b; font-size: 1.5rem;"></i>
+                    <p style="margin-top: 10px; font-weight: 600;">Please <a href="{% url 'login' %}" style="color: #1a4b7a; text-decoration: underline;">Login</a> to view and download papers</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 3rd Year Section (Sem 5 & 6) -->
+    <div class="year-section" id="section3">
+        <div class="section-header" onclick="toggleSection('3')">
+            <h2><i class="fas fa-microchip"></i> B.Tech 3rd Year (Sem 5 & 6)</h2>
+            <span class="toggle-icon" id="icon3"><i class="fas fa-chevron-up"></i></span>
+        </div>
+        <div class="table-wrapper" id="table3">
+            <table id="table3-data">
+                <thead><tr><th>Paper ID</th><th>Paper Name</th><th>Course</th><th>Sem</th><th>Year</th><th>Download</th></tr></thead>
+                <tbody>
+                    {% if user.is_authenticated %}
+                        {% for paper in papers %}
+                            {% if paper.semester == '5th' or paper.semester == '6th' %}
+                                <tr>
+                                    <td>{{ paper.paper_id }}</td>
+                                    <td>{{ paper.paper_name }}</td>
+                                    <td>{{ paper.course }}</td>
+                                    <td>{{ paper.semester }}</td>
+                                    <td>{{ paper.year }}</td>
+                                    <td>
+                                        <a href="{{ paper.pdf_link }}" class="download-btn" target="_blank">
+                                            <i class="fas fa-download"></i> PDF
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 20px;">
+                                <i class="fas fa-lock" style="color: #f59e0b; font-size: 1.2rem;"></i>
+                                <span style="font-weight: 600;">Please <a href="{% url 'login' %}" style="color: #1a4b7a; text-decoration: underline;">Login</a> to view and download papers</span>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-grid" id="cards3">
+            {% if user.is_authenticated %}
+                {% for paper in papers %}
+                    {% if paper.semester == '5th' or paper.semester == '6th' %}
+                        <div class="paper-card">
+                            <div class="card-header">
+                                <span class="card-title">{{ paper.paper_name }}</span>
+                                <span class="card-sem">{{ paper.semester }} Sem</span>
+                            </div>
+                            <div class="card-detail"><span class="card-label">Paper ID:</span> <span class="card-value">{{ paper.paper_id }}</span></div>
+                            <div class="card-detail"><span class="card-label">Course:</span> <span class="card-value">{{ paper.course }}</span></div>
+                            <div class="card-detail"><span class="card-label">Year:</span> <span class="card-value">{{ paper.year }}</span></div>
+                            <a href="{{ paper.pdf_link }}" class="download-btn" target="_blank"><i class="fas fa-download"></i> Download</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="paper-card" style="text-align: center; padding: 20px;">
+                    <i class="fas fa-lock" style="color: #f59e0b; font-size: 1.5rem;"></i>
+                    <p style="margin-top: 10px; font-weight: 600;">Please <a href="{% url 'login' %}" style="color: #1a4b7a; text-decoration: underline;">Login</a> to view and download papers</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 4th Year Section (Sem 7 & 8) -->
+    <div class="year-section" id="section4">
+        <div class="section-header" onclick="toggleSection('4')">
+            <h2><i class="fas fa-project-diagram"></i> B.Tech 4th Year (Sem 7 & 8)</h2>
+            <span class="toggle-icon" id="icon4"><i class="fas fa-chevron-up"></i></span>
+        </div>
+        <div class="table-wrapper" id="table4">
+            <table id="table4-data">
+                <thead><tr><th>Paper ID</th><th>Paper Name</th><th>Course</th><th>Sem</th><th>Year</th><th>Download</th></tr></thead>
+                <tbody>
+                    {% if user.is_authenticated %}
+                        {% for paper in papers %}
+                            {% if paper.semester == '7th' or paper.semester == '8th' %}
+                                <tr>
+                                    <td>{{ paper.paper_id }}</td>
+                                    <td>{{ paper.paper_name }}</td>
+                                    <td>{{ paper.course }}</td>
+                                    <td>{{ paper.semester }}</td>
+                                    <td>{{ paper.year }}</td>
+                                    <td>
+                                        <a href="{{ paper.pdf_link }}" class="download-btn" target="_blank">
+                                            <i class="fas fa-download"></i> PDF
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 20px;">
+                                <i class="fas fa-lock" style="color: #f59e0b; font-size: 1.2rem;"></i>
+                                <span style="font-weight: 600;">Please <a href="{% url 'login' %}" style="color: #1a4b7a; text-decoration: underline;">Login</a> to view and download papers</span>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-grid" id="cards4">
+            {% if user.is_authenticated %}
+                {% for paper in papers %}
+                    {% if paper.semester == '7th' or paper.semester == '8th' %}
+                        <div class="paper-card">
+                            <div class="card-header">
+                                <span class="card-title">{{ paper.paper_name }}</span>
+                                <span class="card-sem">{{ paper.semester }} Sem</span>
+                            </div>
+                            <div class="card-detail"><span class="card-label">Paper ID:</span> <span class="card-value">{{ paper.paper_id }}</span></div>
+                            <div class="card-detail"><span class="card-label">Course:</span> <span class="card-value">{{ paper.course }}</span></div>
+                            <div class="card-detail"><span class="card-label">Year:</span> <span class="card-value">{{ paper.year }}</span></div>
+                            <a href="{{ paper.pdf_link }}" class="download-btn" target="_blank"><i class="fas fa-download"></i> Download</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="paper-card" style="text-align: center; padding: 20px;">
+                    <i class="fas fa-lock" style="color: #f59e0b; font-size: 1.5rem;"></i>
+                    <p style="margin-top: 10px; font-weight: 600;">Please <a href="{% url 'login' %}" style="color: #1a4b7a; text-decoration: underline;">Login</a> to view and download papers</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="noResults" class="no-results" style="display: none;">
+        <i class="fas fa-search"></i>
+        <h3>No matching papers</h3>
+        <p>Try different keywords or semester filter</p>
+    </div>
+</div>
+
+<footer>
+    <i class="fas fa-graduation-cap"></i> Exam Saarthi - IGU B.Tech PYQ Repository | Free for all students
+</footer>
+
+<script>
+    (function() {
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+        const html = document.documentElement;
+        const icon = themeToggle?.querySelector('i');
+
+        function setTheme(theme) {
+            html.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            if (icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            if (mobileThemeToggle) mobileThemeToggle.textContent = theme === 'dark' ? 'Light' : 'Dark';
+        }
+        const saved = localStorage.getItem('theme') || 'light';
+        setTheme(saved);
+        themeToggle?.addEventListener('click', () => setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light'));
+        mobileThemeToggle?.addEventListener('click', () => setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light'));
+
+        // Mobile Menu
+        const menuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        if (menuBtn && mobileNav) {
+            menuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mobileNav.style.display = mobileNav.style.display === 'block' ? 'none' : 'block';
+            });
+            document.addEventListener('click', function(e) {
+                if (mobileNav.style.display === 'block' && !mobileNav.contains(e.target) && !menuBtn.contains(e.target)) {
+                    mobileNav.style.display = 'none';
+                }
+            });
+        }
+
+        function checkViewport() {
+            if (window.innerWidth <= 768 && mobileNav) {
+                mobileNav.style.display = 'none';
+            }
+        }
+        checkViewport();
+        window.addEventListener('resize', checkViewport);
+
+        // Toggle sections (open/close)
+        window.toggleSection = function(id) {
+            const tableDiv = document.getElementById('table' + id);
+            const cardsDiv = document.getElementById('cards' + id);
+            const icon = document.getElementById('icon' + id).querySelector('i');
+            
+            if (window.innerWidth <= 768) {
+                // Mobile: switch between table and cards
+                if (tableDiv.style.display !== 'none') {
+                    tableDiv.style.display = 'none';
+                    cardsDiv.style.display = 'grid';
+                    icon.className = 'fas fa-chevron-down';
+                } else {
+                    tableDiv.style.display = 'block';
+                    cardsDiv.style.display = 'none';
+                    icon.className = 'fas fa-chevron-up';
+                }
+            } else {
+                // Desktop: just hide/show table
+                if (tableDiv.style.display !== 'none') {
+                    tableDiv.style.display = 'none';
+                    icon.className = 'fas fa-chevron-down';
+                } else {
+                    tableDiv.style.display = 'block';
+                    icon.className = 'fas fa-chevron-up';
+                }
+            }
+        };
+
+        // Update section visibility helper
+        function updateSectionVisibility(sectionId) {
+            const tableDiv = document.getElementById('table' + sectionId);
+            const cardsDiv = document.getElementById('cards' + sectionId);
+            const icon = document.getElementById('icon' + sectionId).querySelector('i');
+            const table = document.getElementById('table' + sectionId + '-data');
+            
+            const hasVisibleRows = table ? table.querySelector('tbody tr[style="display: ;"]') !== null : false;
+            
+            if (hasVisibleRows || activeFilter === 'all') {
+                if (window.innerWidth <= 768) {
+                    tableDiv.style.display = 'none';
+                    cardsDiv.style.display = 'grid';
+                    icon.className = 'fas fa-chevron-down';
+                } else {
+                    tableDiv.style.display = 'block';
+                    icon.className = 'fas fa-chevron-up';
+                }
+            } else {
+                tableDiv.style.display = 'none';
+                cardsDiv.style.display = 'none';
+                icon.className = 'fas fa-chevron-down';
+            }
+        }
+
+        // Search and filter functionality
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        let activeFilter = 'all';
+
+        function filterTable() {
+            const searchTerm = searchInput.value.toLowerCase();
+            let anyVisible = false;
+            
+            // First, filter the rows based on search and semester
+            ['table1-data', 'table2-data', 'table3-data', 'table4-data'].forEach(tableId => {
+                const table = document.getElementById(tableId);
+                if (!table) return;
+                const rows = table.querySelectorAll('tbody tr');
+                
+                rows.forEach(row => {
+                    const cells = row.cells;
+                    const paperName = cells[1]?.textContent.toLowerCase() || '';
+                    const paperId = cells[0]?.textContent.toLowerCase() || '';
+                    const sem = cells[3]?.textContent.toLowerCase() || '';
+                    const year = cells[4]?.textContent.toLowerCase() || '';
+
+                    const matchesSearch = paperName.includes(searchTerm) || paperId.includes(searchTerm) || year.includes(searchTerm);
+                    const matchesFilter = activeFilter === 'all' || sem.includes(activeFilter.toLowerCase());
+
+                    if (matchesSearch && matchesFilter) {
+                        row.style.display = '';
+                        anyVisible = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // Update section visibility based on active filter
+            ['1', '2', '3', '4'].forEach(id => {
+                updateSectionVisibility(id);
+            });
+
+            document.getElementById('noResults').style.display = anyVisible ? 'none' : 'block';
+        }
+
+        searchInput.addEventListener('input', filterTable);
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                activeFilter = this.dataset.filter;
+                filterTable();
+            });
+        });
+
+        // Initial setup
+        window.addEventListener('load', function() {
+            filterTable();
+        });
+
+        window.addEventListener('resize', function() {
+            // Reapply visibility based on current filter
+            ['1', '2', '3', '4'].forEach(id => {
+                updateSectionVisibility(id);
+            });
+        });
+
+        // Ensure download links open in new tab
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.setAttribute('target', '_blank');
+        });
+    })();
+</script>
+</body>
+</html>
