@@ -4,13 +4,22 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# =========================
+# SECURITY
+# =========================
+
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'exam-saarthi.onrender.com,localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS',
+    '.onrender.com', '127.0.0.1', 'localhost'
+).split(',')
+
+# =========================
+# APPS
+# =========================
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,11 +28,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',  # ✅ 
+    'accounts',
 ]
+
+# =========================
+# MIDDLEWARE
+# =========================
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # ✅ WhiteNoise (static serve karega)
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -31,6 +48,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# =========================
+# URLS & TEMPLATES
+# =========================
 
 ROOT_URLCONF = 'loginproject.urls'
 
@@ -54,7 +75,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'loginproject.wsgi.application'
 
-# ✅ Updated database settings for Render
+# =========================
+# DATABASE (Render Ready)
+# =========================
+
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3',
@@ -63,32 +87,58 @@ DATABASES = {
     )
 }
 
+# =========================
+# PASSWORD VALIDATION
+# =========================
+
 AUTH_PASSWORD_VALIDATORS = []
+
+# =========================
+# INTERNATIONALIZATION
+# =========================
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# ✅ Updated static files settings
+# =========================
+# STATIC FILES (IMPORTANT)
+# =========================
+
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    # BASE_DIR / "accounts/static",  # ✅ Comment out if folder doesn't exist
 ]
+
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# ✅ WhiteNoise storage
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# =========================
+# DEFAULT FIELD
+# =========================
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ✅ Login settings
+# =========================
+# AUTH SETTINGS
+# =========================
+
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# ✅ Email settings
+# =========================
+# EMAIL SETTINGS (SECURE)
+# =========================
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'gs8901346287@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'dihw oznv pwqa mbgo')  # App Password
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
