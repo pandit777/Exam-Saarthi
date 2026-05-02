@@ -71,7 +71,7 @@ USE_I18N = True
 USE_TZ = True
 
 # ✅ Updated static files settings
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
     # BASE_DIR / "accounts/static",  # ✅ Comment out if folder doesn't exist
