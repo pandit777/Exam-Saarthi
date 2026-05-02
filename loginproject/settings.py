@@ -8,11 +8,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 # =========================
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here')
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-your-secret-key-here'
+)
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '.onrender.com,127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS',
+    '.onrender.com,localhost,127.0.0.1'
+).split(',')
 
 # =========================
 # APPS
@@ -34,10 +40,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
-    # ✅ WhiteNoise (static serve karega)
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # IMPORTANT
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -45,10 +48,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-# =========================
-# URLS & TEMPLATES
-# =========================
 
 ROOT_URLCONF = 'loginproject.urls'
 
@@ -73,7 +72,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'loginproject.wsgi.application'
 
 # =========================
-# DATABASE (Render Ready)
+# DATABASE
 # =========================
 
 DATABASES = {
@@ -85,49 +84,38 @@ DATABASES = {
 }
 
 # =========================
-# PASSWORD VALIDATION
+# STATIC FILES (FIXED)
+# =========================
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",   # ✅ FIXED (NO slash)
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# =========================
+# OTHER SETTINGS
 # =========================
 
 AUTH_PASSWORD_VALIDATORS = []
-
-# =========================
-# INTERNATIONALIZATION
-# =========================
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# =========================
-# STATIC FILES (IMPORTANT)
-# =========================
-
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [BASE_DIR / "/static"]
-
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# ✅ WhiteNoise storage
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# =========================
-# DEFAULT FIELD
-# =========================
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# =========================
-# AUTH SETTINGS
-# =========================
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 # =========================
-# EMAIL SETTINGS (SECURE)
+# EMAIL
 # =========================
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
