@@ -365,20 +365,23 @@
       font-weight: 600;
     }
 
-    /* Feature Grid */
+    /* Feature Grid - FIXED FOR MOBILE */
     .feature-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.5rem;
       margin-top: 1.5rem;
     }
+
     .feature-card {
       background: var(--gradient-card-light);
       border-radius: 28px;
-      padding: 1.8rem;
+      padding: 1.8rem 1.2rem;  /* ✅ Reduced padding for mobile */
       text-align: center;
       transition: all 0.4s ease;
       border: 1px solid rgba(251, 191, 36, 0.1);
+      width: 100%;
+      box-sizing: border-box;
     }
     .feature-card:hover {
       transform: translateY(-8px);
@@ -399,38 +402,8 @@
       color: var(--text-soft);
       font-size: 0.95rem;
       line-height: 1.5;
-    }
-
-    /* Mission Section */
-    .mission-section {
-      background: var(--gradient-card-light);
-      border-radius: 24px;
-      padding: 1.2rem;
-      margin: 1.2rem 0;
-      text-align: center;
-      width: 100%;
-      transition: all 0.3s ease;
-    }
-    .mission-section:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-medium);
-    }
-    .mission-icon {
-      font-size: 2rem;
-      color: var(--accent-bright-yellow);
-      margin-bottom: 0.5rem;
-      display: inline-block;
-    }
-    .mission-section h2 {
-      font-size: 1.3rem;
-      font-weight: 800;
-      margin-bottom: 0.6rem;
-      color: var(--text-main);
-    }
-    .mission-section p {
-      font-size: 0.85rem;
-      line-height: 1.5;
-      color: var(--text-soft);
+      word-wrap: break-word;    /* ✅ Added for long text */
+      overflow-wrap: break-word;
     }
 
     @media (min-width: 768px) {
@@ -443,6 +416,7 @@
       .hero-title { font-size: 3.2rem; }
       .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 2rem; }
       .feature-grid { grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+      .feature-card { padding: 1.8rem; }
     }
     @media (max-width: 768px) {
       .header-content { padding: 0.8rem 1rem; }
@@ -454,10 +428,13 @@
       .stat-card { padding: 1.2rem; }
       .stat-number { font-size: 1.5rem; }
       .feature-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+      .feature-card { padding: 1.5rem 1.2rem; }
     }
     @media (max-width: 480px) {
       .home-card { padding: 1.5rem; }
       .stat-number { font-size: 1.2rem; }
+      .feature-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+      .feature-card { padding: 1.2rem 0.8rem; }
     }
   </style>
 </head>
