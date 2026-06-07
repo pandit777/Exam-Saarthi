@@ -15,6 +15,8 @@
         .success { background: #d4edda; color: #155724; }
         .login-link { text-align: center; margin-top: 20px; }
         .login-link a { color: #667eea; text-decoration: none; }
+        /* Optional: Add a small hint for better UX */
+        .form-group small { display: block; color: #666; font-size: 12px; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -31,6 +33,15 @@
         
         <form method="post">
             {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="first_name" placeholder="First Name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="last_name" placeholder="Last Name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Email Address" required>
+            </div>
             <div class="form-group">
                 <input type="text" name="username" placeholder="Username" required>
             </div>

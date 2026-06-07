@@ -1,0 +1,27 @@
+[
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$bS9c1HcXfnfW3oreorPawF$yf1ceuuOAMliPH4urDw77a5o9vgShen4dhZbFwku54A=",
+        "last_login": "2026-06-07T04:58:37.448Z",
+        "is_superuser": true,
+        "username": "GouravSharma",
+        "first_name": "",
+        "last_name": "",
+        "email": "gs8901346287@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-06-07T03:13:32.485Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "2pk9ajfmo7q1rwnl5gll8mt79b5fygqy",
+    "fields": {
+        "session_data": ".eJxVjLEOAiEQRP-F2hBhFwKW9n4DWWCRU8Mlx11l_He55Aotppn3Zt4i0LbWsHVewpTFRShx-u0ipSe3HeQHtfss09zWZYpyV-RBu7zNmV_Xw_07qNTrWKfoldfJIiOlyBadQwJrDY5kbQpH543WFooHD4WJ2cNw4WyzIhSfL9zcN7Y:1wW5an:ARqpD4x2-3VAKkBtJ6r4yBsAdshJRga-XkrZmSxe0pg",
+        "expire_date": "2026-06-21T04:58:37.453Z"
+    }
+}
+]

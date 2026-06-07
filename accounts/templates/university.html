@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self';">
   <link rel="canonical" href="https://www.examsaarthi.com/Universities.html">
   <link rel="manifest" href="/manifest.json">
   <title>Exam Saarthi - All Universities PYQ</title>
@@ -76,7 +77,7 @@
     }
 
     /* ---------------------------------------------------------------------- */
-    /* ENHANCED HEADER & NAVIGATION - SAME AS INDEX PAGE */
+    /* ENHANCED HEADER & NAVIGATION */
     /* ---------------------------------------------------------------------- */
     header {
       background: var(--gradient-primary);
@@ -511,14 +512,9 @@
           <li><a href="/about">About</a></li>
           <li><a href="/contact">Contact</a></li>
         </ul>
-        {% if user.is_authenticated %}
-          <div class="user-info">
-            <span><i class="fas fa-user-circle"></i> {{ user.username }}</span>
-            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
-          </div>
-        {% else %}
-          <a href="{% url 'login' %}" class="login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
-        {% endif %}
+        
+          <a href="/accounts/login/" class="login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+        
         <div class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></div>
       </nav>
       <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
@@ -533,28 +529,15 @@
         <li><a href="/about">About</a></li>
         <li><a href="/contact">Contact</a></li>
       </ul>
-      {% if user.is_authenticated %}
-        <div class="mobile-user-info">
-          <div><i class="fas fa-user-circle"></i> {{ user.username }}</div>
-          <a href="{% url 'logout' %}" style="color: white; background: rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 50px; display: inline-block; margin-top: 8px;">Logout</a>
-        </div>
-      {% else %}
-        <div style="padding:15px;"><a href="{% url 'login' %}" class="mobile-login-btn"><i class="fas fa-sign-in-alt"></i> Login</a></div>
-      {% endif %}
+      
+        <div style="padding:15px;"><a href="/accounts/login/" class="mobile-login-btn"><i class="fas fa-sign-in-alt"></i> Login</a></div>
+      
       <div class="mobile-theme-toggle"><span>Dark Mode</span><button id="mobileThemeToggle">Switch</button></div>
     </div>
   </header>
 
   <!-- Flash Messages -->
-  {% if messages %}
-  <div class="flash-messages">
-    {% for message in messages %}
-      <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-warning{% endif %}">
-        {{ message }}
-      </div>
-    {% endfor %}
-  </div>
-  {% endif %}
+  
 
   <main>
     <div class="content-section">
@@ -584,7 +567,21 @@
 
   <script>
     (function() {
-      // Theme Toggle
+      function escapeHtml(str) {
+        if (!str) return '';
+        return str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;')
+          .replace(/`/g, '&#96;')
+          .replace(/\//g, '&#x2F;');
+      }
+
+      // ============================================
+      // THEME TOGGLE FUNCTIONALITY
+      // ============================================
       const themeToggle = document.getElementById('themeToggle');
       const mobileThemeToggle = document.getElementById('mobileThemeToggle');
       const html = document.documentElement;
@@ -596,19 +593,25 @@
         if (icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         if (mobileThemeToggle) mobileThemeToggle.textContent = theme === 'dark' ? 'Light' : 'Dark';
       }
+      
       const saved = localStorage.getItem('theme') || 'light';
       setTheme(saved);
+      
       themeToggle?.addEventListener('click', () => setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light'));
       mobileThemeToggle?.addEventListener('click', () => setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light'));
 
-      // Mobile Menu
+      // ============================================
+      // MOBILE MENU FUNCTIONALITY
+      // ============================================
       const menuBtn = document.getElementById('mobileMenuBtn');
       const mobileNav = document.getElementById('mobileNav');
+      
       if (menuBtn && mobileNav) {
         menuBtn.addEventListener('click', function(e) {
           e.stopPropagation();
           mobileNav.style.display = mobileNav.style.display === 'block' ? 'none' : 'block';
         });
+        
         document.addEventListener('click', function(e) {
           if (mobileNav.style.display === 'block' && !mobileNav.contains(e.target) && !menuBtn.contains(e.target)) {
             mobileNav.style.display = 'none';
@@ -621,10 +624,13 @@
           mobileNav.style.display = 'none';
         }
       }
+      
       checkViewport();
       window.addEventListener('resize', checkViewport);
 
-      // Toast notification function
+      // ============================================
+      // TOAST NOTIFICATION FUNCTION
+      // ============================================
       const toast = document.getElementById('toast');
       let toastTimeout;
 
@@ -638,8 +644,9 @@
         }, 3000);
       }
 
-      // Universities Data with availability flag
-      // Sirf IGU available hai abhi, baaki sab coming soon
+      // ============================================
+      // UNIVERSITIES DATA (Hardcoded - Safe)
+      // ============================================
       const universities = [
         { name: "Indira Gandhi University (IGU)", location: "Rewari, Haryana", icon: "🏛️", page: "/igu", available: true },
         { name: "University of Delhi (DU)", location: "Delhi", icon: "📚", page: "/du", available: false },
@@ -660,75 +667,142 @@
         { name: "Bangalore University", location: "Bengaluru, KA", icon: "🌳", page: "/bangalore", available: false }
       ];
 
+      // ============================================
+      // SECURE RENDER FUNCTION - XSS PROTECTED
+      // ============================================
       function renderGrid(filterText = '') {
         const container = document.getElementById('uniGridContainer');
+        if (!container) return;
+        
+        // SECURITY: Escape user input before any processing
         const term = filterText.trim().toLowerCase();
+        const escapedTerm = escapeHtml(term);
+        
+        // Filter universities based on search term
         const filtered = term ? universities.filter(u => 
           u.name.toLowerCase().includes(term) || u.location.toLowerCase().includes(term)
         ) : universities;
 
+        // Handle no results case - ESCAPED search term used safely
         if (filtered.length === 0) {
-          container.innerHTML = `<div class="no-result"><i class="fas fa-frown-open"></i> No university matches "${filterText}"</div>`;
+          container.innerHTML = `<div class="no-result"><i class="fas fa-frown-open"></i> No university matches "${escapedTerm}"</div>`;
           return;
         }
 
+        // Build HTML with all content properly escaped
         let html = '<div class="universities-grid">';
+        
         filtered.forEach(u => {
+          // SECURITY: Escape ALL dynamic content before inserting into HTML
+          const safeName = escapeHtml(u.name);
+          const safeLocation = escapeHtml(u.location);
+          const safeIcon = escapeHtml(u.icon);
+          const safePage = escapeHtml(u.page);
+          
           if (u.available) {
             // Available university - clickable link
             html += `
-              <a href="${u.page}" class="uni-card clickable">
-                <span class="uni-icon">${u.icon}</span>
+              <a href="${safePage}" class="uni-card clickable">
+                <span class="uni-icon">${safeIcon}</span>
                 <div class="uni-info">
-                  <div class="uni-name">${u.name}</div>
-                  <div class="uni-location"><i class="fas fa-map-pin"></i> ${u.location}</div>
+                  <div class="uni-name">${safeName}</div>
+                  <div class="uni-location"><i class="fas fa-map-pin"></i> ${safeLocation}</div>
                 </div>
                 <span class="uni-badge">PYQs Available</span>
               </a>
             `;
           } else {
-            // Coming soon - not clickable, shows toast
+            // Coming soon - not clickable, shows toast with safe data
             html += `
-              <div class="uni-card disabled" data-uni-name="${u.name}">
-                <span class="uni-icon">${u.icon}</span>
+              <div class="uni-card disabled" data-uni-name="${safeName}">
+                <span class="uni-icon">${safeIcon}</span>
                 <div class="uni-info">
-                  <div class="uni-name">${u.name} <span style="font-size: 0.8rem;">🔜</span></div>
-                  <div class="uni-location"><i class="fas fa-map-pin"></i> ${u.location}</div>
+                  <div class="uni-name">${safeName} <span style="font-size: 0.8rem;">🔜</span></div>
+                  <div class="uni-location"><i class="fas fa-map-pin"></i> ${safeLocation}</div>
                 </div>
                 <span class="uni-badge coming-soon">Coming Soon</span>
               </div>
             `;
           }
         });
+        
         html += '</div>';
         container.innerHTML = html;
 
-        // Add click handlers for disabled cards
+        // Add click handlers for disabled cards (Coming Soon)
         document.querySelectorAll('.uni-card.disabled').forEach(card => {
           card.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            const uniName = card.getAttribute('data-uni-name') || 
-                           card.querySelector('.uni-name')?.innerText.replace('🔜', '').trim() || 
-                           'This university';
+            // SECURITY: Get university name from safe data attribute
+            let uniName = card.getAttribute('data-uni-name');
+            if (!uniName) {
+              const nameSpan = card.querySelector('.uni-name');
+              if (nameSpan) {
+                // Safe text extraction using childNodes
+                uniName = nameSpan.childNodes[0]?.nodeValue?.replace('🔜', '').trim() || 'This university';
+              } else {
+                uniName = 'This university';
+              }
+            }
             showToast(`📚 ${uniName} - PYQs coming soon! Stay tuned.`);
           });
         });
       }
 
+      // ============================================
+      // INITIAL RENDER
+      // ============================================
       renderGrid();
 
+      // ============================================
+      // SEARCH FUNCTIONALITY WITH SECURITY
+      // ============================================
       const searchInput = document.getElementById('universitySearch');
       const searchBtn = document.getElementById('searchBtn');
 
       function handleSearch() {
-        renderGrid(searchInput.value);
+        const rawInput = searchInput?.value || '';
+        // SECURITY: Additional sanitization before passing to render
+        const sanitizedInput = rawInput.replace(/[<>]/g, '');
+        renderGrid(sanitizedInput);
       }
       
-      searchBtn.addEventListener('click', handleSearch);
-      searchInput.addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') handleSearch();
-      });
+      if (searchBtn) {
+        searchBtn.addEventListener('click', handleSearch);
+      }
+      
+      if (searchInput) {
+        searchInput.addEventListener('keyup', (e) => {
+          if (e.key === 'Enter') handleSearch();
+        });
+        
+        // SECURITY: Prevent paste of script tags
+        searchInput.addEventListener('paste', (e) => {
+          setTimeout(() => {
+            if (searchInput.value.includes('<') || searchInput.value.includes('>')) {
+              searchInput.value = searchInput.value.replace(/[<>]/g, '');
+            }
+          }, 10);
+        });
+      }
+
+      // ============================================
+      // SECURITY: Protect against DOM clobbering
+      // ============================================
+      if (window.name && (window.name.includes('<') || window.name.includes('>'))) {
+        window.name = '';
+      }
+      
+      // ============================================
+      // SECURITY: Sanitize URL hash
+      // ============================================
+      if (window.location.hash) {
+        const decodedHash = decodeURIComponent(window.location.hash);
+        if (decodedHash.includes('<') || decodedHash.includes('>') || decodedHash.toLowerCase().includes('script')) {
+          window.location.hash = '';
+        }
+      }
 
       // Hide toast initially
       toast.classList.remove('show');
