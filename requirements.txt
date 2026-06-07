@@ -2,7 +2,7 @@ Django==6.0.4
 gunicorn
 whitenoise
 dj-database-url==2.1.0
-psycopg[binary]==3.2.1
+psycopg[binary]==3.2.13
 Pillow==11.1.0
 django-allauth==65.4.1
 django-crispy-forms==2.3
