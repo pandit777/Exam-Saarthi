@@ -5,8 +5,8 @@ services:
     plan: free
     buildCommand: pip install -r requirements.txt && python manage.py migrate --no-input && python manage.py collectstatic --no-input 2>&1 || true
     startCommand: |
-      sh -c 'python manage.py migrate --no-input 2>&1 || true && \
-      python manage.py setup_admin --password admin123 2>&1 || true && \
+      sh -c 'python init_admin.py 2>&1 || true && \
+      python manage.py migrate --no-input 2>&1 || true && \
       gunicorn loginproject.wsgi:application --bind 0.0.0.0:$PORT --workers 2'
     envVars:
       - key: DEBUG
