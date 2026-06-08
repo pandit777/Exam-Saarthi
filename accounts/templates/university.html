@@ -76,7 +76,7 @@
     }
 
     /* ---------------------------------------------------------------------- */
-    /* HEADER & NAVIGATION - EXACTLY LIKE HOME PAGE */
+    /* HEADER & NAVIGATION */
     /* ---------------------------------------------------------------------- */
     header {
       background: var(--gradient-primary);
@@ -542,7 +542,6 @@
     </div>
   </header>
 
-  <!-- Flash Messages -->
   {% if messages %}
   <div class="flash-messages">
     {% for message in messages %}
@@ -571,7 +570,7 @@
   </main>
 
   <footer>
-    <p>&copy; 2025 Exam Saarthi | All Rights Reserved | Made with <i class="fas fa-heart" style="color: #fbbf24;"></i> for Students</p>
+    <p>&copy; 2026 Exam Saarthi | All Rights Reserved | Made with <i class="fas fa-heart" style="color: #fbbf24;"></i> for Students</p>
   </footer>
 
   <div id="toast" class="toast-notification">
@@ -581,20 +580,7 @@
 
   <script>
     (function() {
-      // ============================================
-      // SECURITY: HTML Escape function - XSS Protection
-      // ============================================
-      function escapeHtml(str) {
-        if (!str) return '';
-        return str
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#39;');
-      }
-
-      // Theme Toggle (Same as Home Page)
+      // Theme Toggle 
       const themeToggle = document.getElementById('themeToggle');
       const mobileThemeToggle = document.getElementById('mobileThemeToggle');
       const html = document.documentElement;
@@ -611,7 +597,7 @@
       themeToggle?.addEventListener('click', () => setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light'));
       mobileThemeToggle?.addEventListener('click', () => setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light'));
 
-      // Mobile Menu (Same as Home Page)
+      // Mobile Menu
       const menuBtn = document.getElementById('mobileMenuBtn');
       const mobileNav = document.getElementById('mobileNav');
       if (menuBtn && mobileNav) {
@@ -634,7 +620,7 @@
       checkViewport();
       window.addEventListener('resize', checkViewport);
 
-      // Toast notification function
+      // Toast notification function (XSS Clean - Uses textContent)
       const toast = document.getElementById('toast');
       let toastTimeout;
 
@@ -669,75 +655,119 @@
         { name: "Bangalore University", location: "Bengaluru, KA", icon: "🌳", page: "/bangalore", available: false }
       ];
 
-      // SECURE renderGrid function - XSS Protected
+      // Safe URL Context Validation Helper
+      function sanitizePath(path) {
+        if (path.startsWith('/') || path.startsWith('http://') || path.startsWith('https://')) {
+          return path;
+        }
+        return '#';
+      }
+
+      // SECURE DOM Dynamic Rendering (XSStrike Compliant)
       function renderGrid(filterText = '') {
         const container = document.getElementById('uniGridContainer');
+        container.innerHTML = ''; // Clear container securely
+
         const term = filterText.trim().toLowerCase();
-        const escapedTerm = escapeHtml(term);
-        
         const filtered = term ? universities.filter(u => 
           u.name.toLowerCase().includes(term) || u.location.toLowerCase().includes(term)
         ) : universities;
 
+        // No result handling
         if (filtered.length === 0) {
-          container.innerHTML = `<div class="no-result"><i class="fas fa-frown-open"></i> No university matches "${escapedTerm}"</div>`;
+          const noResultDiv = document.createElement('div');
+          noResultDiv.className = 'no-result';
+          
+          const frownIcon = document.createElement('i');
+          frownIcon.className = 'fas fa-frown-open mr-2';
+          
+          noResultDiv.appendChild(frownIcon);
+          noResultDiv.appendChild(document.createTextNode(` No university matches "${filterText}"`));
+          container.appendChild(noResultDiv);
           return;
         }
 
-        let html = '<div class="universities-grid">';
+        const gridDiv = document.createElement('div');
+        gridDiv.className = 'universities-grid';
+
         filtered.forEach(u => {
-          const safeName = escapeHtml(u.name);
-          const safeLocation = escapeHtml(u.location);
-          const safeIcon = escapeHtml(u.icon);
-          const safePage = escapeHtml(u.page);
+          let card;
           
           if (u.available) {
-            html += `
-              <a href="${safePage}" class="uni-card clickable">
-                <span class="uni-icon">${safeIcon}</span>
-                <div class="uni-info">
-                  <div class="uni-name">${safeName}</div>
-                  <div class="uni-location"><i class="fas fa-map-pin"></i> ${safeLocation}</div>
-                </div>
-                <span class="uni-badge">PYQs Available</span>
-              </a>
-            `;
+            card = document.createElement('a');
+            card.href = sanitizePath(u.page);
+            card.className = 'uni-card clickable';
           } else {
-            html += `
-              <div class="uni-card disabled" data-uni-name="${safeName}">
-                <span class="uni-icon">${safeIcon}</span>
-                <div class="uni-info">
-                  <div class="uni-name">${safeName} <span style="font-size: 0.8rem;">🔜</span></div>
-                  <div class="uni-location"><i class="fas fa-map-pin"></i> ${safeLocation}</div>
-                </div>
-                <span class="uni-badge coming-soon">Coming Soon</span>
-              </div>
-            `;
+            card = document.createElement('div');
+            card.className = 'uni-card disabled';
+            card.setAttribute('data-uni-name', u.name);
           }
-        });
-        html += '</div>';
-        container.innerHTML = html;
 
-        document.querySelectorAll('.uni-card.disabled').forEach(card => {
-          card.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            let uniName = card.getAttribute('data-uni-name');
-            if (!uniName) {
-              const nameSpan = card.querySelector('.uni-name');
-              if (nameSpan) {
-                uniName = nameSpan.childNodes[0]?.nodeValue?.replace('🔜', '').trim() || 'This university';
-              } else {
-                uniName = 'This university';
-              }
-            }
-            showToast(`📚 ${uniName} - PYQs coming soon! Stay tuned.`);
-          });
+          // Icon Component
+          const iconSpan = document.createElement('span');
+          iconSpan.className = 'uni-icon';
+          iconSpan.textContent = u.icon;
+
+          // Information Component
+          const infoDiv = document.createElement('div');
+          infoDiv.className = 'uni-info';
+
+          // University Name
+          const nameDiv = document.createElement('div');
+          nameDiv.className = 'uni-name';
+          nameDiv.textContent = u.name;
+          if (!u.available) {
+            const soonSpan = document.createElement('span');
+            soonSpan.style.fontSize = '0.8rem';
+            soonSpan.textContent = ' 🔜';
+            nameDiv.appendChild(soonSpan);
+          }
+
+          // Location
+          const locDiv = document.createElement('div');
+          locDiv.className = 'uni-location';
+          const mapIcon = document.createElement('i');
+          mapIcon.className = 'fas fa-map-pin mr-1';
+          locDiv.appendChild(mapIcon);
+          locDiv.appendChild(document.createTextNode(` ${u.location}`));
+
+          infoDiv.appendChild(nameDiv);
+          infoDiv.appendChild(locDiv);
+
+          // Badge Component
+          const badgeSpan = document.createElement('span');
+          if (u.available) {
+            badgeSpan.className = 'uni-badge';
+            badgeSpan.textContent = 'PYQs Available';
+          } else {
+            badgeSpan.className = 'uni-badge coming-soon';
+            badgeSpan.textContent = 'Coming Soon';
+          }
+
+          // Append all parts to card
+          card.appendChild(iconSpan);
+          card.appendChild(infoDiv);
+          card.appendChild(badgeSpan);
+
+          // Disabled Card Toast Event
+          if (!u.available) {
+            card.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              showToast(`📚 ${u.name} - PYQs coming soon! Stay tuned.`);
+            });
+          }
+
+          gridDiv.appendChild(card);
         });
+
+        container.appendChild(gridDiv);
       }
 
+      // Initialize Grid
       renderGrid();
 
+      // Search Event Bindings
       const searchInput = document.getElementById('universitySearch');
       const searchBtn = document.getElementById('searchBtn');
 
