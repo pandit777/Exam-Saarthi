@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = ["examsaarthi.com", "://examsaarthi.com", "://onrender.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["examsaarthi.com", "www.examsaarthi.com", "onrender.com", "*.onrender.com", "localhost", "127.0.0.1"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -51,11 +51,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'loginproject.wsgi.application'
 
-# Database Configuration
-# Local computer par sqlite3 chalega aur Render par automatic PostgreSQL connect hoga
+# Database Configuration - Updated with Render PostgreSQL URL
 DATABASES = {
     'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
+        default='postgresql://exam_saarthi_db_f04c_user:mceD9Jeim9sgkIEoM6bkFLLiccNTNB13@dpg-d8ihfvj7uimc73apa7p0-a.oregon-postgres.render.com/exam_saarthi_db_f04c',
         conn_max_age=600,
         conn_health_checks=True,
     )
