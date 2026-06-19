@@ -4,9 +4,15 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Environment variables se lein (Render automatically set karega)
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = ["examsaarthi.com", "www.examsaarthi.com", "onrender.com", "*.onrender.com", "localhost", "127.0.0.1"]
+
+# ALLOWED_HOSTS - Environment se bhi le sakte hain, ya direct set karein
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+
+# Agar aap direct set karna chahte hain toh yeh use karein:
+# ALLOWED_HOSTS = ["examsaarthi.com", "www.examsaarthi.com", "examsaarthi.onrender.com", "*.onrender.com", "localhost", "127.0.0.1"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -51,10 +57,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'loginproject.wsgi.application'
 
-# Database Configuration - Updated with Render PostgreSQL URL
+# Database Configuration
+# Render automatically DATABASE_URL set karega, local par SQLite use hoga
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://exam_saarthi_db_f04c_user:mceD9Jeim9sgkIEoM6bkFLLiccNTNB13@dpg-d8ihfvj7uimc73apa7p0-a.oregon-postgres.render.com/exam_saarthi_db_f04c',
+        default='sqlite:///db.sqlite3',  # Local development ke liye SQLite
         conn_max_age=600,
         conn_health_checks=True,
     )
