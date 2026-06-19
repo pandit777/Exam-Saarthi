@@ -7,6 +7,7 @@ services:
       pip install -r requirements.txt
       python manage.py collectstatic --no-input 2>&1 || true
       python manage.py migrate --noinput
+      echo "from django.contrib.auth import get_user_model; User = get_user_model(); user, created = User.objects.get_or_create(username='admin', defaults={'email':'gs8901346287@gmail.com','first_name':'Gourav','last_name':'Saini','is_superuser':True,'is_staff':True}); user.set_password('Gourav@2005to2026'); user.save(); print('✅ Superuser created successfully!' if created else '✅ User updated successfully!')" | python manage.py shell
     startCommand: gunicorn loginproject.wsgi:application
     envVars:
       - key: DEBUG
@@ -35,8 +36,8 @@ services:
     buildCommand: |
       pip install -r requirements.txt
     startCommand: |
-      python manage.py migrate --noinput &&
-      echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='admin').exists() or User.objects.create_superuser(username='admin', email='gs8901346287@gmail.com', password='Gourav@2005to2026', first_name='Gourav', last_name='Sharma')" | python manage.py shell
+      python manage.py migrate --noinput
+      echo "from django.contrib.auth import get_user_model; User = get_user_model(); user, created = User.objects.get_or_create(username='admin', defaults={'email':'gs8901346287@gmail.com','first_name':'Gourav','last_name':'Saini','is_superuser':True,'is_staff':True}); user.set_password('Gourav@2005to2026'); user.save(); print('✅ Superuser created successfully!' if created else '✅ User updated successfully!')" | python manage.py shell
     envVars:
       - key: DATABASE_URL
         fromDatabase:
