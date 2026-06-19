@@ -3,14 +3,49 @@ services:
     name: Exam-Saarthi
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --no-input 2>&1 || true
-    startCommand: python startup.py
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --no-input 2>&1 || true
+      python manage.py migrate --noinput
+    startCommand: gunicorn loginproject.wsgi:application
     envVars:
       - key: DEBUG
         value: "False"
       - key: SECRET_KEY
         sync: false
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: exam-saarthi-db
+          property: connectionString
       - key: PYTHONUNBUFFERED
         value: "1"
+      - key: ALLOWED_HOSTS
+        value: "examsaarthi.com,www.examsaarthi.com,examsaarthi.onrender.com,*.onrender.com,localhost,127.0.0.1"
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://examsaarthi.com,https://www.examsaarthi.com,https://examsaarthi.onrender.com"
+      - key: WEB_CONCURRENCY
+        value: "4"
+      - key: PORT
+        value: "8000"
+
+  - type: worker
+    name: Exam-Saarthi-Migrations
+    env: python
+    plan: free
+    buildCommand: |
+      pip install -r requirements.txt
+    startCommand: |
+      python manage.py migrate --noinput &&
+      echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='admin').exists() or User.objects.create_superuser(username='admin', email='gs8901346287@gmail.com', password='Gourav@2005to2026', first_name='Gourav', last_name='Sharma')" | python manage.py shell
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: exam-saarthi-db
+          property: connectionString
+      - key: PYTHONUNBUFFERED
+        value: "1"
+
+databases:
+  - name: exam-saarthi-db
+    plan: free
+    databaseName: exam_saarthi_db
