@@ -1,4 +1,3 @@
-# accounts/views.py (Improved version)
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -43,7 +42,8 @@ def profile_view(request):
         'email': user.email,
         'full_name': f"{user.first_name} {user.last_name}".strip(),
         'date_joined': user.date_joined,
-        'last_login': user.last_login
+        'last_login': user.last_login,
+        'request': request,
     }
     return render(request, 'profile.html', context)
 
@@ -139,41 +139,50 @@ def submit_contact(request):
     
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
-# Paper views with error handling
-def get_papers_view(model, template):
+# ===== PAPER VIEWS WITH REQUEST PASSED =====
+def get_papers_view(request, model, template):
     try:
         papers = model.objects.all().order_by('semester', 'year')
-        return render(request, template, {'papers': papers})
+        context = {
+            'papers': papers,
+            'request': request,  # ✅ Request pass karo
+        }
+        return render(request, template, context)
     except Exception as e:
         print(f"Error in {template}: {e}")
-        return render(request, template, {'papers': [], 'error': 'No papers found'})
+        context = {
+            'papers': [],
+            'error': 'No papers found',
+            'request': request,  # ✅ Error me bhi request pass karo
+        }
+        return render(request, template, context)
 
 def igu_btech_view(request):
-    return get_papers_view(IGUPaper, 'igu-btech.html')
+    return get_papers_view(request, IGUPaper, 'igu-btech.html')
 
 def igu_mtech_view(request):
-    return get_papers_view(IGUMtechPaper, 'igu-mtech.html')
+    return get_papers_view(request, IGUMtechPaper, 'igu-mtech.html')
 
 def igu_bca_view(request):
-    return get_papers_view(IGUBcaPaper, 'igu-bca.html')
+    return get_papers_view(request, IGUBcaPaper, 'igu-bca.html')
 
 def igu_bba_view(request):
-    return get_papers_view(IGUBbaPaper, 'igu-bba.html')
+    return get_papers_view(request, IGUBbaPaper, 'igu-bba.html')
 
 def igu_bsc_view(request):
-    return get_papers_view(IGUBscPaper, 'igu-bsc.html')
+    return get_papers_view(request, IGUBscPaper, 'igu-bsc.html')
 
 def igu_msc_view(request):
-    return get_papers_view(IGUMscPaper, 'igu-msc.html')
+    return get_papers_view(request, IGUMscPaper, 'igu-msc.html')
 
 def igu_ba_view(request):
-    return get_papers_view(IGUBaPaper, 'igu-ba.html')
+    return get_papers_view(request, IGUBaPaper, 'igu-ba.html')
 
 def igu_ma_view(request):
-    return get_papers_view(IGUMaPaper, 'igu-ma.html')
+    return get_papers_view(request, IGUMaPaper, 'igu-ma.html')
 
 def igu_bcom_view(request):
-    return get_papers_view(IGUBcomPaper, 'igu-bcom.html')
+    return get_papers_view(request, IGUBcomPaper, 'igu-bcom.html')
 
 def igu_mcom_view(request):
-    return get_papers_view(IGUMcomPaper, 'igu-mcom.html')
+    return get_papers_view(request, IGUMcomPaper, 'igu-mcom.html')
