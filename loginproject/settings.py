@@ -2,12 +2,49 @@ from pathlib import Path
 import os
 import dj_database_url
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = ["examsaarthi.com", "://examsaarthi.com", "://onrender.com", "localhost", "127.0.0.1",'exam-saarthi.vercel.app', '.vercel.app','exam-saarthi.vercel.app',]
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
+# ✅ ALLOWED_HOSTS - Complete configuration for Vercel and Render
+ALLOWED_HOSTS = [
+    # Local development
+    'localhost',
+    '127.0.0.1',
+    
+    # Vercel domains
+    'exam-saarthi.vercel.app',
+    '.vercel.app',  # All Vercel subdomains
+    
+    # Render domains
+    'examsaarthi.onrender.com',
+    '.onrender.com',  # All Render subdomains
+    
+    # Custom domain
+    'examsaarthi.com',
+    'www.examsaarthi.com',
+]
+
+# Dynamic ALLOWED_HOSTS - Auto detect from environment
+render_host = os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')
+vercel_host = os.environ.get('VERCEL_URL', '')
+
+if render_host:
+    ALLOWED_HOSTS.append(render_host)
+if vercel_host:
+    ALLOWED_HOSTS.append(vercel_host)
+
+# Remove duplicates while preserving order
+ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
+
+print(f"✅ ALLOWED_HOSTS: {ALLOWED_HOSTS}")  # Debug log
+
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -15,12 +52,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
+    'accounts',  # Your app
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -41,6 +78,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -51,8 +89,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'loginproject.wsgi.application'
 
-# Database Configuration
-# Local computer par sqlite3 chalega aur Render par automatic PostgreSQL connect hoga
+# Database Configuration - Supports both SQLite and PostgreSQL
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3',
@@ -61,20 +98,54 @@ DATABASES = {
     )
 }
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else []
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Password validation
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
-AUTH_PASSWORD_VALIDATORS = []
-
+# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else []
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Login/Logout URLs
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+# CSRF Settings for Vercel/Render
+CSRF_TRUSTED_ORIGINS = [
+    'https://exam-saarthi.vercel.app',
+    'https://examsaarthi.onrender.com',
+    'https://examsaarthi.com',
+]
+
+# Security Settings (Production)
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
