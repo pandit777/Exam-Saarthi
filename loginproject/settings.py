@@ -11,8 +11,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# ✅ EMERGENCY FIX - Allow all hosts for Vercel deployment
-# Change this to specific hosts after site works
+# ✅ ALLOWED_HOSTS - Allow all hosts for Vercel
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -60,7 +59,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'loginproject.wsgi.application'
 
-# Database Configuration - Supports both SQLite and PostgreSQL
+# Database Configuration
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3',
@@ -91,7 +90,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Static files
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else []
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -105,13 +104,10 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# CSRF Settings for Vercel/Render
+# CSRF Settings
 CSRF_TRUSTED_ORIGINS = [
     'https://exam-saarthi.vercel.app',
     'https://examsaarthi.onrender.com',
-    'https://examsaarthi.com',
-    'https://*.vercel.app',
-    'https://*.onrender.com',
 ]
 
 # Security Settings (Production)
@@ -122,10 +118,3 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
-
-# Debug - Print settings on startup (for Vercel logs)
-print("=" * 60)
-print(f"✅ DEBUG: {DEBUG}")
-print(f"✅ ALLOWED_HOSTS: {ALLOWED_HOSTS}")
-print(f"✅ DATABASE ENGINE: {DATABASES['default']['ENGINE']}")
-print("=" * 60)
