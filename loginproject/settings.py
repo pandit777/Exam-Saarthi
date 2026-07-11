@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = ["examsaarthi.com", "://examsaarthi.com", "://onrender.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["examsaarthi.com", "://examsaarthi.com", "://onrender.com", "localhost", "127.0.0.1",'exam-saarthi.vercel.app', '.vercel.app','exam-saarthi.vercel.app',]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
