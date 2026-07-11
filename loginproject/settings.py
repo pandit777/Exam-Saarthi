@@ -11,38 +11,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# ✅ ALLOWED_HOSTS - Complete configuration for Vercel and Render
-ALLOWED_HOSTS = [
-    # Local development
-    'localhost',
-    '127.0.0.1',
-    
-    # Vercel domains
-    'exam-saarthi.vercel.app',
-    '.vercel.app',  # All Vercel subdomains
-    
-    # Render domains
-    'examsaarthi.onrender.com',
-    '.onrender.com',  # All Render subdomains
-    
-    # Custom domain
-    'examsaarthi.com',
-    'www.examsaarthi.com',
-]
-
-# Dynamic ALLOWED_HOSTS - Auto detect from environment
-render_host = os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')
-vercel_host = os.environ.get('VERCEL_URL', '')
-
-if render_host:
-    ALLOWED_HOSTS.append(render_host)
-if vercel_host:
-    ALLOWED_HOSTS.append(vercel_host)
-
-# Remove duplicates while preserving order
-ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
-
-print(f"✅ ALLOWED_HOSTS: {ALLOWED_HOSTS}")  # Debug log
+# ✅ EMERGENCY FIX - Allow all hosts for Vercel deployment
+# Change this to specific hosts after site works
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -139,6 +110,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://exam-saarthi.vercel.app',
     'https://examsaarthi.onrender.com',
     'https://examsaarthi.com',
+    'https://*.vercel.app',
+    'https://*.onrender.com',
 ]
 
 # Security Settings (Production)
@@ -149,3 +122,10 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Debug - Print settings on startup (for Vercel logs)
+print("=" * 60)
+print(f"✅ DEBUG: {DEBUG}")
+print(f"✅ ALLOWED_HOSTS: {ALLOWED_HOSTS}")
+print(f"✅ DATABASE ENGINE: {DATABASES['default']['ENGINE']}")
+print("=" * 60)
