@@ -188,11 +188,12 @@ router.post(
 router.get('/google', async (req, res) => {
   try {
     console.log('🔵 Google OAuth URL requested');
+    const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/+$/, '');
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${process.env.FRONTEND_URL}/dashboard`,
+        redirectTo: `${frontendUrl}/dashboard`,
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',

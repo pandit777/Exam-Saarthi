@@ -9,6 +9,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const FRONTEND_URL = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/+$/, '');
 
 // =====================================================
 // SECURITY MIDDLEWARE
@@ -17,7 +18,7 @@ app.use(helmet());
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: FRONTEND_URL,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -92,7 +93,7 @@ app.listen(PORT, () => {
   console.log('════════════════════════════════════════════');
   console.log(`📍 URL:         http://localhost:${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 Frontend:    ${process.env.FRONTEND_URL}`);
+  console.log(`🔗 Frontend:    ${FRONTEND_URL}`);
   console.log(`💚 Health:      http://localhost:${PORT}/api/health`);
   console.log('════════════════════════════════════════════');
   console.log('');
