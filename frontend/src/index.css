@@ -1261,7 +1261,7 @@ footer p {
   justify-content: center;
   color: var(--primary-deep-blue);
   text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: none;
   font-size: 1rem;
 }
 
@@ -1462,7 +1462,7 @@ footer p {
   color: var(--text-main);
   text-decoration: none;
   font-weight: 600;
-  transition: all 0.3s;
+  transition: none;
   font-size: 0.85rem;
   word-break: break-word;
 }
@@ -1470,7 +1470,6 @@ footer p {
 .contact-link:hover {
   background: var(--gradient-accent);
   color: #0b1e4a;
-  transform: translateY(-2px);
 }
 
 .social-links {
@@ -1491,13 +1490,12 @@ footer p {
   justify-content: center;
   font-size: 1.3rem;
   color: var(--text-main);
-  transition: all 0.4s;
+  transition: none;
   text-decoration: none;
   border: 1px solid rgba(251, 191, 36, 0.2);
 }
 
 .social-link:hover {
-  transform: translateY(-5px) scale(1.05);
   background: var(--gradient-accent);
   color: #0b1e4a;
 }
