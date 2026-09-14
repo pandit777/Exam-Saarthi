@@ -435,11 +435,6 @@ function IGUBtech() {
         )}
       </div>
 
-      {/* ===== FOOTER ===== */}
-      <footer>
-        <i className="fas fa-graduation-cap"></i> Exam Saarthi - IGU B.Tech PYQ
-        Repository | Free for all students
-      </footer>
     </div>
   );
 }

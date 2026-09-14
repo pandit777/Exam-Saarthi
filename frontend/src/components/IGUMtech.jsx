@@ -350,11 +350,6 @@ function IGUMtech() {
         )}
       </div>
 
-      {/* ===== FOOTER ===== */}
-      <footer>
-        <i className="fas fa-graduation-cap"></i> Exam Saarthi - IGU M.Tech PYQ
-        Repository | Free for all students
-      </footer>
     </div>
   );
 }

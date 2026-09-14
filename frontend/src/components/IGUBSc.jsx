@@ -365,11 +365,6 @@ function IGUBSc() {
         )}
       </div>
 
-      {/* ===== FOOTER ===== */}
-      <footer>
-        <i className="fas fa-graduation-cap"></i> Exam Saarthi - IGU BSc PYQ
-        Repository | Free for all students
-      </footer>
     </div>
   );
 }
