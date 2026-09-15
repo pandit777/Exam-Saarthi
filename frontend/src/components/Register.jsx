@@ -188,7 +188,11 @@ function Register() {
               <span>OR</span>
             </div>
 
-            <form className="login-form" onSubmit={handleSubmit}>
+            <form
+              className="login-form"
+              onSubmit={handleSubmit}
+              autoComplete="off"
+            >
               <div className="form-group">
                 <label>
                   <i className="fas fa-user"></i> Full Name
@@ -214,6 +218,7 @@ function Register() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="your@email.com"
+                  autoComplete="new-email"
                   required
                   disabled={loading || googleLoading}
                 />
@@ -293,6 +298,7 @@ function Register() {
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="Min 6 characters"
+                    autoComplete="new-password"
                     required
                     disabled={loading || googleLoading}
                   />
@@ -318,6 +324,7 @@ function Register() {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="Re-enter password"
+                  autoComplete="new-password"
                   required
                   disabled={loading || googleLoading}
                 />
