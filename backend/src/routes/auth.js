@@ -1,4 +1,5 @@
 import express from 'express';
+import { FRONTEND_URL } from '../utils/frontendConfig.js';
 import { body, validationResult } from 'express-validator';
 import { supabase, supabaseAdmin } from '../utils/supabase.js';
 
@@ -188,12 +189,10 @@ router.post(
 router.get('/google', async (req, res) => {
   try {
     console.log('🔵 Google OAuth URL requested');
-    const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/+$/, '');
-
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${frontendUrl}/dashboard`,
+        redirectTo: `${FRONTEND_URL}/dashboard`,
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
