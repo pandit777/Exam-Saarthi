@@ -20,6 +20,8 @@ import IGU from './components/IGU';
 import IGUBtech from './components/IGUBtech';
 import Login from './components/Login';
 import Register from './components/Register';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 import Profile from './components/Profile';
 import Dashboard from './components/Dashboard';
 import AdminLogin from './components/AdminLogin';
@@ -72,6 +74,8 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/igu-bca" element={<IGUBCA />} />
                 <Route path="/igu-bba" element={<IGUBBA />} />
