@@ -33,6 +33,39 @@ export const api = {
     return data;
   },
 
+  requestPasswordOtp: async (email) => {
+    const res = await fetch(`${API_URL}/auth/password-reset/request-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Unable to send OTP');
+    return data;
+  },
+
+  verifyPasswordOtp: async (email, otp) => {
+    const res = await fetch(`${API_URL}/auth/password-reset/verify-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, otp }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Unable to verify OTP');
+    return data;
+  },
+
+  updatePasswordWithOtp: async (email, resetToken, newPassword) => {
+    const res = await fetch(`${API_URL}/auth/password-reset/update-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, resetToken, newPassword }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Unable to update password');
+    return data;
+  },
+
   // ===== GOOGLE - Get OAuth URL =====
   getGoogleUrl: async () => {
     const res = await fetch(`${API_URL}/auth/google`);

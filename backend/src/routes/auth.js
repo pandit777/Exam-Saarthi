@@ -1,8 +1,31 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
+import crypto from 'crypto';
 import { supabase, supabaseAdmin } from '../utils/supabase.js';
+import { sendPasswordOtpEmail } from '../utils/email.js';
 
 const router = express.Router();
+const passwordOtps = new Map();
+const OTP_TTL_MS = 10 * 60 * 1000;
+const OTP_RESEND_COOLDOWN_MS = 60 * 1000;
+const OTP_MAX_ATTEMPTS = 5;
+
+const hashValue = (value) => crypto.createHash('sha256').update(value).digest('hex');
+
+const createOtp = () => String(crypto.randomInt(100000, 1000000));
+
+const createResetToken = () => crypto.randomBytes(32).toString('hex');
+
+const getOtpRecord = (email) => passwordOtps.get(email.toLowerCase());
+
+const clearExpiredOtps = () => {
+  const now = Date.now();
+  for (const [email, record] of passwordOtps.entries()) {
+    if (record.expiresAt <= now && !record.resetTokenHash) passwordOtps.delete(email);
+  }
+};
+
+setInterval(clearExpiredOtps, 60 * 1000).unref();
 
 // =====================================================
 // REGISTER
@@ -111,6 +134,134 @@ router.post(
       });
     }
   }
+);
+
+// =====================================================
+// PASSWORD RESET OTP
+// =====================================================
+router.post(
+  '/password-reset/request-otp',
+  [body('email').trim().isEmail().normalizeEmail().withMessage('Valid email required')],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, message: errors.array()[0].msg });
+      }
+
+      const email = req.body.email.toLowerCase();
+      const existingRecord = getOtpRecord(email);
+      if (existingRecord && Date.now() - existingRecord.sentAt < OTP_RESEND_COOLDOWN_MS) {
+        return res.status(429).json({ success: false, message: 'Please wait before requesting another OTP.' });
+      }
+
+      const { data: profile } = await supabaseAdmin
+        .from('users')
+        .select('id, email')
+        .eq('email', email)
+        .maybeSingle();
+
+      if (!profile) {
+        return res.json({ success: true, message: 'If this email is registered, an OTP has been sent.' });
+      }
+
+      const otp = createOtp();
+      await sendPasswordOtpEmail(email, otp);
+      passwordOtps.set(email, {
+        otpHash: hashValue(otp),
+        sentAt: Date.now(),
+        expiresAt: Date.now() + OTP_TTL_MS,
+        attempts: 0,
+        resetTokenHash: null,
+        resetTokenExpiresAt: null,
+      });
+
+      return res.json({ success: true, message: 'If this email is registered, an OTP has been sent.' });
+    } catch (error) {
+      console.error('❌ Password OTP email error:', error);
+      return res.status(503).json({ success: false, message: 'Unable to send OTP right now. Please try again later.' });
+    }
+  },
+);
+
+router.post(
+  '/password-reset/verify-otp',
+  [
+    body('email').trim().isEmail().normalizeEmail().withMessage('Valid email required'),
+    body('otp').trim().matches(/^\d{6}$/).withMessage('A valid 6-digit OTP is required'),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, message: errors.array()[0].msg });
+    }
+
+    const email = req.body.email.toLowerCase();
+    const record = getOtpRecord(email);
+    if (!record || record.expiresAt <= Date.now()) {
+      return res.status(400).json({ success: false, message: 'OTP is invalid or expired.' });
+    }
+    if (record.attempts >= OTP_MAX_ATTEMPTS) {
+      passwordOtps.delete(email);
+      return res.status(429).json({ success: false, message: 'Too many incorrect attempts. Request a new OTP.' });
+    }
+
+    record.attempts += 1;
+    if (hashValue(req.body.otp) !== record.otpHash) {
+      return res.status(400).json({ success: false, message: 'Incorrect OTP.' });
+    }
+
+    const resetToken = createResetToken();
+    record.otpHash = null;
+    record.resetTokenHash = hashValue(resetToken);
+    record.resetTokenExpiresAt = Date.now() + OTP_TTL_MS;
+    return res.json({ success: true, message: 'OTP verified.', resetToken });
+  },
+);
+
+router.post(
+  '/password-reset/update-password',
+  [
+    body('email').trim().isEmail().normalizeEmail().withMessage('Valid email required'),
+    body('resetToken').isString().isLength({ min: 32 }).withMessage('Valid reset token required'),
+    body('newPassword').isLength({ min: 6 }).withMessage('Password min 6 characters'),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, message: errors.array()[0].msg });
+    }
+
+    const email = req.body.email.toLowerCase();
+    const record = getOtpRecord(email);
+    if (!record || !record.resetTokenHash || record.resetTokenExpiresAt <= Date.now()) {
+      return res.status(400).json({ success: false, message: 'Reset session is invalid or expired.' });
+    }
+    if (hashValue(req.body.resetToken) !== record.resetTokenHash) {
+      return res.status(400).json({ success: false, message: 'Reset session is invalid or expired.' });
+    }
+
+    const { data: profile, error: profileError } = await supabaseAdmin
+      .from('users')
+      .select('id')
+      .eq('email', email)
+      .maybeSingle();
+    if (profileError) throw profileError;
+    if (!profile) {
+      return res.status(400).json({ success: false, message: 'Unable to reset password.' });
+    }
+
+    const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(profile.id, {
+      password: req.body.newPassword,
+    });
+    if (updateError) {
+      console.error('❌ OTP password update error:', updateError.message);
+      return res.status(500).json({ success: false, message: 'Unable to update password right now.' });
+    }
+
+    passwordOtps.delete(email);
+    return res.json({ success: true, message: 'Password updated successfully.' });
+  },
 );
 
 // =====================================================
