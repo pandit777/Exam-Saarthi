@@ -33,52 +33,6 @@ export const api = {
     return data;
   },
 
-  requestPasswordOtp: async (email) => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 25000);
-
-    try {
-      const res = await fetch(`${API_URL}/auth/password-reset/request-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-        signal: controller.signal,
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Unable to send OTP');
-      return data;
-    } catch (error) {
-      if (error.name === 'AbortError') {
-        throw new Error('OTP request timed out. Check the backend and Gmail settings.');
-      }
-      throw error;
-    } finally {
-      clearTimeout(timeoutId);
-    }
-  },
-
-  verifyPasswordOtp: async (email, otp) => {
-    const res = await fetch(`${API_URL}/auth/password-reset/verify-otp`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, otp }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Unable to verify OTP');
-    return data;
-  },
-
-  updatePasswordWithOtp: async (email, resetToken, newPassword) => {
-    const res = await fetch(`${API_URL}/auth/password-reset/update-password`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, resetToken, newPassword }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Unable to update password');
-    return data;
-  },
-
   // ===== GOOGLE - Get OAuth URL =====
   getGoogleUrl: async () => {
     const res = await fetch(`${API_URL}/auth/google`);
