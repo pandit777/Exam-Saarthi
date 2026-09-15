@@ -180,19 +180,6 @@ function Contact() {
               <i className="fas fa-headset"></i> igupyq.support@gmail.com
             </a>
           </div>
-          <div className="contact-item">
-            <p>
-              <i className="fab fa-instagram"></i> Instagram
-            </p>
-            <a
-              href="https://instagram.com/velogourav"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="contact-link"
-            >
-              <i className="fab fa-instagram"></i> @velogourav
-            </a>
-          </div>
         </div>
 
         <div className="social-links">
@@ -205,15 +192,6 @@ function Contact() {
             title="Support"
           >
             <i className="fas fa-headset"></i>
-          </a>
-          <a
-            href="https://instagram.com/velogourav"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="social-link"
-            title="Instagram"
-          >
-            <i className="fab fa-instagram"></i>
           </a>
         </div>
       </div>
@@ -238,16 +216,6 @@ function Contact() {
             >
               <i className="fas fa-headset fa-2x"></i>
               <span>Support</span>
-            </a>
-            <a
-              href="https://instagram.com/velogourav"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="contact-link"
-              style={{ flexDirection: 'column', padding: '0.8rem' }}
-            >
-              <i className="fab fa-instagram fa-2x"></i>
-              <span>Instagram</span>
             </a>
           </div>
         </div>

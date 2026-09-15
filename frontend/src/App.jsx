@@ -24,6 +24,7 @@ import Profile from './components/Profile';
 import Dashboard from './components/Dashboard';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
+import logo from './assets/logo.png';
 
 function App() {
   const [theme, setTheme] = useState('light');
@@ -32,6 +33,19 @@ function App() {
     const saved = localStorage.getItem('theme') || 'light';
     setTheme(saved);
     document.documentElement.setAttribute('data-theme', saved);
+  }, []);
+
+  useEffect(() => {
+    let favicon = document.querySelector('link[rel="icon"]');
+
+    if (!favicon) {
+      favicon = document.createElement('link');
+      favicon.rel = 'icon';
+      document.head.appendChild(favicon);
+    }
+
+    favicon.type = 'image/png';
+    favicon.href = logo;
   }, []);
 
   const toggleTheme = () => {

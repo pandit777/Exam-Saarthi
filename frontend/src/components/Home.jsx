@@ -92,12 +92,45 @@ function Home() {
       </div>
 
       {/* Mission Section */}
-      <div className="home-card">
+      <div className="home-card mission-card">
         <h2 className="section-title">Our Mission</h2>
         <p className="description-text">
-          Empower all students with easy access to academic materials. Focus on
-          understanding, not searching.
+          At Exam Saarthi, our mission is to simplify academic preparation by
+          providing reliable, well-organized, and easily accessible previous year
+          question papers. We bring university-wise, course-wise, and semester-wise
+          resources together so students can spend less time searching and more time
+          learning.
         </p>
+        <div className="mission-pillars">
+          <div className="mission-pillar">
+            <i className="fas fa-universal-access"></i>
+            <div>
+              <h3>Accessible Learning</h3>
+              <p>Useful academic resources, available whenever students need them.</p>
+            </div>
+          </div>
+          <div className="mission-pillar">
+            <i className="fas fa-layer-group"></i>
+            <div>
+              <h3>Organized Resources</h3>
+              <p>Course-wise and semester-wise papers that are simple to find.</p>
+            </div>
+          </div>
+          <div className="mission-pillar">
+            <i className="fas fa-shield-alt"></i>
+            <div>
+              <h3>Reliable Preparation</h3>
+              <p>Dependable study material to help students prepare with confidence.</p>
+            </div>
+          </div>
+          <div className="mission-pillar">
+            <i className="fas fa-users"></i>
+            <div>
+              <h3>Equal Opportunity</h3>
+              <p>Free access to essential academic resources for every student.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

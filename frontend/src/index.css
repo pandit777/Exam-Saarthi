@@ -947,6 +947,89 @@ footer p {
   line-height: 1.6;
 }
 
+.mission-card {
+  background: linear-gradient(135deg, rgba(255, 251, 235, 0.96), rgba(239, 246, 255, 0.94)) !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+.mission-card .section-title {
+  background: linear-gradient(90deg, #d97706, #2563eb, #0f766e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mission-card .description-text {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mission-pillars {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.mission-pillar {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 1.1rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(59, 130, 246, 0.14);
+}
+
+.mission-pillar:nth-child(2) { border-color: rgba(245, 158, 11, 0.22); }
+.mission-pillar:nth-child(3) { border-color: rgba(16, 185, 129, 0.22); }
+.mission-pillar:nth-child(4) { border-color: rgba(239, 68, 68, 0.18); }
+
+.mission-pillar > i {
+  flex: 0 0 2.2rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: #ffffff;
+  background: #2563eb;
+}
+
+.mission-pillar:nth-child(2) > i { background: #d97706; }
+.mission-pillar:nth-child(3) > i { background: #059669; }
+.mission-pillar:nth-child(4) > i { background: #dc2626; }
+
+.mission-pillar h3 {
+  margin: 0 0 0.3rem;
+  color: var(--text-main);
+  font-size: 1rem;
+}
+
+.mission-pillar p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+[data-theme='dark'] .mission-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.96), rgba(23, 51, 75, 0.95)) !important;
+  border-color: rgba(251, 191, 36, 0.28) !important;
+}
+
+[data-theme='dark'] .mission-pillar {
+  background: rgba(15, 23, 42, 0.58);
+}
+
+@media (max-width: 600px) {
+  .mission-pillars {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Stats Grid */
 .stats-grid {
   display: grid;

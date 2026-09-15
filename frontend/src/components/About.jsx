@@ -11,11 +11,6 @@ function About() {
       university: 'Indira Gandhi University, Rewari',
       bio: 'Passionate developer and final year student at IGU Rewari. Created Exam Saarthi to help students access PYQs easily.',
       img: gouravImg,
-      social: {
-        linkedin: 'https://www.linkedin.com/in/gourav-sharma8901/',
-        instagram: 'https://instagram.com/velogourav/',
-        github: 'https://github.com/pandit777',
-      },
     },
     {
       name: 'Mahesh Verma',
@@ -24,11 +19,6 @@ function About() {
       university: 'Indira Gandhi University, Rewari',
       bio: 'Dedicated to curating and verifying quality content, ensuring every PYQ is accurate and helpful for students.',
       img: maheshImg,
-      social: {
-        linkedin: '#',
-        instagram: 'https://instagram.com/maheshverma8371/',
-        github: null,
-      },
     },
   ];
 
@@ -74,44 +64,6 @@ function About() {
               <i className="fas fa-university"></i> {founder.university}
             </div>
             <div className="founder-bio">{founder.bio}</div>
-            <div className="founder-social">
-              {founder.social.linkedin && (
-                <a
-                  href={founder.social.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="founder-social-link"
-                  aria-label={`${founder.name} LinkedIn`}
-                  title="LinkedIn"
-                >
-                  <i className="fab fa-linkedin-in"></i>
-                </a>
-              )}
-              {founder.social.instagram && (
-                <a
-                  href={founder.social.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="founder-social-link"
-                  aria-label={`${founder.name} Instagram`}
-                  title="Instagram"
-                >
-                  <i className="fab fa-instagram"></i>
-                </a>
-              )}
-              {founder.social.github && (
-                <a
-                  href={founder.social.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="founder-social-link"
-                  aria-label={`${founder.name} GitHub`}
-                  title="GitHub"
-                >
-                  <i className="fab fa-github"></i>
-                </a>
-              )}
-            </div>
           </div>
         ))}
       </div>
