@@ -250,7 +250,7 @@ function IGUBBA() {
                               to="/login"
                               className="download-btn login-required"
                             >
-                              <i className="fas fa-lock"></i> Login
+                              <i className="fas fa-lock"></i> Download
                             </Link>
                           )}
                         </td>
@@ -295,7 +295,7 @@ function IGUBBA() {
                         to="/login"
                         className="download-btn login-required"
                       >
-                        <i className="fas fa-lock"></i> Login to Download
+                        <i className="fas fa-lock"></i> Download
                       </Link>
                     )}
                   </div>
