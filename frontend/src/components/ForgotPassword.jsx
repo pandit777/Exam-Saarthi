@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../utils/supabase';
 import logo from '../assets/logo.png';
 
 function ForgotPassword() {
+  const COOLDOWN_SECONDS = 60;
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    if (cooldown <= 0) return undefined;
+
+    const timer = setInterval(() => {
+      setCooldown((seconds) => Math.max(seconds - 1, 0));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [cooldown]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,6 +34,7 @@ function ForgotPassword() {
       });
       if (resetError) throw resetError;
       setSuccess('Password reset link sent. Check your email and open the link to set a new password.');
+      setCooldown(COOLDOWN_SECONDS);
     } catch (resetError) {
       setError(resetError.message || 'Unable to process password reset.');
     } finally {
@@ -54,8 +67,8 @@ function ForgotPassword() {
                 <label htmlFor="reset-email"><i className="fas fa-envelope"></i> Email</label>
                 <input id="reset-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="your@email.com" required disabled={loading} />
               </div>
-                <button type="submit" className="login-submit-btn" disabled={loading}>
-                  {loading ? <><span className="spinner"></span> Sending...</> : <><i className="fas fa-envelope"></i> Send Reset Link</>}
+                <button type="submit" className="login-submit-btn" disabled={loading || cooldown > 0}>
+                  {loading ? <><span className="spinner"></span> Sending...</> : cooldown > 0 ? <><i className="fas fa-clock"></i> Try again in {cooldown}s</> : <><i className="fas fa-envelope"></i> Send Reset Link</>}
                 </button>
             </form>
 
