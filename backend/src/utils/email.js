@@ -6,6 +6,7 @@ export const sendPasswordOtpEmail = async (email, otp) => {
   }
 
   const smtpPort = Number(process.env.SMTP_PORT || 587);
+  const allowSelfSignedCertificate = process.env.SMTP_TLS_REJECT_UNAUTHORIZED === 'false';
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: smtpPort,
@@ -13,6 +14,9 @@ export const sendPasswordOtpEmail = async (email, otp) => {
     connectionTimeout: 10000,
     greetingTimeout: 10000,
     socketTimeout: 15000,
+    tls: {
+      rejectUnauthorized: !allowSelfSignedCertificate,
+    },
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
