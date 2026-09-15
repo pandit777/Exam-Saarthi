@@ -34,14 +34,27 @@ export const api = {
   },
 
   requestPasswordOtp: async (email) => {
-    const res = await fetch(`${API_URL}/auth/password-reset/request-otp`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Unable to send OTP');
-    return data;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 25000);
+
+    try {
+      const res = await fetch(`${API_URL}/auth/password-reset/request-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+        signal: controller.signal,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Unable to send OTP');
+      return data;
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        throw new Error('OTP request timed out. Check the backend and Gmail settings.');
+      }
+      throw error;
+    } finally {
+      clearTimeout(timeoutId);
+    }
   },
 
   verifyPasswordOtp: async (email, otp) => {

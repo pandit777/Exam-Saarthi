@@ -10,13 +10,16 @@ export const sendPasswordOtpEmail = async (email, otp) => {
     host: process.env.SMTP_HOST,
     port: smtpPort,
     secure: smtpPort === 465,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
   });
 
-  return transporter.sendMail({
+  const sendPromise = transporter.sendMail({
     from: process.env.SMTP_FROM || process.env.SMTP_USER,
     to: email,
     subject: 'Exam Saarthi password reset OTP',
@@ -31,4 +34,10 @@ export const sendPasswordOtpEmail = async (email, otp) => {
       </div>
     `,
   });
+
+  const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => reject(new Error('SMTP request timed out')), 20000);
+  });
+
+  return Promise.race([sendPromise, timeoutPromise]);
 };
