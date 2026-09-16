@@ -84,7 +84,7 @@ router.post(
         await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
         return res.status(500).json({
           success: false,
-          message: 'Failed to create profile',
+          message: `Failed to create profile: ${dbError.message}`,
         });
       }
 

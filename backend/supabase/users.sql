@@ -11,3 +11,10 @@ alter table public.users
 
 create unique index if not exists users_email_unique_idx
   on public.users (lower(email));
+
+-- These fields are not collected during signup and must not block profile creation.
+alter table public.users
+  alter column name drop not null,
+  alter column email drop not null,
+  alter column role set default 'user',
+  alter column active set default true;
