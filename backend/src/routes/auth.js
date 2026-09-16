@@ -29,13 +29,22 @@ router.post(
       }
 
       const { name, email, mobile, university, course, password } = req.body;
-      console.log('📝 Register attempt:', email);
+      const normalizedEmail = email.trim().toLowerCase();
+      console.log('📝 Register attempt:', normalizedEmail);
 
-      const { data: existing } = await supabaseAdmin
+      const { data: existing, error: profileLookupError } = await supabaseAdmin
         .from('users')
         .select('id')
-        .eq('email', email.toLowerCase())
-        .single();
+        .eq('email', normalizedEmail)
+        .maybeSingle();
+
+      if (profileLookupError) {
+        console.error('❌ Profile lookup error:', profileLookupError.message);
+        return res.status(500).json({
+          success: false,
+          message: 'Unable to verify email. Please try again later.',
+        });
+      }
 
       if (existing) {
         return res.status(400).json({
@@ -45,7 +54,7 @@ router.post(
       }
 
       const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-        email: email.toLowerCase(),
+        email: normalizedEmail,
         password,
         email_confirm: true,
         user_metadata: { full_name: name, mobile, university, course },
@@ -55,7 +64,9 @@ router.post(
         console.error('❌ Auth error:', authError.message);
         return res.status(400).json({
           success: false,
-          message: authError.message,
+          message: authError.code === 'email_exists' || authError.message?.toLowerCase().includes('already registered')
+            ? 'Email already registered. Please login.'
+            : authError.message,
         });
       }
 
@@ -64,7 +75,7 @@ router.post(
       const { error: dbError } = await supabaseAdmin.from('users').insert([
         {
           id: authData.user.id,
-          email: email.toLowerCase(),
+          email: normalizedEmail,
           name,
           mobile,
           university,
@@ -86,7 +97,7 @@ router.post(
       console.log('✅ Profile saved');
 
       const { data: sessionData } = await supabase.auth.signInWithPassword({
-        email: email.toLowerCase(),
+        email: normalizedEmail,
         password,
       });
 
