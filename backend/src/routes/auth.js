@@ -50,7 +50,9 @@ router.post(
         });
       }
 
-      const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+      let authUser;
+      let createdNewAuthUser = false;
+      const { data: createdAuthData, error: authError } = await supabaseAdmin.auth.admin.createUser({
         email: normalizedEmail,
         password,
         email_confirm: true,
@@ -58,12 +60,54 @@ router.post(
       });
 
       if (authError) {
+        if (authError.code === 'email_exists' || authError.message?.toLowerCase().includes('already registered')) {
+          const { data: existingAuthData, error: existingAuthError } = await supabaseAdmin.auth.admin.getUserByEmail(normalizedEmail);
+
+          if (existingAuthError || !existingAuthData?.user) {
+            console.error('❌ Existing auth user lookup error:', existingAuthError?.message || authError.message);
+            return res.status(400).json({
+              success: false,
+              message: 'Email already registered. Please login or reset your password.',
+            });
+          }
+
+          const { data: recoveredAuthData, error: recoveryError } = await supabaseAdmin.auth.admin.updateUserById(
+            existingAuthData.user.id,
+            {
+              password,
+              user_metadata: { ...existingAuthData.user.user_metadata, full_name: name },
+              email_confirm: true,
+            }
+          );
+
+          if (recoveryError) {
+            console.error('❌ Auth user recovery error:', recoveryError.message);
+            return res.status(400).json({
+              success: false,
+              message: 'Email already registered. Please login or reset your password.',
+            });
+          }
+
+          authUser = recoveredAuthData.user;
+        } else {
+          console.error('❌ Auth error:', authError.message);
+          return res.status(400).json({
+            success: false,
+            message: authError.message,
+          });
+        }
+      } else {
+        authUser = createdAuthData.user;
+        createdNewAuthUser = true;
+      }
+
+      const authData = { user: authUser };
+
+      if (!authData.user) {
         console.error('❌ Auth error:', authError.message);
         return res.status(400).json({
           success: false,
-          message: authError.code === 'email_exists' || authError.message?.toLowerCase().includes('already registered')
-            ? 'Email already registered. Please login.'
-            : authError.message,
+          message: 'Unable to create account. Please try again.',
         });
       }
 
@@ -81,7 +125,9 @@ router.post(
 
       if (dbError) {
         console.error('❌ DB error:', dbError.message);
-        await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
+        if (createdNewAuthUser) {
+          await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
+        }
         return res.status(500).json({
           success: false,
           message: `Failed to create profile: ${dbError.message}`,
