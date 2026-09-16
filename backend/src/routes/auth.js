@@ -113,7 +113,7 @@ router.post(
 
       console.log('✅ Auth user created:', authData.user.id);
 
-      const { error: dbError } = await supabaseAdmin.from('users').insert([
+      const { error: dbError } = await supabaseAdmin.from('users').upsert(
         {
           id: authData.user.id,
           email: normalizedEmail,
@@ -121,7 +121,8 @@ router.post(
           role: 'user',
           active: true,
         },
-      ]);
+        { onConflict: 'id' }
+      );
 
       if (dbError) {
         console.error('❌ DB error:', dbError.message);
