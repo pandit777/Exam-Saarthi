@@ -99,6 +99,25 @@ export const api = {
     return data;
   },
 
+  // ===== ADMIN: GET ALL PAPERS =====
+  getAdminPapers: async () => {
+    const res = await fetch(`${API_URL}/auth/admin/papers`, {
+      headers: getAuthHeaders(),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to load papers');
+    return data;
+  },
+
+  // ===== GET PAPERS FOR A COURSE =====
+  getPapers: async (courseName) => {
+    const params = new URLSearchParams({ course: courseName });
+    const res = await fetch(`${API_URL}/auth/papers?${params.toString()}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to load papers');
+    return data;
+  },
+
   // ===== ADMIN: RESET USER PASSWORD =====
   resetUserPassword: async (userId, newPassword) => {
     const res = await fetch(`${API_URL}/auth/admin/reset-password`, {

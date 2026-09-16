@@ -11,6 +11,7 @@ const initialPaperForm = {
   paper_name: '',
   course_name: '',
   semester: '',
+  year: '',
   google_drive_link: '',
 };
 
@@ -41,13 +42,13 @@ function AdminDashboard() {
     try {
       const [usersResult, papersResult, logsResult, recentDownloadsResult] = await Promise.allSettled([
         supabase.from('users').select('*').order('created_at', { ascending: false }),
-        supabase.from('papers').select('*').order('created_at', { ascending: false }),
+        api.getAdminPapers(),
         api.getAdminLogs(),
         supabase.from('downloads').select('*').order('created_at', { ascending: false }).limit(10),
       ]);
 
       const usersData = usersResult.status === 'fulfilled' ? usersResult.value.data || [] : [];
-      const papersData = papersResult.status === 'fulfilled' ? papersResult.value.data || [] : [];
+      const papersData = papersResult.status === 'fulfilled' ? papersResult.value.papers || [] : [];
       const logsData = logsResult.status === 'fulfilled' ? logsResult.value.logs || [] : [];
       const recentDownloads = recentDownloadsResult.status === 'fulfilled' ? recentDownloadsResult.value.data || [] : [];
 
@@ -102,10 +103,11 @@ function AdminDashboard() {
         paper_name: paperForm.paper_name.trim(),
         course_name: paperForm.course_name.trim(),
         semester: paperForm.semester.trim(),
+        year: paperForm.year.trim(),
         google_drive_link: paperForm.google_drive_link.trim(),
       };
 
-      if (!payload.paper_id || !payload.paper_name || !payload.course_name || !payload.semester || !payload.google_drive_link) {
+      if (!payload.paper_id || !payload.paper_name || !payload.course_name || !payload.semester || !payload.year || !payload.google_drive_link) {
         throw new Error('Please fill all paper fields before saving.');
       }
 
@@ -304,6 +306,10 @@ function AdminDashboard() {
                       ))}
                     </select>
                   </label>
+                  <label>
+                    Paper Year
+                    <input name="year" value={paperForm.year} onChange={handlePaperChange} placeholder="2025" inputMode="numeric" maxLength="4" />
+                  </label>
                   <label className="full-width">
                     Google Drive Link
                     <input name="google_drive_link" value={paperForm.google_drive_link} onChange={handlePaperChange} placeholder="https://drive.google.com/..." />
@@ -327,7 +333,7 @@ function AdminDashboard() {
                 <h2>All Papers ({papers.length})</h2>
                 <div className="admin-table-wrapper">
                   <table className="admin-table">
-                    <thead><tr><th>Paper ID</th><th>Name</th><th>Course</th><th>Semester</th></tr></thead>
+                    <thead><tr><th>Paper ID</th><th>Name</th><th>Course</th><th>Semester</th><th>Year</th></tr></thead>
                     <tbody>
                       {papers.length > 0 ? papers.map((p) => (
                         <tr key={p.id || p.paper_id}>
@@ -335,8 +341,9 @@ function AdminDashboard() {
                           <td>{p.paper_name}</td>
                           <td>{p.course_name || p.course}</td>
                           <td>{p.semester}</td>
+                          <td>{p.year || 'N/A'}</td>
                         </tr>
-                      )) : <tr><td colSpan="4" className="text-center">No papers found</td></tr>}
+                      )) : <tr><td colSpan="5" className="text-center">No papers found</td></tr>}
                     </tbody>
                   </table>
                 </div>

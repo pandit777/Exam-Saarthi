@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { api } from './api';
 
 export const iguCourseOptions = [
   { value: 'B.Tech', label: 'B.Tech (All Branches)' },
@@ -16,22 +16,18 @@ export const iguCourseOptions = [
 export const semesterOptions = ['1st', '2nd', '3rd', '4th', '5th', '6th'];
 
 export async function loadAdminPapers(courseName) {
-  const { data, error } = await supabase
-    .from('papers')
-    .select('id, paper_id, paper_name, semester, google_drive_link, created_at')
-    .eq('course_name', courseName)
-    .order('created_at', { ascending: false });
+  try {
+    const { papers = [] } = await api.getPapers(courseName);
 
-  if (error) {
+    return papers.map((paper) => ({
+      id: paper.paper_id || paper.id,
+      name: paper.paper_name,
+      sem: paper.semester,
+      year: String(paper.year || new Date(paper.created_at || Date.now()).getFullYear()),
+      link: paper.google_drive_link,
+    }));
+  } catch (error) {
     console.warn('Unable to load admin papers:', error.message);
     return [];
   }
-
-  return (data || []).map((paper) => ({
-    id: paper.paper_id || paper.id,
-    name: paper.paper_name,
-    sem: paper.semester,
-    year: new Date(paper.created_at || Date.now()).getFullYear().toString(),
-    link: paper.google_drive_link,
-  }));
 }

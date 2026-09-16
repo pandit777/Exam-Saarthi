@@ -444,14 +444,50 @@ router.get('/admin/logs', async (req, res) => {
   }
 });
 
+router.get('/admin/papers', async (req, res) => {
+  try {
+    await verifyAdmin(req);
+
+    const { data, error } = await supabaseAdmin
+      .from('papers')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return res.json({ success: true, papers: data || [] });
+  } catch (error) {
+    return res.status(403).json({ success: false, message: error.message || 'Unable to fetch papers' });
+  }
+});
+
+router.get('/papers', async (req, res) => {
+  try {
+    const courseName = String(req.query.course || '').trim();
+    if (!courseName) {
+      return res.status(400).json({ success: false, message: 'Course is required' });
+    }
+
+    const { data, error } = await supabaseAdmin
+      .from('papers')
+      .select('*')
+      .eq('course_name', courseName)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return res.json({ success: true, papers: data || [] });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message || 'Unable to fetch papers' });
+  }
+});
+
 router.post('/admin/papers', async (req, res) => {
   try {
     await verifyAdmin(req);
 
-    const { paper_id, paper_name, course_name, semester, google_drive_link } = req.body || {};
+    const { paper_id, paper_name, course_name, semester, year, google_drive_link } = req.body || {};
 
-    if (!paper_id || !paper_name || !course_name || !semester || !google_drive_link) {
-      return res.status(400).json({ success: false, message: 'paper_id, paper_name, course_name, semester and google_drive_link are required' });
+    if (!paper_id || !paper_name || !course_name || !semester || !year || !google_drive_link) {
+      return res.status(400).json({ success: false, message: 'paper_id, paper_name, course_name, semester, year and google_drive_link are required' });
     }
 
     const paperPayload = {
@@ -459,6 +495,7 @@ router.post('/admin/papers', async (req, res) => {
       paper_name: String(paper_name).trim(),
       course_name: String(course_name).trim(),
       semester: String(semester).trim(),
+      year: String(year).trim(),
       google_drive_link: String(google_drive_link).trim(),
       created_at: new Date().toISOString(),
     };
