@@ -113,16 +113,35 @@ router.post(
 
       console.log('✅ Auth user created:', authData.user.id);
 
-      const { error: dbError } = await supabaseAdmin.from('users').upsert(
-        {
-          id: authData.user.id,
-          email: normalizedEmail,
-          name,
-          role: 'user',
-          active: true,
-        },
-        { onConflict: 'id' }
-      );
+      const profileData = {
+        id: authData.user.id,
+        email: normalizedEmail,
+        name,
+        role: 'user',
+        active: true,
+      };
+      const { data: profileById, error: profileLookupByIdError } = await supabaseAdmin
+        .from('users')
+        .select('id')
+        .eq('id', authData.user.id)
+        .maybeSingle();
+
+      let dbError = profileLookupByIdError;
+      if (!dbError && profileById) {
+        ({ error: dbError } = await supabaseAdmin
+          .from('users')
+          .update(profileData)
+          .eq('id', authData.user.id));
+      } else if (!dbError) {
+        ({ error: dbError } = await supabaseAdmin.from('users').insert(profileData));
+
+        if (dbError?.code === '23505' && dbError.message.includes('users_pkey')) {
+          ({ error: dbError } = await supabaseAdmin
+            .from('users')
+            .update(profileData)
+            .eq('id', authData.user.id));
+        }
+      }
 
       if (dbError) {
         console.error('❌ DB error:', dbError.message);
