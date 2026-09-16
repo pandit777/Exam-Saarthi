@@ -8,7 +8,7 @@ function About() {
       name: 'Gourav Sharma',
       role: 'Developer & Founder',
       roleIcon: 'fa-code',
-      university: 'Indira Gandhi University, Rewari',
+      instagram: 'https://instagram.com/velogourav/',
       bio: 'Passionate developer and final year student at IGU Rewari. Created Exam Saarthi to help students access PYQs easily.',
       img: gouravImg,
     },
@@ -16,7 +16,7 @@ function About() {
       name: 'Mahesh Verma',
       role: 'Developer & Founder',
       roleIcon: 'fa-code',
-      university: 'Indira Gandhi University, Rewari',
+      instagram: 'https://instagram.com/maheshverma8371/',
       bio: 'Dedicated to curating and verifying quality content, ensuring every PYQ is accurate and helpful for students.',
       img: maheshImg,
     },
@@ -47,21 +47,20 @@ function About() {
         {founders.map((founder, index) => (
           <div key={index} className="founder-card">
             <div className="founder-img-wrapper">
-              <img
-                src={founder.img}
-                alt={founder.name}
-                className="founder-img"
-                onError={(e) => {
-                  e.target.src = '/logo.png';
-                }}
-              />
+              <a href={founder.instagram} target="_blank" rel="noreferrer">
+                <img
+                  src={founder.img}
+                  alt={founder.name}
+                  className="founder-img"
+                  onError={(e) => {
+                    e.target.src = '/logo.png';
+                  }}
+                />
+              </a>
             </div>
             <h2 className="founder-name">{founder.name}</h2>
             <div className="founder-role">
               <i className={`fas ${founder.roleIcon}`}></i> {founder.role}
-            </div>
-            <div className="founder-university">
-              <i className="fas fa-university"></i> {founder.university}
             </div>
             <div className="founder-bio">{founder.bio}</div>
           </div>
