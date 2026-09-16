@@ -96,10 +96,28 @@ router.post(
 
       console.log('✅ Profile saved');
 
-      const { data: sessionData } = await supabase.auth.signInWithPassword({
+      const { data: sessionData, error: sessionError } = await supabase.auth.signInWithPassword({
         email: normalizedEmail,
         password,
       });
+
+      if (sessionError || !sessionData?.session) {
+        console.error('❌ Registration login error:', sessionError?.message || 'Session was not created');
+        return res.status(201).json({
+          success: true,
+          message: 'Registration successful. Please login with your password.',
+          user: {
+            id: authData.user.id,
+            email: authData.user.email,
+            name,
+            mobile,
+            university,
+            course,
+            role: 'user',
+          },
+          session: null,
+        });
+      }
 
       return res.status(201).json({
         success: true,
@@ -172,9 +190,9 @@ router.post(
           id: data.user.id,
           email: data.user.email,
           name: profile?.name || data.user.user_metadata?.full_name,
-          mobile: profile?.mobile,
-          university: profile?.university,
-          course: profile?.course,
+          mobile: profile?.mobile || data.user.user_metadata?.mobile,
+          university: profile?.university || data.user.user_metadata?.university,
+          course: profile?.course || data.user.user_metadata?.course,
           role: profile?.role || 'user',
           avatar_url: profile?.avatar_url,
         },
