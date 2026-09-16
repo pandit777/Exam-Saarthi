@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { universitiesList as universitiesData } from '../data/universities';
 import logo from '../assets/logo.png';
 
 function Register() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    mobile: '',
-    university: '',
-    course: '',
     password: '',
     confirmPassword: '',
   });
@@ -22,36 +18,11 @@ function Register() {
   const navigate = useNavigate();
   const { register, loginWithGoogle } = useAuth();
 
-  const universityOptions = [
-    ...universitiesData.map((uni) => ({
-      value: uni.fullName,
-      label: `${uni.fallbackIcon} ${uni.fullName}`,
-    })),
-    { value: 'Other University', label: '🎓 Other University' },
-  ];
-
-  const courseOptions = [
-    'B.Tech',
-    'M.Tech',
-    'BCA',
-    'MCA',
-    'BBA',
-    'MBA',
-    'B.Sc',
-    'M.Sc',
-    'BA',
-    'MA',
-    'B.Com',
-    'M.Com',
-    'Other',
-  ];
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setError('');
   };
 
-  const validateMobile = (m) => /^[6-9]\d{9}$/.test(m);
   const validateEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 
   const handleSubmit = async (e) => {
@@ -61,9 +32,6 @@ function Register() {
 
     if (!formData.name.trim()) return setError('Name required');
     if (!validateEmail(formData.email)) return setError('Invalid email');
-    if (!validateMobile(formData.mobile)) return setError('Invalid mobile');
-    if (!formData.university) return setError('Select university');
-    if (!formData.course) return setError('Select course');
     if (formData.password.length < 6) return setError('Password min 6 chars');
     if (formData.password !== formData.confirmPassword)
       return setError('Passwords do not match');
@@ -71,19 +39,21 @@ function Register() {
     setLoading(true);
 
     try {
-      const { error: regError } = await register({
+      const { data, error: regError } = await register({
         name: formData.name.trim(),
         email: formData.email.trim().toLowerCase(),
-        mobile: formData.mobile.trim(),
-        university: formData.university,
-        course: formData.course,
         password: formData.password,
       });
 
       if (regError) throw regError;
 
-      setSuccess('Account created! Redirecting...');
-      setTimeout(() => navigate('/dashboard'), 1500);
+      if (data?.session) {
+        setSuccess('Account created! Redirecting...');
+        setTimeout(() => navigate('/dashboard'), 1000);
+      } else {
+        setSuccess('Account created! Please login with your password.');
+        setTimeout(() => navigate('/login'), 1200);
+      }
     } catch (err) {
       setError(err.message || 'Registration failed');
     } finally {
@@ -222,69 +192,6 @@ function Register() {
                   required
                   disabled={loading || googleLoading}
                 />
-              </div>
-
-              <div className="form-group">
-                <label>
-                  <i className="fas fa-phone"></i> Mobile
-                </label>
-                <input
-                  type="tel"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={(e) => {
-                    const val = e.target.value.replace(/\D/g, '').slice(0, 10);
-                    setFormData({ ...formData, mobile: val });
-                  }}
-                  placeholder="10-digit mobile"
-                  required
-                  disabled={loading || googleLoading}
-                  maxLength={10}
-                />
-              </div>
-
-              <div className="form-group">
-                <label>
-                  <i className="fas fa-university"></i> University
-                </label>
-                <select
-                  name="university"
-                  value={formData.university}
-                  onChange={handleChange}
-                  required
-                  disabled={loading || googleLoading}
-                >
-                  <option value="" disabled>
-                    Select university
-                  </option>
-                  {universityOptions.map((u, i) => (
-                    <option key={i} value={u.value}>
-                      {u.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label>
-                  <i className="fas fa-graduation-cap"></i> Course
-                </label>
-                <select
-                  name="course"
-                  value={formData.course}
-                  onChange={handleChange}
-                  required
-                  disabled={loading || googleLoading}
-                >
-                  <option value="" disabled>
-                    Select course
-                  </option>
-                  {courseOptions.map((c, i) => (
-                    <option key={i} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
               </div>
 
               <div className="form-group">

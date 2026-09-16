@@ -13,9 +13,6 @@ router.post(
   [
     body('name').trim().isLength({ min: 2, max: 100 }).withMessage('Name must be 2-100 characters'),
     body('email').trim().isEmail().normalizeEmail().withMessage('Valid email required'),
-    body('mobile').trim().matches(/^[6-9]\d{9}$/).withMessage('Valid 10-digit mobile required'),
-    body('university').trim().notEmpty().withMessage('University required'),
-    body('course').trim().notEmpty().withMessage('Course required'),
     body('password').isLength({ min: 6 }).withMessage('Password min 6 characters'),
   ],
   async (req, res) => {
@@ -28,7 +25,7 @@ router.post(
         });
       }
 
-      const { name, email, mobile, university, course, password } = req.body;
+      const { name, email, password } = req.body;
       const normalizedEmail = email.trim().toLowerCase();
       console.log('📝 Register attempt:', normalizedEmail);
 
@@ -57,7 +54,7 @@ router.post(
         email: normalizedEmail,
         password,
         email_confirm: true,
-        user_metadata: { full_name: name, mobile, university, course },
+        user_metadata: { full_name: name },
       });
 
       if (authError) {
@@ -77,9 +74,6 @@ router.post(
           id: authData.user.id,
           email: normalizedEmail,
           name,
-          mobile,
-          university,
-          course,
           role: 'user',
           active: true,
         },
@@ -110,9 +104,6 @@ router.post(
             id: authData.user.id,
             email: authData.user.email,
             name,
-            mobile,
-            university,
-            course,
             role: 'user',
           },
           session: null,
@@ -126,9 +117,6 @@ router.post(
           id: authData.user.id,
           email: authData.user.email,
           name,
-          mobile,
-          university,
-          course,
           role: 'user',
         },
         session: sessionData?.session || null,
