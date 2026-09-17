@@ -1,10 +1,14 @@
 const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/([^:]\/)\/+/g, '$1').replace(/\/+$/, '');
+let authToken = null;
+
+export const setAuthToken = (token) => {
+  authToken = token || null;
+};
 
 const getAuthHeaders = () => {
-  const token = localStorage.getItem('auth_token');
   return {
     'Content-Type': 'application/json',
-    ...(token && { Authorization: `Bearer ${token}` }),
+    ...(authToken && { Authorization: `Bearer ${authToken}` }),
   };
 };
 
@@ -55,24 +59,21 @@ export const api = {
 
   // ===== LOGOUT =====
   logout: async () => {
-    const token = localStorage.getItem('auth_token');
     try {
       await fetch(`${API_URL}/auth/logout`, {
         method: 'POST',
-        headers: { ...(token && { Authorization: `Bearer ${token}` }) },
+        headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
       });
     } catch (err) {
       // Silent fail
     }
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user');
+    authToken = null;
   },
 
   // ===== GET ME =====
   getMe: async () => {
-    const token = localStorage.getItem('auth_token');
     const res = await fetch(`${API_URL}/auth/me`, {
-      headers: { ...(token && { Authorization: `Bearer ${token}` }) },
+      headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
     });
     return res.json();
   },

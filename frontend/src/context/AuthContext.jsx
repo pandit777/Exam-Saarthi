@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { api } from '../utils/api';
+import { api, setAuthToken } from '../utils/api';
 import { supabase } from '../utils/supabase';
 
 const AuthContext = createContext();
@@ -30,18 +30,11 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadSession = async () => {
       try {
-        // 1. Check localStorage
-        const token = localStorage.getItem('auth_token');
-        const savedUser = localStorage.getItem('user');
+        // Remove credentials saved by older versions of the app.
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user');
 
-        if (token && savedUser) {
-          const parsed = JSON.parse(savedUser);
-          setUser(parsed);
-          setUserProfile(parsed);
-          setIsLoggedIn(true);
-        }
-
-        // 2. Check Supabase session (Google OAuth)
+        // Only use the current in-memory Supabase session.
         const {
           data: { session },
         } = await supabase.auth.getSession();
@@ -51,9 +44,7 @@ export const AuthProvider = ({ children }) => {
             const response = await api.oauthCallback(session.access_token);
 
             if (response.success) {
-              localStorage.setItem('auth_token', session.access_token);
-              localStorage.setItem('user', JSON.stringify(response.user));
-
+              setAuthToken(session.access_token);
               setUser(response.user);
               setUserProfile(response.user);
               setIsLoggedIn(true);
@@ -83,9 +74,7 @@ export const AuthProvider = ({ children }) => {
           const response = await api.oauthCallback(session.access_token);
 
           if (response.success) {
-            localStorage.setItem('auth_token', session.access_token);
-            localStorage.setItem('user', JSON.stringify(response.user));
-
+            setAuthToken(session.access_token);
             setUser(response.user);
             setUserProfile(response.user);
             setIsLoggedIn(true);
@@ -95,8 +84,7 @@ export const AuthProvider = ({ children }) => {
           // silent fail for auth sync
         }
       } else if (event === 'SIGNED_OUT') {
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('user');
+        setAuthToken(null);
         setUser(null);
         setUserProfile(null);
         setIsLoggedIn(false);
@@ -114,8 +102,7 @@ export const AuthProvider = ({ children }) => {
       const response = await api.login(email, password);
 
       if (response.success) {
-        localStorage.setItem('auth_token', response.session.access_token);
-        localStorage.setItem('user', JSON.stringify(response.user));
+        setAuthToken(response.session.access_token);
         setUser(response.user);
         setUserProfile(response.user);
         setIsLoggedIn(true);
@@ -136,8 +123,7 @@ export const AuthProvider = ({ children }) => {
       const response = await api.register(userData);
 
       if (response.success && response.session) {
-        localStorage.setItem('auth_token', response.session.access_token);
-        localStorage.setItem('user', JSON.stringify(response.user));
+        setAuthToken(response.session.access_token);
         setUser(response.user);
         setUserProfile(response.user);
         setIsLoggedIn(true);
@@ -178,8 +164,7 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       // silent fail for logout
     } finally {
-      localStorage.removeItem('auth_token');
-      localStorage.removeItem('user');
+      setAuthToken(null);
       setUser(null);
       setUserProfile(null);
       setIsLoggedIn(false);

@@ -231,11 +231,18 @@ router.post(
 
       console.log('✅ Login successful:', data.user.email);
 
-      const { data: profile } = await supabaseAdmin
+      const { data: profile, error: profileError } = await supabaseAdmin
         .from('users')
         .select('*')
         .eq('id', data.user.id)
-        .single();
+        .maybeSingle();
+
+      if (profileError || !profile) {
+        return res.status(403).json({
+          success: false,
+          message: 'Account profile is incomplete. Please contact support.',
+        });
+      }
 
       return res.json({
         success: true,

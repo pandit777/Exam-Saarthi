@@ -13,8 +13,7 @@ function AdminLogin() {
   const { login, isLoggedIn, user } = useAuth();
 
   useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem('user') || 'null');
-    const isAdminSession = isLoggedIn && (user?.role === 'admin' || savedUser?.role === 'admin');
+    const isAdminSession = isLoggedIn && user?.role === 'admin';
 
     if (isAdminSession) {
       navigate('/admin/dashboard', { replace: true });
