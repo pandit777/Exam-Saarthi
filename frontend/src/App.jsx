@@ -60,7 +60,12 @@ function App() {
   return (
     <AuthProvider>
       <AdminProvider>
-        <Router>
+        <Router
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
           <div className="App">
             <Header theme={theme} toggleTheme={toggleTheme} />
             <main>
