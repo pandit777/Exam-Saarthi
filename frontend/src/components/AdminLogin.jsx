@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../utils/supabase';
 import { useAuth } from '../context/AuthContext';
@@ -10,7 +10,16 @@ function AdminLogin() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isLoggedIn, user } = useAuth();
+
+  useEffect(() => {
+    const savedUser = JSON.parse(localStorage.getItem('user') || 'null');
+    const isAdminSession = isLoggedIn && (user?.role === 'admin' || savedUser?.role === 'admin');
+
+    if (isAdminSession) {
+      navigate('/admin/dashboard', { replace: true });
+    }
+  }, [isLoggedIn, user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +43,7 @@ function AdminLogin() {
       }
 
       await login(email, password);
-      navigate('/admin/dashboard');
+      navigate('/admin/dashboard', { replace: true });
     } catch (err) {
       setError(err.message || 'Failed to login as admin');
     } finally {
