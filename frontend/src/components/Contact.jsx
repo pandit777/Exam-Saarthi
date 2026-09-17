@@ -94,11 +94,8 @@ function Contact() {
         ]);
 
       if (dbError) {
-        console.error('Supabase error:', dbError);
         throw new Error(dbError.message || 'Failed to save message');
       }
-
-      console.log('✅ Contact saved successfully');
 
       // Success
       setShowForm(false);
@@ -112,7 +109,6 @@ function Contact() {
       });
       setError('');
     } catch (err) {
-      console.error('Error submitting form:', err);
       showError(
         err.message || 'Failed to send message. Please try again later.'
       );

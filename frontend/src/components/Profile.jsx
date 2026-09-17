@@ -30,15 +30,15 @@ function Profile() {
 
       // Fetch fresh from DB
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('users')
           .select('*')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
 
-        if (data) setProfile(data);
+        if (!error && data) setProfile(data);
       } catch (err) {
-        console.warn('Profile fetch failed:', err);
+        // silent fail for missing profile data
       }
 
       // Load downloads

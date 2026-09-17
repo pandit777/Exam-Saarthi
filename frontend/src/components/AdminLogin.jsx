@@ -24,7 +24,7 @@ function AdminLogin() {
         .from('users')
         .select('role')
         .eq('id', data.user.id)
-        .single();
+        .maybeSingle();
 
       if (userError || userData?.role !== 'admin') {
         await supabase.auth.signOut();

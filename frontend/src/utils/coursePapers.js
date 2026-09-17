@@ -27,7 +27,6 @@ export async function loadAdminPapers(courseName) {
       link: paper.google_drive_link,
     }));
   } catch (error) {
-    console.warn('Unable to load admin papers:', error.message);
     return [];
   }
 }

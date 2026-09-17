@@ -19,20 +19,9 @@ export const AuthProvider = ({ children }) => {
   const logUserAction = async (userData, action, details = {}) => {
     if (!userData?.id || !userData?.email) return;
 
-    try {
-      await supabase.from('user_logs').insert([
-        {
-          user_id: userData.id,
-          user_email: userData.email,
-          name: userData.name || userData.email.split('@')[0],
-          action,
-          details: JSON.stringify(details),
-          created_at: new Date().toISOString(),
-        },
-      ]);
-    } catch (error) {
-      console.warn('Activity log skipped:', error.message || error);
-    }
+    // Browser anon key cannot write to protected user_logs table without RLS.
+    // Skip the client-side write to prevent the 401 loop and let the backend
+    // handle auditing if needed in the future.
   };
 
   // =====================================================
@@ -41,8 +30,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadSession = async () => {
       try {
-        console.log('🔵 Loading session...');
-
         // 1. Check localStorage
         const token = localStorage.getItem('auth_token');
         const savedUser = localStorage.getItem('user');
@@ -52,7 +39,6 @@ export const AuthProvider = ({ children }) => {
           setUser(parsed);
           setUserProfile(parsed);
           setIsLoggedIn(true);
-          console.log('✅ Session restored:', parsed.email);
         }
 
         // 2. Check Supabase session (Google OAuth)
@@ -61,8 +47,6 @@ export const AuthProvider = ({ children }) => {
         } = await supabase.auth.getSession();
 
         if (session?.access_token && session?.user) {
-          console.log('🔵 Supabase session:', session.user.email);
-
           try {
             const response = await api.oauthCallback(session.access_token);
 
@@ -74,14 +58,13 @@ export const AuthProvider = ({ children }) => {
               setUserProfile(response.user);
               setIsLoggedIn(true);
               await logUserAction(response.user, 'login', { source: 'google' });
-              console.log('✅ Google user synced:', response.user.email);
             }
           } catch (err) {
-            console.error('OAuth sync error:', err);
+            // silent fail for session sync
           }
         }
       } catch (err) {
-        console.error('Session load error:', err);
+        // silent fail for session load
       } finally {
         setLoading(false);
       }
@@ -95,8 +78,6 @@ export const AuthProvider = ({ children }) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('🔔 Auth event:', event);
-
       if (event === 'SIGNED_IN' && session?.access_token) {
         try {
           const response = await api.oauthCallback(session.access_token);
@@ -109,13 +90,11 @@ export const AuthProvider = ({ children }) => {
             setUserProfile(response.user);
             setIsLoggedIn(true);
             await logUserAction(response.user, 'login', { source: 'oauth' });
-            console.log('✅ Auth sync complete');
           }
         } catch (err) {
-          console.error('OAuth sync error:', err);
+          // silent fail for auth sync
         }
       } else if (event === 'SIGNED_OUT') {
-        console.log('🔵 User signed out');
         localStorage.removeItem('auth_token');
         localStorage.removeItem('user');
         setUser(null);
@@ -176,19 +155,15 @@ export const AuthProvider = ({ children }) => {
   // =====================================================
   const loginWithGoogle = async () => {
     try {
-      console.log('🔵 Initiating Google login...');
-
       const response = await api.getGoogleUrl();
 
       if (response.success && response.url) {
-        console.log('✅ Redirecting to Google');
         window.location.href = response.url;
         return { error: null };
       } else {
         throw new Error('Failed to get Google URL');
       }
     } catch (error) {
-      console.error('❌ Google login error:', error);
       return { error };
     }
   };
@@ -201,7 +176,7 @@ export const AuthProvider = ({ children }) => {
       await api.logout();
       await supabase.auth.signOut();
     } catch (err) {
-      console.warn('Logout error:', err);
+      // silent fail for logout
     } finally {
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user');

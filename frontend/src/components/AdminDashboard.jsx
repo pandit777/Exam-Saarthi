@@ -66,7 +66,6 @@ function AdminDashboard() {
         recentDownloads,
       });
     } catch (err) {
-      console.error('Admin data fetch error:', err);
     } finally {
       setLoadingData(false);
     }

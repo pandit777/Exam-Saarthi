@@ -24,13 +24,13 @@ export const AdminProvider = ({ children }) => {
       }
 
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('users')
           .select('role')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
 
-        setIsAdminUser(data?.role === 'admin');
+        setIsAdminUser(!error && data?.role === 'admin');
       } catch (err) {
         setIsAdminUser(false);
       } finally {
