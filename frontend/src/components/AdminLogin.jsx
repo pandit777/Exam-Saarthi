@@ -10,15 +10,18 @@ function AdminLogin() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login, isLoggedIn, user } = useAuth();
+  const { login, isLoggedIn, loading: authLoading, user } = useAuth();
+  const isAdminSession = isLoggedIn && user?.role === 'admin';
 
   useEffect(() => {
-    const isAdminSession = isLoggedIn && user?.role === 'admin';
-
     if (isAdminSession) {
       navigate('/admin/dashboard', { replace: true });
     }
-  }, [isLoggedIn, user, navigate]);
+  }, [isAdminSession, navigate]);
+
+  if (authLoading || isAdminSession) {
+    return null;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
