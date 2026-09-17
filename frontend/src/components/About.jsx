@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import gouravImg from '../assets/Dev.jpg';
 import maheshImg from '../assets/Edit.jpeg';
 
 function About() {
+  const [selectedFounder, setSelectedFounder] = useState(null);
+
   const founders = [
     {
       name: 'Gourav Sharma',
       role: 'Developer & Founder',
       roleIcon: 'fa-code',
-      socialUrl: 'https://linkedin.com/in/gourav-sharma8901',
+      socials: {
+        linkedin: 'https://linkedin.com/in/gourav-sharma8901',
+        instagram: 'https://instagram.com/velogourav',
+      },
       bio: 'Passionate developer and final year student at IGU Rewari. Created Exam Saarthi to help students access PYQs easily.',
       img: gouravImg,
     },
@@ -16,11 +21,23 @@ function About() {
       name: 'Mahesh Verma',
       role: 'Developer & Founder',
       roleIcon: 'fa-code',
-      socialUrl: 'https://www.linkedin.com/in/mahesh-verma-0b7211419/',
+      socials: {
+        linkedin: 'https://www.linkedin.com/in/mahesh-verma-0b7211419/',
+        instagram: 'https://instagram.com/maheshverma8371',
+      },
       bio: 'Dedicated to curating and verifying quality content, ensuring every PYQ is accurate and helpful for students.',
       img: maheshImg,
     },
   ];
+
+  useEffect(() => {
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setSelectedFounder(null);
+    };
+
+    document.addEventListener('keydown', closeOnEscape);
+    return () => document.removeEventListener('keydown', closeOnEscape);
+  }, []);
 
   const stats = [
     { number: '50+', label: 'Universities' },
@@ -47,7 +64,12 @@ function About() {
         {founders.map((founder, index) => (
           <div key={index} className="founder-card">
             <div className="founder-img-wrapper">
-              <a href={founder.socialUrl} target="_blank" rel="noreferrer">
+              <button
+                type="button"
+                className="founder-img-button"
+                aria-label={`View social profiles for ${founder.name}`}
+                onClick={() => setSelectedFounder(founder)}
+              >
                 <img
                   src={founder.img}
                   alt={founder.name}
@@ -56,7 +78,10 @@ function About() {
                     e.target.src = '/logo.png';
                   }}
                 />
-              </a>
+                <span className="founder-img-hint">
+                  <i className="fas fa-share-nodes"></i>
+                </span>
+              </button>
             </div>
             <h2 className="founder-name">{founder.name}</h2>
             <div className="founder-role">
@@ -66,6 +91,58 @@ function About() {
           </div>
         ))}
       </div>
+
+      {selectedFounder && (
+        <div
+          className="social-modal-backdrop"
+          role="presentation"
+          onClick={() => setSelectedFounder(null)}
+        >
+          <div
+            className="social-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="social-modal-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="social-modal-close"
+              aria-label="Close social profiles"
+              onClick={() => setSelectedFounder(null)}
+            >
+              <i className="fas fa-xmark"></i>
+            </button>
+            <div className="social-modal-avatar">
+              <img src={selectedFounder.img} alt="" />
+            </div>
+            <p className="social-modal-eyebrow">Connect with</p>
+            <h2 id="social-modal-title">{selectedFounder.name}</h2>
+            <div className="social-modal-links">
+              <a
+                href={selectedFounder.socials.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="social-modal-link linkedin-link"
+              >
+                <i className="fab fa-linkedin-in"></i>
+                <span>LinkedIn</span>
+                <i className="fas fa-arrow-up-right-from-square"></i>
+              </a>
+              <a
+                href={selectedFounder.socials.instagram}
+                target="_blank"
+                rel="noreferrer"
+                className="social-modal-link instagram-link"
+              >
+                <i className="fab fa-instagram"></i>
+                <span>Instagram</span>
+                <i className="fas fa-arrow-up-right-from-square"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Stats Section */}
       <div className="stats-about">
