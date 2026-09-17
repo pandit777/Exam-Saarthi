@@ -1270,12 +1270,22 @@ footer p {
 
 .founder-img-button {
   position: relative;
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0;
-  border: 0;
+  border: 2px solid rgba(251, 191, 36, 0.28);
   border-radius: 50%;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 25px rgba(11, 30, 74, 0.12);
   cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.founder-img-button:hover {
+  transform: translateY(-4px);
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: 0 16px 30px rgba(11, 30, 74, 0.18);
 }
 
 .founder-img-button:focus-visible {
@@ -1300,22 +1310,23 @@ footer p {
 
 .founder-img-hint {
   position: absolute;
-  right: 4px;
-  bottom: 4px;
+  right: 6px;
+  bottom: 6px;
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   color: #0b1e4a;
-  background: var(--accent-bright-yellow);
-  border: 3px solid var(--card-bg-light);
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border: 3px solid rgba(255, 255, 255, 0.95);
   border-radius: 50%;
-  box-shadow: var(--shadow-soft);
-  transition: transform 0.3s ease;
+  box-shadow: 0 10px 20px rgba(251, 191, 36, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .founder-img-button:hover .founder-img-hint {
-  transform: rotate(12deg) scale(1.1);
+  transform: rotate(12deg) scale(1.08);
+  box-shadow: 0 12px 24px rgba(251, 191, 36, 0.45);
 }
 
 .social-modal-backdrop {
@@ -1421,7 +1432,8 @@ footer p {
   border-radius: 14px;
   opacity: 0;
   animation: socialLinkIn 0.35s ease forwards;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  width: 100%;
 }
 
 .social-modal-link:nth-child(2) { animation-delay: 0.08s; }
@@ -1429,6 +1441,7 @@ footer p {
 .social-modal-link:hover {
   transform: translateY(-3px) scale(1.01);
   box-shadow: var(--shadow-medium);
+  filter: brightness(1.04);
 }
 
 .social-modal-link > i:first-child {
