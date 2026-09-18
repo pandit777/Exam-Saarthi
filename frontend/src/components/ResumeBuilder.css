@@ -7,6 +7,28 @@
 .resume-intro-mark { align-self: center; display: grid; place-items: center; min-width: 130px; height: 130px; border: 1px solid rgba(255,255,255,.3); border-radius: 50%; color: #fcd34d; font-size: 2rem; text-align: center; transform: rotate(7deg); }
 .resume-intro-mark span { margin-top: -.3rem; font-size: .75rem; line-height: 1.1; font-weight: 800; text-transform: uppercase; }
 .resume-builder-form { margin-top: 1.4rem; }
+.resume-studio-tools { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg-light); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow-soft); }
+.resume-tools-label { display: block; margin-bottom: .5rem; color: var(--text-muted); font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.resume-template-picker, .resume-tools-actions { display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
+.resume-template-option { display: flex; align-items: center; gap: .4rem; padding: .45rem .65rem; border: 1px solid var(--border); border-radius: 8px; color: var(--text-soft); background: transparent; cursor: pointer; font: inherit; font-size: .78rem; font-weight: 700; }
+.resume-template-option.active { border-color: var(--accent-deep-gold); box-shadow: 0 0 0 2px rgba(245,158,11,.13); }
+.resume-template-option span { width: 12px; height: 12px; border-radius: 50%; }
+.resume-tools-actions { color: var(--text-muted); font-size: .75rem; }
+.resume-clear-btn { border: 0; color: #b91c1c; background: transparent; cursor: pointer; font: inherit; font-weight: 800; }
+.resume-live-preview { margin-top: 1.2rem; padding: 1rem; border-radius: 18px; background: #dbe4ef; }
+.resume-preview-label { margin: 0 auto .7rem; max-width: 690px; color: #475569; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; }
+.resume-preview-paper { position: relative; min-height: 280px; max-width: 690px; margin: 0 auto; padding: 1.5rem 1.8rem; color: #334155; background: #fff; box-shadow: 0 12px 25px rgba(15,23,42,.14); }
+.resume-preview-paper h2 { margin: 0; color: #0b1e4a; font-size: 1.6rem; }
+.resume-preview-headline { margin: .2rem 0; color: #64748b; font-size: .8rem; }
+.resume-preview-contact { padding-bottom: .6rem; border-bottom: 2px solid #f59e0b; color: #64748b; font-size: .65rem; }
+.resume-preview-paper h3 { margin: .8rem 0 .25rem; color: #0b1e4a; font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; }
+.resume-preview-paper p { margin: .15rem 0; font-size: .68rem; line-height: 1.45; }
+.resume-preview-photo { position: absolute; top: 1.2rem; right: 1.5rem; width: 52px; height: 62px; object-fit: cover; border-radius: 5px; }
+.resume-preview-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+.resume-preview-minimal .resume-preview-contact { border-bottom-color: #94a3b8; }
+.resume-preview-minimal .resume-preview-paper h2, .resume-preview-minimal .resume-preview-paper h3 { color: #334155; }
+.resume-preview-modern .resume-preview-paper { border-left: 7px solid #0d748c; }
+.resume-preview-modern .resume-preview-paper h2, .resume-preview-modern .resume-preview-paper h3 { color: #0d748c; }
 .resume-form-section, .resume-actions { margin-bottom: 1.2rem; padding: 1.7rem; background: var(--card-bg-light); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow-soft); }
 .resume-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.3rem; }
 .resume-section-heading > div { display: flex; align-items: center; gap: .7rem; }
@@ -40,10 +62,12 @@
 @media (max-width: 700px) {
   .resume-builder-page { padding-top: 0; }
   .resume-builder-intro { padding: 1.6rem; border-radius: 18px; }
+  .resume-studio-tools { align-items: stretch; flex-direction: column; }
   .resume-intro-mark { min-width: 84px; width: 84px; height: 84px; font-size: 1.3rem; }
   .resume-profile-layout, .resume-grid-two { grid-template-columns: 1fr; }
   .resume-photo-upload { width: 100px; height: 118px; }
   .resume-actions { align-items: stretch; flex-direction: column; }
   .resume-action-buttons { justify-content: stretch; }
   .resume-action-buttons button { flex: 1; }
+  .resume-preview-columns { grid-template-columns: 1fr; }
 }

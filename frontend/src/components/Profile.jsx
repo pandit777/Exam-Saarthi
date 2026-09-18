@@ -22,6 +22,10 @@ function Profile() {
   const [editForm, setEditForm] = useState({ name: '', mobile: '', university: '', course: '' });
   const [editError, setEditError] = useState('');
   const [saving, setSaving] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({ password: '', confirmPassword: '' });
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSaving, setPasswordSaving] = useState(false);
   const { updateProfile } = useAuth();
   const navigate = useNavigate();
 
@@ -102,6 +106,29 @@ function Profile() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handlePasswordSave = async (event) => {
+    event.preventDefault();
+    if (passwordForm.password.length < 6) {
+      setPasswordError('Password must be at least 6 characters.');
+      return;
+    }
+    if (passwordForm.password !== passwordForm.confirmPassword) {
+      setPasswordError('Passwords do not match.');
+      return;
+    }
+
+    setPasswordSaving(true);
+    setPasswordError('');
+    const { error } = await supabase.auth.updateUser({ password: passwordForm.password });
+    setPasswordSaving(false);
+    if (error) {
+      setPasswordError(error.message || 'Unable to change password.');
+      return;
+    }
+    setPasswordForm({ password: '', confirmPassword: '' });
+    setShowPasswordModal(false);
   };
 
   // ===== DISPLAY HELPERS =====
@@ -303,6 +330,11 @@ function Profile() {
           >
             <i className="fas fa-edit"></i> Edit
           </button>
+          {!isGoogleUser && (
+            <button className="profile-action-btn security" onClick={() => { setPasswordError(''); setShowPasswordModal(true); }}>
+              <i className="fas fa-key"></i> Password
+            </button>
+          )}
           <button
             className="profile-action-btn logout"
             onClick={() => setShowLogoutModal(true)}
@@ -365,6 +397,27 @@ function Profile() {
             <div className="modal-actions">
               <button type="button" className="modal-btn cancel" onClick={() => setShowEditModal(false)}>Cancel</button>
               <button type="submit" className="modal-btn confirm profile-save-btn" disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {showPasswordModal && (
+        <div className="modal-overlay" onClick={() => setShowPasswordModal(false)}>
+          <form className="modal-content profile-edit-modal" onSubmit={handlePasswordSave} onClick={(event) => event.stopPropagation()}>
+            <div className="modal-header">
+              <i className="fas fa-key profile-edit-icon"></i>
+              <h3>Change Password</h3>
+              <p>Choose a new password for your account.</p>
+            </div>
+            {passwordError && <div className="profile-edit-error"><i className="fas fa-exclamation-circle"></i> {passwordError}</div>}
+            <div className="profile-edit-fields profile-password-fields">
+              <label><span>New Password</span><input type="password" value={passwordForm.password} onChange={(event) => setPasswordForm({ ...passwordForm, password: event.target.value })} minLength="6" required /></label>
+              <label><span>Confirm Password</span><input type="password" value={passwordForm.confirmPassword} onChange={(event) => setPasswordForm({ ...passwordForm, confirmPassword: event.target.value })} minLength="6" required /></label>
+            </div>
+            <div className="modal-actions">
+              <button type="button" className="modal-btn cancel" onClick={() => setShowPasswordModal(false)}>Cancel</button>
+              <button type="submit" className="modal-btn confirm profile-save-btn" disabled={passwordSaving}>{passwordSaving ? 'Updating...' : 'Update Password'}</button>
             </div>
           </form>
         </div>

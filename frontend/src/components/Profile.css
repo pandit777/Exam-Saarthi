@@ -8,6 +8,8 @@
 .profile-edit-error { margin: -1rem 0 1rem; padding: .7rem; border-radius: 8px; color: #b91c1c; background: rgba(248, 113, 113, .13); font-size: .8rem; font-weight: 700; }
 .profile-save-btn { background: var(--gradient-primary); }
 .profile-save-btn:disabled { cursor: wait; opacity: .65; }
+.profile-action-btn.security { color: #fff; background: #0f766e; }
+.profile-password-fields { grid-template-columns: 1fr; }
 @media (max-width: 520px) {
   .profile-edit-fields { grid-template-columns: 1fr; }
 }
