@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 function Dashboard() {
-  const { user } = useAuth();
+  const { getDisplayName } = useAuth();
   const downloads = JSON.parse(localStorage.getItem('userDownloads') || '[]');
+  const displayName = getDisplayName();
 
   return (
     <div className="dashboard-page">
@@ -13,7 +14,7 @@ function Dashboard() {
         <div className="dashboard-welcome">
           <h1>
             <i className="fas fa-hand-wave"></i> Welcome,{' '}
-            {user?.email?.split('@')[0] || 'Student'}
+            {displayName || 'Student'}
           </h1>
           <p>Track your activity and access papers</p>
         </div>
