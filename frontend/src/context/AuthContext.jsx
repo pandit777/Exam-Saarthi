@@ -106,6 +106,9 @@ export const AuthProvider = ({ children }) => {
       const response = await api.login(email, password);
 
       if (response.success) {
+        if (!response.session?.access_token) {
+          throw new Error('Login succeeded but no session was created. Please try again.');
+        }
         setAuthToken(response.session.access_token);
         setUser(response.user);
         setUserProfile(response.user);
@@ -127,6 +130,9 @@ export const AuthProvider = ({ children }) => {
       const response = await api.register(userData);
 
       if (response.success && response.session) {
+        if (!response.session.access_token) {
+          throw new Error('Account created but no session was created. Please login again.');
+        }
         setAuthToken(response.session.access_token);
         setUser(response.user);
         setUserProfile(response.user);

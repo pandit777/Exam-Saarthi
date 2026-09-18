@@ -15,11 +15,16 @@ const getAuthHeaders = () => {
 export const api = {
   // ===== REGISTER =====
   register: async (userData) => {
-    const res = await fetch(`${API_URL}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
-    });
+    let res;
+    try {
+      res = await fetch(`${API_URL}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
+    } catch (error) {
+      throw new Error('Unable to connect to the server. Please start the backend and try again.');
+    }
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Registration failed');
     return data;
@@ -27,11 +32,16 @@ export const api = {
 
   // ===== LOGIN =====
   login: async (email, password) => {
-    const res = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
+    let res;
+    try {
+      res = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+    } catch (error) {
+      throw new Error('Unable to connect to the server. Please start the backend and try again.');
+    }
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Login failed');
     return data;

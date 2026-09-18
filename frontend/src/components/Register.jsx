@@ -32,7 +32,7 @@ function Register() {
 
     if (!formData.name.trim()) return setError('Name required');
     if (!validateEmail(formData.email)) return setError('Only Gmail addresses are allowed');
-    if (formData.password.length < 6) return setError('Password min 6 chars');
+    if (formData.password.length < 6) return setError('Password must be at least 6 characters');
     if (formData.password !== formData.confirmPassword)
       return setError('Passwords do not match');
 
@@ -55,7 +55,7 @@ function Register() {
         setTimeout(() => navigate('/login'), 1200);
       }
     } catch (err) {
-      setError(err.message || 'Registration failed');
+      setError(err.message || 'Registration failed. Please check your details and server connection.');
     } finally {
       setLoading(false);
     }

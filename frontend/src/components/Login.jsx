@@ -23,11 +23,14 @@ function Login() {
       if (!cleanEmail.endsWith('@gmail.com')) {
         throw new Error('Only Gmail addresses are allowed.');
       }
+      if (!password) {
+        throw new Error('Please enter your password.');
+      }
       const { error: loginError } = await login(cleanEmail, password);
       if (loginError) throw loginError;
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || 'Login failed');
+      setError(err.message || 'Login failed. Please check your email, password, and server connection.');
     } finally {
       setLoading(false);
     }
