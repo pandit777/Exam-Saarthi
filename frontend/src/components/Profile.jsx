@@ -26,6 +26,9 @@ function Profile() {
   const [passwordForm, setPasswordForm] = useState({ password: '', confirmPassword: '' });
   const [passwordError, setPasswordError] = useState('');
   const [passwordSaving, setPasswordSaving] = useState(false);
+  const [avatarDraft, setAvatarDraft] = useState('');
+  const [avatarChanged, setAvatarChanged] = useState(false);
+  const [avatarError, setAvatarError] = useState('');
   const { updateProfile } = useAuth();
   const navigate = useNavigate();
 
@@ -73,8 +76,47 @@ function Profile() {
       university: profile?.university || '',
       course: profile?.course || '',
     });
+    setAvatarDraft(profile?.avatar_url || avatarUrl || '');
+    setAvatarChanged(false);
+    setAvatarError('');
     setEditError('');
     setShowEditModal(true);
+  };
+
+  const handleAvatarChange = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setAvatarError('Please choose an image file.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const image = new Image();
+      image.onload = () => {
+        const size = 400;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const context = canvas.getContext('2d');
+        const scale = Math.max(size / image.width, size / image.height);
+        const width = image.width * scale;
+        const height = image.height * scale;
+        context.drawImage(image, (size - width) / 2, (size - height) / 2, width, height);
+        setAvatarDraft(canvas.toDataURL('image/jpeg', 0.78));
+        setAvatarChanged(true);
+        setAvatarError('');
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeAvatar = () => {
+    setAvatarDraft('');
+    setAvatarChanged(true);
+    setAvatarError('');
   };
 
   const handleEditChange = (event) => {
@@ -92,7 +134,7 @@ function Profile() {
     setSaving(true);
     setEditError('');
     try {
-      const response = await api.updateProfile(editForm);
+      const response = await api.updateProfile(avatarChanged ? { ...editForm, avatar_url: avatarDraft } : editForm);
       setProfile(response.profile);
       updateProfile(response.profile);
       setShowEditModal(false);
@@ -382,6 +424,10 @@ function Profile() {
             </div>
             {editError && <div className="profile-edit-error"><i className="fas fa-exclamation-circle"></i> {editError}</div>}
             <div className="profile-edit-fields">
+              <div className="profile-avatar-editor">
+                <div className="profile-avatar-editor-preview">{avatarDraft ? <img src={avatarDraft} alt="Profile preview" /> : <span>{editForm.name?.charAt(0).toUpperCase() || 'U'}</span>}</div>
+                <div><strong>Profile photo</strong><p>Use a square JPG or PNG image.</p><label className="profile-avatar-upload-btn"><i className="fas fa-camera"></i> {avatarDraft ? 'Change image' : 'Upload image'}<input type="file" accept="image/png,image/jpeg,image/webp" onChange={handleAvatarChange} /></label>{avatarDraft && <button type="button" className="profile-avatar-remove" onClick={removeAvatar}><i className="fas fa-trash"></i> Remove</button>}{avatarError && <small className="profile-avatar-error">{avatarError}</small>}</div>
+              </div>
               {['name', 'mobile', 'university', 'course'].map((field) => (
                 <label key={field}>
                   <span>{field === 'name' ? 'Full Name' : field.charAt(0).toUpperCase() + field.slice(1)}</span>

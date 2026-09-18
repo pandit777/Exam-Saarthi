@@ -458,11 +458,15 @@ router.patch('/profile', async (req, res) => {
       return res.status(401).json({ success: false, message: 'Invalid token' });
     }
 
-    const { name, mobile, university, course } = req.body || {};
+    const { name, mobile, university, course, avatar_url } = req.body || {};
     const cleanName = String(name || '').trim();
     const cleanMobile = String(mobile || '').trim();
     const cleanUniversity = String(university || '').trim();
     const cleanCourse = String(course || '').trim();
+    const hasAvatarUpdate = Object.prototype.hasOwnProperty.call(req.body || {}, 'avatar_url');
+    if (hasAvatarUpdate && avatar_url && (!String(avatar_url).startsWith('data:image/') || String(avatar_url).length > 450000)) {
+      return res.status(400).json({ success: false, message: 'Please upload an image smaller than 300 KB.' });
+    }
     if (cleanName.length < 2 || cleanName.length > 100) {
       return res.status(400).json({ success: false, message: 'Name must be 2-100 characters' });
     }
@@ -481,13 +485,18 @@ router.patch('/profile', async (req, res) => {
       return res.status(500).json({ success: false, message: 'Unable to update profile' });
     }
 
+    const nextMetadata = {
+      ...user.user_metadata,
+      full_name: cleanName,
+      mobile: cleanMobile,
+      university: cleanUniversity,
+      course: cleanCourse,
+    };
+    if (hasAvatarUpdate) nextMetadata.avatar_url = avatar_url || null;
+
     const { data: authUpdate, error: authUpdateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, {
       user_metadata: {
-        ...user.user_metadata,
-        full_name: cleanName,
-        mobile: cleanMobile,
-        university: cleanUniversity,
-        course: cleanCourse,
+        ...nextMetadata,
       },
     });
 
@@ -505,6 +514,7 @@ router.patch('/profile', async (req, res) => {
         mobile: cleanMobile,
         university: cleanUniversity,
         course: cleanCourse,
+        avatar_url: nextMetadata.avatar_url || null,
       },
       user: authUpdate.user,
     });
@@ -549,7 +559,7 @@ router.get('/me', async (req, res) => {
         university: profile?.university || user.user_metadata?.university,
         course: profile?.course || user.user_metadata?.course,
         role: profile?.role || 'user',
-        avatar_url: profile?.avatar_url,
+        avatar_url: profile?.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture,
       },
     });
   } catch (error) {

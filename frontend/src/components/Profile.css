@@ -5,6 +5,15 @@
 .profile-edit-fields label { display: flex; flex-direction: column; gap: .35rem; color: var(--text-muted); font-size: .78rem; font-weight: 700; }
 .profile-edit-fields input { border: 1px solid var(--border); border-radius: 9px; padding: .75rem; background: transparent; color: var(--text-main); font: inherit; outline: none; }
 .profile-edit-fields input:focus { border-color: var(--accent-deep-gold); box-shadow: 0 0 0 3px rgba(245, 158, 11, .14); }
+.profile-avatar-editor { grid-column: 1 / -1; display: flex; align-items: center; gap: 1rem; padding-bottom: .8rem; border-bottom: 1px solid var(--border); }
+.profile-avatar-editor-preview { width: 76px; height: 76px; display: grid; place-items: center; overflow: hidden; border-radius: 50%; color: #fff; background: var(--gradient-primary); font-size: 1.7rem; font-weight: 800; }
+.profile-avatar-editor-preview img { width: 100%; height: 100%; object-fit: cover; }
+.profile-avatar-editor strong { display: block; color: var(--text-main); font-size: .85rem; }
+.profile-avatar-editor p { margin: .2rem 0 .5rem; color: var(--text-muted); font-size: .7rem; }
+.profile-avatar-upload-btn { display: inline-flex; align-items: center; gap: .35rem; padding: .45rem .65rem; border-radius: 7px; color: var(--primary-rich-blue); background: rgba(37, 99, 235, .1); cursor: pointer; font-size: .72rem; font-weight: 800; }
+.profile-avatar-upload-btn input { display: none; }
+.profile-avatar-remove { margin-left: .5rem; border: 0; color: #b91c1c; background: transparent; cursor: pointer; font: inherit; font-size: .72rem; font-weight: 800; }
+.profile-avatar-error { display: block; margin-top: .35rem; color: #b91c1c; font-size: .7rem; }
 .profile-edit-error { margin: -1rem 0 1rem; padding: .7rem; border-radius: 8px; color: #b91c1c; background: rgba(248, 113, 113, .13); font-size: .8rem; font-weight: 700; }
 .profile-save-btn { background: var(--gradient-primary); }
 .profile-save-btn:disabled { cursor: wait; opacity: .65; }
