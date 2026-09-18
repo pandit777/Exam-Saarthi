@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
-import { useAuth } from './AuthContext';
 
 const AdminContext = createContext();
 
@@ -11,13 +10,15 @@ export const useAdmin = () => {
 };
 
 export const AdminProvider = ({ children }) => {
-  const { user, isLoggedIn } = useAuth();
   const [isAdminUser, setIsAdminUser] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      if (!isLoggedIn || !user) {
+    const checkAdmin = async (session) => {
+      const activeSession = session || (await supabase.auth.getSession()).data.session;
+      const userId = activeSession?.user?.id;
+
+      if (!userId) {
         setIsAdminUser(false);
         setLoading(false);
         return;
@@ -27,7 +28,7 @@ export const AdminProvider = ({ children }) => {
         const { data, error } = await supabase
           .from('users')
           .select('role')
-          .eq('id', user.id)
+          .eq('id', userId)
           .maybeSingle();
 
         setIsAdminUser(!error && data?.role === 'admin');
@@ -39,7 +40,15 @@ export const AdminProvider = ({ children }) => {
     };
 
     checkAdmin();
-  }, [user, isLoggedIn]);
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      checkAdmin(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <AdminContext.Provider value={{ isAdminUser, loading }}>

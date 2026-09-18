@@ -9,6 +9,7 @@ const configuredOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL
 
 const defaultOrigins = [
   'http://localhost:5173',
+  'http://localhost:4173',
   'https://examsaarthi.com',
   'https://www.examsaarthi.com',
   'https://exam-saarthi-1.onrender.com',
