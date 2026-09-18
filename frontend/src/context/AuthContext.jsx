@@ -44,7 +44,11 @@ export const AuthProvider = ({ children }) => {
         university: session.user.user_metadata?.university,
         course: session.user.user_metadata?.course,
         role: 'user',
-        avatar_url: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture,
+        avatar_url:
+          session.user.user_metadata?.avatar_url ||
+          session.user.user_metadata?.picture ||
+          localStorage.getItem(`profileAvatar:${session.user.id}`) ||
+          undefined,
       };
       setUser(sessionUser);
       setUserProfile(sessionUser);
@@ -60,6 +64,9 @@ export const AuthProvider = ({ children }) => {
           const syncedUser = response.user || response.profile;
           setUser(syncedUser);
           setUserProfile(syncedUser);
+          if (syncedUser.avatar_url) {
+            localStorage.setItem(`profileAvatar:${syncedUser.id}`, syncedUser.avatar_url);
+          }
         }
       } catch (error) {
         if (session.user.app_metadata?.provider === 'google' && error.message?.includes('Only Gmail')) {
@@ -196,6 +203,11 @@ export const AuthProvider = ({ children }) => {
   const getInitial = () => getDisplayName().charAt(0).toUpperCase();
 
   const updateProfile = (profile) => {
+    if (profile?.id && profile.avatar_url) {
+      localStorage.setItem(`profileAvatar:${profile.id}`, profile.avatar_url);
+    } else if (profile?.id && profile.avatar_url === null) {
+      localStorage.removeItem(`profileAvatar:${profile.id}`);
+    }
     setUserProfile(profile);
     setUser((currentUser) => (currentUser ? { ...currentUser, ...profile } : currentUser));
   };

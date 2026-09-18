@@ -45,7 +45,13 @@ function Profile() {
       // Fetch fresh profile through the API so metadata-backed fields work
       try {
         const response = await api.getMe();
-        if (response.success && response.user) setProfile(response.user);
+        if (response.success && response.user) {
+          const savedAvatar = localStorage.getItem(`profileAvatar:${user.id}`);
+          setProfile({
+            ...response.user,
+            avatar_url: response.user.avatar_url || savedAvatar || null,
+          });
+        }
       } catch (err) {
         // silent fail for missing profile data
       }
@@ -135,8 +141,17 @@ function Profile() {
     setEditError('');
     try {
       const response = await api.updateProfile(avatarChanged ? { ...editForm, avatar_url: avatarDraft } : editForm);
-      setProfile(response.profile);
-      updateProfile(response.profile);
+      const updatedProfile = {
+        ...response.profile,
+        avatar_url: avatarChanged ? avatarDraft || null : response.profile.avatar_url || avatarUrl || null,
+      };
+      if (updatedProfile.avatar_url) {
+        localStorage.setItem(`profileAvatar:${user.id}`, updatedProfile.avatar_url);
+      } else {
+        localStorage.removeItem(`profileAvatar:${user.id}`);
+      }
+      setProfile(updatedProfile);
+      updateProfile(updatedProfile);
       setShowEditModal(false);
     } catch (error) {
       setEditError(error.message || 'Unable to update profile.');
