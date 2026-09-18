@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { jsPDF } from 'jspdf';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -11,6 +11,7 @@ const templateOptions = [
   { id: 'classic', label: 'Classic', accent: [11, 30, 74] },
   { id: 'minimal', label: 'Minimal', accent: [51, 65, 85] },
   { id: 'modern', label: 'Modern', accent: [13, 116, 144] },
+  { id: 'creative', label: 'Creative', accent: [126, 34, 206] },
 ];
 
 const escapeLatex = (value = '') =>
@@ -44,6 +45,7 @@ function ResumeBuilder() {
   const [message, setMessage] = useState('');
   const [template, setTemplate] = useState('classic');
   const [draftLoaded, setDraftLoaded] = useState(false);
+  const photoInputRef = useRef(null);
 
   const storageKey = `resumeDraft:${user?.id || 'guest'}`;
 
@@ -98,12 +100,18 @@ function ResumeBuilder() {
     reader.readAsDataURL(file);
   };
 
+  const removePhoto = () => {
+    setPhoto('');
+    if (photoInputRef.current) photoInputRef.current.value = '';
+  };
+
   const latex = useMemo(() => {
     const contact = [profile.email, profile.mobile, profile.city, profile.pinCode]
       .filter(Boolean)
       .map(escapeLatex)
       .join(' \\textbar{} ');
     const links = [profile.linkedin, profile.github].filter(Boolean).map(escapeLatex).join(' \\textbar{} ');
+    const selectedTemplate = templateOptions.find((option) => option.id === template) || templateOptions[0];
     const section = (title, body) => body.trim() && `\\section*{${title}}\n${body}\n`;
     const educationBody = education
       .filter(meaningful)
@@ -137,8 +145,10 @@ function ResumeBuilder() {
 \\usepackage[margin=0.65in]{geometry}
 \\usepackage[hidelinks]{hyperref}
 \\usepackage{titlesec}
+\\usepackage{xcolor}
+\\definecolor{accent}{RGB}{${selectedTemplate.accent.join(',')}}
 \\pagenumbering{gobble}
-\\titleformat{\\section}{\\large\\bfseries}{}{0em}{}[\\titlerule]
+\\titleformat{\\section}{\\large\\bfseries\\color{accent}}{}{0em}{}[\\color{accent}\\titlerule]
 \\begin{document}
 \\begin{center}
 {\\LARGE \\textbf{${escapeLatex(profile.name || 'Your Name')}}}\\\\
@@ -152,7 +162,7 @@ ${section('Experience', experienceBody) || ''}
 ${section('Projects', projectBody) || ''}
 ${section('Skills', skillsBody) || ''}
 \\end{document}`;
-  }, [education, experience, profile]);
+  }, [education, experience, profile, template]);
 
   const validate = () => {
     if (!profile.name.trim()) return 'Please enter your full name.';
@@ -188,8 +198,8 @@ ${section('Skills', skillsBody) || ''}
     };
     const addSection = (title) => {
       y += 5;
-      addText(title.toUpperCase(), 11, true, [11, 30, 74]);
-      document.setDrawColor(245, 158, 11);
+      addText(title.toUpperCase(), 11, true, activeTemplate.accent);
+      document.setDrawColor(...activeTemplate.accent);
       document.line(margin, y - 2, pageWidth - margin, y - 2);
       y += 2;
     };
@@ -287,22 +297,26 @@ ${section('Skills', skillsBody) || ''}
         </div>
         <div className="resume-tools-actions"><span><i className="fas fa-cloud-check"></i> Auto-saved in this browser</span><button type="button" className="resume-clear-btn" onClick={clearDraft}>Clear draft</button></div>
       </section>
-      <section className={`resume-live-preview resume-preview-${template}`}>
-        <div className="resume-preview-label"><i className="fas fa-eye"></i> Live preview</div>
-        <div className="resume-preview-paper">
-          {photo && <img src={photo} alt="" className="resume-preview-photo" />}
-          <h2>{profile.name || 'Your Name'}</h2>
-          <p className="resume-preview-headline">{profile.headline || 'Professional headline'}</p>
-          <p className="resume-preview-contact">{[profile.email, profile.mobile, profile.city].filter(Boolean).join(' | ') || 'email@gmail.com | +91 mobile | City'}</p>
-          {profile.summary && <div><h3>Summary</h3><p>{profile.summary}</p></div>}
-          {(education.some(meaningful) || experience.some(meaningful) || projects.some(meaningful) || profile.skills) && <div className="resume-preview-columns"><div>{education.some(meaningful) && <><h3>Education</h3>{education.filter(meaningful).map((item, index) => <p key={index}><strong>{item.degree || 'Degree'}</strong><br />{item.institution} {item.year && `| ${item.year}`}</p>)}</>}{experience.some(meaningful) && <><h3>Experience</h3>{experience.filter(meaningful).map((item, index) => <p key={index}><strong>{item.role || 'Role'}</strong><br />{item.company} {item.duration && `| ${item.duration}`}</p>)}</>}</div><div>{projects.some(meaningful) && <><h3>Projects</h3>{projects.filter(meaningful).map((item, index) => <p key={index}><strong>{item.title || 'Project'}</strong><br />{item.technology || item.description}</p>)}</>}{profile.skills && <><h3>Skills</h3><p>{profile.skills}</p></>}</div></div>}
-        </div>
-      </section>
-      <form className="resume-builder-form" onSubmit={(event) => event.preventDefault()}>
+      <div className="resume-builder-workspace">
+        <section className={`resume-live-preview resume-preview-${template}`}>
+          <div className="resume-preview-label"><i className="fas fa-eye"></i> Live preview</div>
+          <div className="resume-preview-paper">
+            {photo && <img src={photo} alt="" className="resume-preview-photo" />}
+            <h2>{profile.name || 'Your Name'}</h2>
+            <p className="resume-preview-headline">{profile.headline || 'Professional headline'}</p>
+            <p className="resume-preview-contact">{[profile.email, profile.mobile, profile.city].filter(Boolean).join(' | ') || 'email@gmail.com | +91 mobile | City'}</p>
+            {profile.summary && <div><h3>Summary</h3><p>{profile.summary}</p></div>}
+            {(education.some(meaningful) || experience.some(meaningful) || projects.some(meaningful) || profile.skills) && <div className="resume-preview-columns"><div>{education.some(meaningful) && <><h3>Education</h3>{education.filter(meaningful).map((item, index) => <p key={index}><strong>{item.degree || 'Degree'}</strong><br />{item.institution} {item.year && `| ${item.year}`}</p>)}</>}{experience.some(meaningful) && <><h3>Experience</h3>{experience.filter(meaningful).map((item, index) => <p key={index}><strong>{item.role || 'Role'}</strong><br />{item.company} {item.duration && `| ${item.duration}`}</p>)}</>}</div><div>{projects.some(meaningful) && <><h3>Projects</h3>{projects.filter(meaningful).map((item, index) => <p key={index}><strong>{item.title || 'Project'}</strong><br />{item.technology || item.description}</p>)}</>}{profile.skills && <><h3>Skills</h3><p>{profile.skills}</p></>}</div></div>}
+          </div>
+        </section>
+        <form className="resume-builder-form" onSubmit={(event) => event.preventDefault()}>
         <section className="resume-form-section">
           <div className="resume-section-heading"><div><span className="resume-section-kicker">01</span><h2>Personal details</h2></div><span className="resume-required-note">* Required</span></div>
           <div className="resume-profile-layout">
-            <label className="resume-photo-upload"><input type="file" accept="image/*" onChange={readPhoto} />{photo ? <img src={photo} alt="Resume profile" /> : <><i className="fas fa-camera"></i><span>Add photo</span></>}</label>
+            <div className="resume-photo-area">
+              <label className="resume-photo-upload"><input ref={photoInputRef} type="file" accept="image/*" onChange={readPhoto} />{photo ? <img src={photo} alt="Resume profile" /> : <><i className="fas fa-camera"></i><span>Add photo</span></>}</label>
+              <div className="resume-photo-actions">{photo && <button type="button" onClick={() => photoInputRef.current?.click()}><i className="fas fa-repeat"></i> Change</button>}{photo && <button type="button" className="remove" onClick={removePhoto}><i className="fas fa-trash"></i> Remove</button>}</div>
+            </div>
             <div className="resume-grid resume-grid-two">
               {['name', 'email', 'mobile', 'address', 'city', 'pinCode', 'headline'].map((field) => <label key={field} className="resume-field"><span>{field.replace(/([A-Z])/g, ' $1')} {['name', 'email', 'mobile'].includes(field) && '*'}</span><input name={field} type={field === 'email' ? 'email' : 'text'} value={profile[field]} onChange={updateProfile} placeholder={`Enter your ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`} /></label>)}
               <label className="resume-field resume-field-wide"><span>Professional summary</span><textarea name="summary" value={profile.summary} onChange={updateProfile} rows="4" placeholder="Write 2-4 lines about your strengths and goals" /></label>
@@ -317,7 +331,8 @@ ${section('Skills', skillsBody) || ''}
         {renderList(experience, setExperience, emptyExperience, 'Experience', 'Add experience')}
         {renderList(projects, setProjects, emptyProject, 'Projects', 'Add project')}
         <section className="resume-actions"><div>{message && <p className="resume-message"><i className="fas fa-circle-info"></i> {message}</p>}<p>Your information stays in this browser and is not uploaded.</p></div><div className="resume-action-buttons"><button type="button" className="resume-secondary-btn" onClick={downloadLatex}><i className="fas fa-code"></i> Download .tex</button><button type="button" className="resume-primary-btn" onClick={generatePdf}><i className="fas fa-file-pdf"></i> Generate PDF</button></div></section>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
