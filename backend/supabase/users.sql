@@ -3,11 +3,11 @@
 alter table public.users
   add column if not exists name text,
   add column if not exists email text,
+  add column if not exists mobile text,
+  add column if not exists university text,
+  add column if not exists course text,
   add column if not exists role text default 'user',
-  add column if not exists active boolean default true,
-  drop column if exists mobile,
-  drop column if exists university,
-  drop column if exists course;
+  add column if not exists active boolean default true;
 
 create unique index if not exists users_email_unique_idx
   on public.users (lower(email));

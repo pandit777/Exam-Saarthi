@@ -460,6 +460,9 @@ router.patch('/profile', async (req, res) => {
 
     const { name, mobile, university, course } = req.body || {};
     const cleanName = String(name || '').trim();
+    const cleanMobile = String(mobile || '').trim();
+    const cleanUniversity = String(university || '').trim();
+    const cleanCourse = String(course || '').trim();
     if (cleanName.length < 2 || cleanName.length > 100) {
       return res.status(400).json({ success: false, message: 'Name must be 2-100 characters' });
     }
@@ -468,9 +471,6 @@ router.patch('/profile', async (req, res) => {
       .from('users')
       .update({
         name: cleanName,
-        mobile: String(mobile || '').trim(),
-        university: String(university || '').trim(),
-        course: String(course || '').trim(),
       })
       .eq('id', user.id)
       .select('*')
@@ -481,7 +481,33 @@ router.patch('/profile', async (req, res) => {
       return res.status(500).json({ success: false, message: 'Unable to update profile' });
     }
 
-    return res.json({ success: true, message: 'Profile updated successfully', profile });
+    const { data: authUpdate, error: authUpdateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, {
+      user_metadata: {
+        ...user.user_metadata,
+        full_name: cleanName,
+        mobile: cleanMobile,
+        university: cleanUniversity,
+        course: cleanCourse,
+      },
+    });
+
+    if (authUpdateError) {
+      console.error('❌ Profile metadata update error:', authUpdateError.message);
+      return res.status(500).json({ success: false, message: 'Unable to save profile details' });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Profile updated successfully',
+      profile: {
+        ...profile,
+        name: cleanName,
+        mobile: cleanMobile,
+        university: cleanUniversity,
+        course: cleanCourse,
+      },
+      user: authUpdate.user,
+    });
   } catch (error) {
     console.error('❌ Profile update error:', error);
     return res.status(500).json({ success: false, message: 'Server error' });
@@ -518,10 +544,10 @@ router.get('/me', async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        name: profile?.name,
-        mobile: profile?.mobile,
-        university: profile?.university,
-        course: profile?.course,
+        name: profile?.name || user.user_metadata?.full_name || user.user_metadata?.name,
+        mobile: profile?.mobile || user.user_metadata?.mobile,
+        university: profile?.university || user.user_metadata?.university,
+        course: profile?.course || user.user_metadata?.course,
         role: profile?.role || 'user',
         avatar_url: profile?.avatar_url,
       },

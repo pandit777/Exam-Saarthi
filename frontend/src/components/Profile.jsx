@@ -39,15 +39,10 @@ function Profile() {
       // Set from context (instant)
       setProfile(userProfile);
 
-      // Fetch fresh from DB
+      // Fetch fresh profile through the API so metadata-backed fields work
       try {
-        const { data, error } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', user.id)
-          .maybeSingle();
-
-        if (!error && data) setProfile(data);
+        const response = await api.getMe();
+        if (response.success && response.user) setProfile(response.user);
       } catch (err) {
         // silent fail for missing profile data
       }
