@@ -4,6 +4,7 @@ import { body, validationResult } from 'express-validator';
 import { supabase, supabaseAdmin } from '../utils/supabase.js';
 
 const router = express.Router();
+const isGmailAddress = (email) => email.trim().toLowerCase().endsWith('@gmail.com');
 
 // =====================================================
 // REGISTER
@@ -12,7 +13,12 @@ router.post(
   '/register',
   [
     body('name').trim().isLength({ min: 2, max: 100 }).withMessage('Name must be 2-100 characters'),
-    body('email').trim().isEmail().normalizeEmail().withMessage('Valid email required'),
+    body('email')
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .custom((email) => isGmailAddress(email))
+      .withMessage('Only Gmail addresses are allowed'),
     body('password').isLength({ min: 6 }).withMessage('Password min 6 characters'),
   ],
   async (req, res) => {
@@ -202,7 +208,15 @@ router.post(
 // =====================================================
 router.post(
   '/login',
-  [body('email').trim().isEmail().normalizeEmail(), body('password').notEmpty()],
+  [
+    body('email')
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .custom((email) => isGmailAddress(email))
+      .withMessage('Only Gmail addresses are allowed'),
+    body('password').notEmpty(),
+  ],
   async (req, res) => {
     try {
       const errors = validationResult(req);
@@ -330,6 +344,13 @@ router.post('/oauth-callback', async (req, res) => {
       return res.status(401).json({
         success: false,
         message: 'Invalid token',
+      });
+    }
+
+    if (!isGmailAddress(user.email || '')) {
+      return res.status(403).json({
+        success: false,
+        message: 'Only Gmail accounts are allowed.',
       });
     }
 

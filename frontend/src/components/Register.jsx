@@ -23,7 +23,7 @@ function Register() {
     setError('');
   };
 
-  const validateEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+  const validateEmail = (e) => /^[^\s@]+@gmail\.com$/.test(e.trim().toLowerCase());
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ function Register() {
     setSuccess('');
 
     if (!formData.name.trim()) return setError('Name required');
-    if (!validateEmail(formData.email)) return setError('Invalid email');
+    if (!validateEmail(formData.email)) return setError('Only Gmail addresses are allowed');
     if (formData.password.length < 6) return setError('Password min 6 chars');
     if (formData.password !== formData.confirmPassword)
       return setError('Passwords do not match');

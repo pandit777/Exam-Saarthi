@@ -20,6 +20,9 @@ function Login() {
 
     try {
       const cleanEmail = email.trim().toLowerCase();
+      if (!cleanEmail.endsWith('@gmail.com')) {
+        throw new Error('Only Gmail addresses are allowed.');
+      }
       const { error: loginError } = await login(cleanEmail, password);
       if (loginError) throw loginError;
       navigate('/dashboard');

@@ -173,6 +173,13 @@ function Header({ theme, toggleTheme }) {
                   >
                     <i className="fas fa-tachometer-alt"></i> Dashboard
                   </Link>
+                  <Link
+                    to="/resume-builder"
+                    className="dropdown-item"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <i className="fas fa-file-signature"></i> Build Resume
+                  </Link>
 
                   <hr className="dropdown-divider" />
 

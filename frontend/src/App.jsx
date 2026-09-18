@@ -26,6 +26,7 @@ import Profile from './components/Profile';
 import Dashboard from './components/Dashboard';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
+import ResumeBuilder from './components/ResumeBuilder';
 import logo from './assets/logo.png';
 
 const siteUrl = 'https://www.examsaarthi.com';
@@ -255,6 +256,7 @@ function App() {
                 <Route path="/igu-bcom" element={<IGUBCom />} />
                 <Route path="/igu-mcom" element={<IGUMCom />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/resume-builder" element={<ResumeBuilder />} />
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
               </Routes>

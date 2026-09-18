@@ -18,6 +18,9 @@ function Dashboard() {
           <p>Track your activity and access papers</p>
         </div>
         <div className="dashboard-actions">
+          <Link to="/resume-builder" className="dashboard-action-btn resume-dashboard-btn">
+            <i className="fas fa-file-signature"></i> Build Resume
+          </Link>
           <Link to="/university" className="dashboard-action-btn primary">
             <i className="fas fa-search"></i> Browse Papers
           </Link>

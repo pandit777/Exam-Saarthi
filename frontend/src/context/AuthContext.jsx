@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
               await logUserAction(response.user, 'login', { source: 'google' });
             }
           } catch (err) {
-            // silent fail for session sync
+            await supabase.auth.signOut();
           }
         }
       } catch (err) {
@@ -81,7 +81,11 @@ export const AuthProvider = ({ children }) => {
             await logUserAction(response.user, 'login', { source: 'oauth' });
           }
         } catch (err) {
-          // silent fail for auth sync
+          await supabase.auth.signOut();
+          setAuthToken(null);
+          setUser(null);
+          setUserProfile(null);
+          setIsLoggedIn(false);
         }
       } else if (event === 'SIGNED_OUT') {
         setAuthToken(null);
