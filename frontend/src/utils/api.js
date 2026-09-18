@@ -78,6 +78,18 @@ export const api = {
     return res.json();
   },
 
+  // ===== UPDATE PROFILE =====
+  updateProfile: async (profileData) => {
+    const res = await fetch(`${API_URL}/auth/profile`, {
+      method: 'PATCH',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(profileData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Profile update failed');
+    return data;
+  },
+
   // ===== ADMIN: GET USERS =====
   getAdminUsers: async () => {
     const res = await fetch(`${API_URL}/auth/admin/users`, {

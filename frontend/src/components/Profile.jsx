@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../utils/supabase';
+import { api } from '../utils/api';
+import './Profile.css';
 
 function Profile() {
   const {
@@ -16,6 +18,11 @@ function Profile() {
   const [downloads, setDownloads] = useState([]);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editForm, setEditForm] = useState({ name: '', mobile: '', university: '', course: '' });
+  const [editError, setEditError] = useState('');
+  const [saving, setSaving] = useState(false);
+  const { updateProfile } = useAuth();
   const navigate = useNavigate();
 
   // ===== FETCH FULL PROFILE + DOWNLOADS =====
@@ -58,6 +65,43 @@ function Profile() {
     await logout();
     setShowLogoutModal(false);
     navigate('/');
+  };
+
+  const openEditModal = () => {
+    setEditForm({
+      name: profile?.name || '',
+      mobile: profile?.mobile || '',
+      university: profile?.university || '',
+      course: profile?.course || '',
+    });
+    setEditError('');
+    setShowEditModal(true);
+  };
+
+  const handleEditChange = (event) => {
+    setEditForm({ ...editForm, [event.target.name]: event.target.value });
+    setEditError('');
+  };
+
+  const handleProfileSave = async (event) => {
+    event.preventDefault();
+    if (editForm.name.trim().length < 2) {
+      setEditError('Name must be at least 2 characters.');
+      return;
+    }
+
+    setSaving(true);
+    setEditError('');
+    try {
+      const response = await api.updateProfile(editForm);
+      setProfile(response.profile);
+      updateProfile(response.profile);
+      setShowEditModal(false);
+    } catch (error) {
+      setEditError(error.message || 'Unable to update profile.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   // ===== DISPLAY HELPERS =====
@@ -255,7 +299,7 @@ function Profile() {
           </Link>
           <button
             className="profile-action-btn edit"
-            onClick={() => alert('Edit feature coming soon!')}
+            onClick={openEditModal}
           >
             <i className="fas fa-edit"></i> Edit
           </button>
@@ -298,6 +342,31 @@ function Profile() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {showEditModal && (
+        <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
+          <form className="modal-content profile-edit-modal" onSubmit={handleProfileSave} onClick={(event) => event.stopPropagation()}>
+            <div className="modal-header">
+              <i className="fas fa-user-edit profile-edit-icon"></i>
+              <h3>Edit Profile</h3>
+              <p>Update your details and keep your profile current.</p>
+            </div>
+            {editError && <div className="profile-edit-error"><i className="fas fa-exclamation-circle"></i> {editError}</div>}
+            <div className="profile-edit-fields">
+              {['name', 'mobile', 'university', 'course'].map((field) => (
+                <label key={field}>
+                  <span>{field === 'name' ? 'Full Name' : field.charAt(0).toUpperCase() + field.slice(1)}</span>
+                  <input name={field} value={editForm[field]} onChange={handleEditChange} required={field === 'name'} placeholder={`Enter ${field}`} />
+                </label>
+              ))}
+            </div>
+            <div className="modal-actions">
+              <button type="button" className="modal-btn cancel" onClick={() => setShowEditModal(false)}>Cancel</button>
+              <button type="submit" className="modal-btn confirm profile-save-btn" disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</button>
+            </div>
+          </form>
         </div>
       )}
     </div>

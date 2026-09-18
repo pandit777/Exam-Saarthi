@@ -1,0 +1,13 @@
+.profile-edit-modal { max-width: 520px; text-align: left; }
+.profile-edit-modal .modal-header { text-align: center; }
+.profile-edit-icon { color: var(--primary-rich-blue); font-size: 2.7rem; }
+.profile-edit-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.profile-edit-fields label { display: flex; flex-direction: column; gap: .35rem; color: var(--text-muted); font-size: .78rem; font-weight: 700; }
+.profile-edit-fields input { border: 1px solid var(--border); border-radius: 9px; padding: .75rem; background: transparent; color: var(--text-main); font: inherit; outline: none; }
+.profile-edit-fields input:focus { border-color: var(--accent-deep-gold); box-shadow: 0 0 0 3px rgba(245, 158, 11, .14); }
+.profile-edit-error { margin: -1rem 0 1rem; padding: .7rem; border-radius: 8px; color: #b91c1c; background: rgba(248, 113, 113, .13); font-size: .8rem; font-weight: 700; }
+.profile-save-btn { background: var(--gradient-primary); }
+.profile-save-btn:disabled { cursor: wait; opacity: .65; }
+@media (max-width: 520px) {
+  .profile-edit-fields { grid-template-columns: 1fr; }
+}

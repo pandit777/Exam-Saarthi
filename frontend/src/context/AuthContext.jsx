@@ -185,6 +185,11 @@ export const AuthProvider = ({ children }) => {
 
   const getInitial = () => getDisplayName().charAt(0).toUpperCase();
 
+  const updateProfile = (profile) => {
+    setUserProfile(profile);
+    setUser((currentUser) => (currentUser ? { ...currentUser, ...profile } : currentUser));
+  };
+
   const value = {
     user,
     userProfile,
@@ -197,6 +202,7 @@ export const AuthProvider = ({ children }) => {
     getDisplayName,
     getAvatarUrl,
     getInitial,
+    updateProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

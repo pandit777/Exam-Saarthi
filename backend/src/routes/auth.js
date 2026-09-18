@@ -440,6 +440,55 @@ router.post('/logout', async (req, res) => {
 });
 
 // =====================================================
+// UPDATE PROFILE
+// =====================================================
+router.patch('/profile', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    if (!token) {
+      return res.status(401).json({ success: false, message: 'No token' });
+    }
+
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser(token);
+
+    if (userError || !user) {
+      return res.status(401).json({ success: false, message: 'Invalid token' });
+    }
+
+    const { name, mobile, university, course } = req.body || {};
+    const cleanName = String(name || '').trim();
+    if (cleanName.length < 2 || cleanName.length > 100) {
+      return res.status(400).json({ success: false, message: 'Name must be 2-100 characters' });
+    }
+
+    const { data: profile, error: profileError } = await supabaseAdmin
+      .from('users')
+      .update({
+        name: cleanName,
+        mobile: String(mobile || '').trim(),
+        university: String(university || '').trim(),
+        course: String(course || '').trim(),
+      })
+      .eq('id', user.id)
+      .select('*')
+      .single();
+
+    if (profileError) {
+      console.error('❌ Profile update error:', profileError.message);
+      return res.status(500).json({ success: false, message: 'Unable to update profile' });
+    }
+
+    return res.json({ success: true, message: 'Profile updated successfully', profile });
+  } catch (error) {
+    console.error('❌ Profile update error:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// =====================================================
 // GET ME
 // =====================================================
 router.get('/me', async (req, res) => {
