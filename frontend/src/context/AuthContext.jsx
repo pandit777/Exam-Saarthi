@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useRef } from 'react';
 import { api, setAuthToken } from '../utils/api';
 import { supabase } from '../utils/supabase';
 
@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const sessionSyncInProgress = useRef(false);
 
   const logUserAction = async (userData, action, details = {}) => {
     if (!userData?.id || !userData?.email) return;
@@ -28,65 +29,60 @@ export const AuthProvider = ({ children }) => {
   // LOAD SESSION ON MOUNT
   // =====================================================
   useEffect(() => {
-    const loadSession = async () => {
+    const syncSession = async (session) => {
+      if (!session?.access_token || !session.user || sessionSyncInProgress.current) return;
+
+      sessionSyncInProgress.current = true;
+      setAuthToken(session.access_token);
+
+      // Restore the local auth state immediately so a refresh does not look like logout.
+      const sessionUser = {
+        id: session.user.id,
+        email: session.user.email,
+        name: session.user.user_metadata?.full_name || session.user.user_metadata?.name,
+        mobile: session.user.user_metadata?.mobile,
+        university: session.user.user_metadata?.university,
+        course: session.user.user_metadata?.course,
+        role: 'user',
+        avatar_url: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture,
+      };
+      setUser(sessionUser);
+      setUserProfile(sessionUser);
+      setIsLoggedIn(true);
+
       try {
-        // Remove credentials saved by older versions of the app.
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('user');
+        const provider = session.user.app_metadata?.provider;
+        const response = provider === 'google'
+          ? await api.oauthCallback(session.access_token)
+          : await api.getMe();
 
-        // Only use the current in-memory Supabase session.
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        if (session?.access_token && session?.user) {
-          try {
-            const response = await api.oauthCallback(session.access_token);
-
-            if (response.success) {
-              setAuthToken(session.access_token);
-              setUser(response.user);
-              setUserProfile(response.user);
-              setIsLoggedIn(true);
-              await logUserAction(response.user, 'login', { source: 'google' });
-            }
-          } catch (err) {
-            await supabase.auth.signOut();
-          }
+        if (response.success && (response.user || response.profile)) {
+          const syncedUser = response.user || response.profile;
+          setUser(syncedUser);
+          setUserProfile(syncedUser);
         }
-      } catch (err) {
-        // silent fail for session load
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadSession();
-
-    // =====================================================
-    // LISTEN FOR AUTH CHANGES
-    // =====================================================
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session?.access_token) {
-        try {
-          const response = await api.oauthCallback(session.access_token);
-
-          if (response.success) {
-            setAuthToken(session.access_token);
-            setUser(response.user);
-            setUserProfile(response.user);
-            setIsLoggedIn(true);
-            await logUserAction(response.user, 'login', { source: 'oauth' });
-          }
-        } catch (err) {
+      } catch (error) {
+        if (session.user.app_metadata?.provider === 'google' && error.message?.includes('Only Gmail')) {
           await supabase.auth.signOut();
           setAuthToken(null);
           setUser(null);
           setUserProfile(null);
           setIsLoggedIn(false);
+        } else {
+          // Keep the Supabase session alive; a temporary API failure must not log the user out.
+          console.error('Auth session sync failed:', error.message);
         }
+      } finally {
+        sessionSyncInProgress.current = false;
+        setLoading(false);
+      }
+    };
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if ((event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.access_token) {
+        await syncSession(session);
       } else if (event === 'SIGNED_OUT') {
         setAuthToken(null);
         setUser(null);
@@ -94,6 +90,14 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(false);
       }
     });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        syncSession(session);
+      } else {
+        setLoading(false);
+      }
+    }).catch(() => setLoading(false));
 
     return () => subscription.unsubscribe();
   }, []);
