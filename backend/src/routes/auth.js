@@ -484,9 +484,16 @@ router.patch('/profile', async (req, res) => {
       const imageBuffer = Buffer.from(encodedImage, 'base64');
       const extension = contentType.split('/')[1].replace('jpeg', 'jpg');
       const filePath = `${user.id}/avatar-${Date.now()}.${extension}`;
-      const { error: uploadError } = await supabaseAdmin.storage
+      let { error: uploadError } = await supabaseAdmin.storage
         .from(AVATAR_BUCKET)
         .upload(filePath, imageBuffer, { contentType, upsert: true, cacheControl: '31536000' });
+
+      if (uploadError?.message?.toLowerCase().includes('bucket not found')) {
+        await supabaseAdmin.storage.createBucket(AVATAR_BUCKET, { public: true });
+        ({ error: uploadError } = await supabaseAdmin.storage
+          .from(AVATAR_BUCKET)
+          .upload(filePath, imageBuffer, { contentType, upsert: true, cacheControl: '31536000' }));
+      }
 
       if (uploadError) {
         console.error('❌ Avatar upload error:', uploadError.message);
@@ -507,12 +514,24 @@ router.patch('/profile', async (req, res) => {
     };
     if (hasAvatarUpdate) profileUpdate.avatar_url = avatarUrl;
 
-    const { data: profile, error: profileError } = await supabaseAdmin
+    let profileUpdateWithoutAvatar = false;
+    let { data: profile, error: profileError } = await supabaseAdmin
       .from('users')
       .update(profileUpdate)
       .eq('id', user.id)
       .select('*')
       .single();
+
+    if (profileError && hasAvatarUpdate && profileError.message?.toLowerCase().includes('avatar_url')) {
+      // Keep profile updates working until the users.sql migration is applied.
+      profileUpdateWithoutAvatar = true;
+      ({ data: profile, error: profileError } = await supabaseAdmin
+        .from('users')
+        .update({ name: cleanName, mobile: cleanMobile, university: cleanUniversity, course: cleanCourse })
+        .eq('id', user.id)
+        .select('*')
+        .single());
+    }
 
     if (profileError) {
       console.error('❌ Profile update error:', profileError.message);
@@ -527,6 +546,7 @@ router.patch('/profile', async (req, res) => {
       university: cleanUniversity,
       course: cleanCourse,
     };
+    if (profileUpdateWithoutAvatar && hasAvatarUpdate) nextMetadata.avatar_url = avatarUrl || null;
 
     const { data: authUpdate, error: authUpdateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, {
       user_metadata: {
