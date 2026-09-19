@@ -120,6 +120,11 @@ export const AuthProvider = ({ children }) => {
         if (!response.session?.access_token) {
           throw new Error('Login succeeded but no session was created. Please try again.');
         }
+        const { error: sessionError } = await supabase.auth.setSession({
+          access_token: response.session.access_token,
+          refresh_token: response.session.refresh_token,
+        });
+        if (sessionError) throw sessionError;
         setAuthToken(response.session.access_token);
         setUser(response.user);
         setUserProfile(response.user);
@@ -144,6 +149,11 @@ export const AuthProvider = ({ children }) => {
         if (!response.session.access_token) {
           throw new Error('Account created but no session was created. Please login again.');
         }
+        const { error: sessionError } = await supabase.auth.setSession({
+          access_token: response.session.access_token,
+          refresh_token: response.session.refresh_token,
+        });
+        if (sessionError) throw sessionError;
         setAuthToken(response.session.access_token);
         setUser(response.user);
         setUserProfile(response.user);
