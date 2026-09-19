@@ -90,10 +90,12 @@ export const api = {
 
   // ===== UPDATE PROFILE =====
   updateProfile: async (profileData) => {
+    // Keep the token out of headers for this endpoint. Older accounts may
+    // have an oversized JWT because a base64 avatar was saved in metadata.
     const res = await fetch(`${API_URL}/auth/profile`, {
       method: 'PATCH',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(profileData),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...profileData, access_token: authToken }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Profile update failed');

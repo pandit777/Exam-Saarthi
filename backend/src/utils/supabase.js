@@ -40,3 +40,5 @@ export const supabaseAdmin = createClient(
     },
   }
 );
+
+export const AVATAR_BUCKET = process.env.SUPABASE_AVATAR_BUCKET || 'avatars';

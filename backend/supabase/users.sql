@@ -6,6 +6,7 @@ alter table public.users
   add column if not exists mobile text,
   add column if not exists university text,
   add column if not exists course text,
+  add column if not exists avatar_url text,
   add column if not exists role text default 'user',
   add column if not exists active boolean default true;
 
@@ -18,3 +19,8 @@ alter table public.users
   alter column email drop not null,
   alter column role set default 'user',
   alter column active set default true;
+
+-- Profile photos are stored in Supabase Storage; only their public URL is kept here.
+insert into storage.buckets (id, name, public)
+values ('avatars', 'avatars', true)
+on conflict (id) do update set public = true;

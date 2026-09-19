@@ -1,7 +1,7 @@
 import express from 'express';
 import { FRONTEND_URL } from '../utils/frontendConfig.js';
 import { body, validationResult } from 'express-validator';
-import { supabase, supabaseAdmin } from '../utils/supabase.js';
+import { AVATAR_BUCKET, supabase, supabaseAdmin } from '../utils/supabase.js';
 
 const router = express.Router();
 const isGmailAddress = (email) => email.trim().toLowerCase().endsWith('@gmail.com');
@@ -444,7 +444,9 @@ router.post('/logout', async (req, res) => {
 // =====================================================
 router.patch('/profile', async (req, res) => {
   try {
-    const token = req.headers.authorization?.replace('Bearer ', '');
+    // The body fallback lets users recover from old sessions whose JWT became
+    // too large after a base64 avatar was stored in auth metadata.
+    const token = req.headers.authorization?.replace('Bearer ', '') || req.body?.access_token;
     if (!token) {
       return res.status(401).json({ success: false, message: 'No token' });
     }
@@ -464,18 +466,50 @@ router.patch('/profile', async (req, res) => {
     const cleanUniversity = String(university || '').trim();
     const cleanCourse = String(course || '').trim();
     const hasAvatarUpdate = Object.prototype.hasOwnProperty.call(req.body || {}, 'avatar_url');
-    if (hasAvatarUpdate && avatar_url && (!String(avatar_url).startsWith('data:image/') || String(avatar_url).length > 450000)) {
-      return res.status(400).json({ success: false, message: 'Please upload an image smaller than 300 KB.' });
+    if (hasAvatarUpdate && avatar_url && (!String(avatar_url).startsWith('data:image/') || String(avatar_url).length > 600000)) {
+      return res.status(400).json({ success: false, message: 'Please upload an image smaller than 450 KB.' });
     }
     if (cleanName.length < 2 || cleanName.length > 100) {
       return res.status(400).json({ success: false, message: 'Name must be 2-100 characters' });
     }
 
+    let avatarUrl;
+    if (hasAvatarUpdate && avatar_url) {
+      const match = String(avatar_url).match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+      if (!match) {
+        return res.status(400).json({ success: false, message: 'Invalid image data.' });
+      }
+
+      const [, contentType, encodedImage] = match;
+      const imageBuffer = Buffer.from(encodedImage, 'base64');
+      const extension = contentType.split('/')[1].replace('jpeg', 'jpg');
+      const filePath = `${user.id}/avatar-${Date.now()}.${extension}`;
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from(AVATAR_BUCKET)
+        .upload(filePath, imageBuffer, { contentType, upsert: true, cacheControl: '31536000' });
+
+      if (uploadError) {
+        console.error('❌ Avatar upload error:', uploadError.message);
+        return res.status(500).json({ success: false, message: 'Unable to save profile photo. Please try again.' });
+      }
+
+      const { data: publicUrlData } = supabaseAdmin.storage.from(AVATAR_BUCKET).getPublicUrl(filePath);
+      avatarUrl = publicUrlData.publicUrl;
+    } else if (hasAvatarUpdate) {
+      avatarUrl = null;
+    }
+
+    const profileUpdate = {
+      name: cleanName,
+      mobile: cleanMobile,
+      university: cleanUniversity,
+      course: cleanCourse,
+    };
+    if (hasAvatarUpdate) profileUpdate.avatar_url = avatarUrl;
+
     const { data: profile, error: profileError } = await supabaseAdmin
       .from('users')
-      .update({
-        name: cleanName,
-      })
+      .update(profileUpdate)
       .eq('id', user.id)
       .select('*')
       .single();
@@ -485,14 +519,14 @@ router.patch('/profile', async (req, res) => {
       return res.status(500).json({ success: false, message: 'Unable to update profile' });
     }
 
+    const { avatar_url: _oldAvatar, picture: _oldPicture, ...metadataWithoutAvatar } = user.user_metadata || {};
     const nextMetadata = {
-      ...user.user_metadata,
+      ...metadataWithoutAvatar,
       full_name: cleanName,
       mobile: cleanMobile,
       university: cleanUniversity,
       course: cleanCourse,
     };
-    if (hasAvatarUpdate) nextMetadata.avatar_url = avatar_url || null;
 
     const { data: authUpdate, error: authUpdateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, {
       user_metadata: {
@@ -514,7 +548,7 @@ router.patch('/profile', async (req, res) => {
         mobile: cleanMobile,
         university: cleanUniversity,
         course: cleanCourse,
-        avatar_url: nextMetadata.avatar_url || null,
+        avatar_url: profile.avatar_url || null,
       },
       user: authUpdate.user,
     });

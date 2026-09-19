@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../utils/supabase';
-import { api } from '../utils/api';
+import { api, setAuthToken } from '../utils/api';
 import './Profile.css';
 
 function Profile() {
@@ -141,6 +141,10 @@ function Profile() {
     setEditError('');
     try {
       const response = await api.updateProfile(avatarChanged ? { ...editForm, avatar_url: avatarDraft } : editForm);
+      const { data: refreshedSession } = await supabase.auth.refreshSession();
+      if (refreshedSession.session?.access_token) {
+        setAuthToken(refreshedSession.session.access_token);
+      }
       const updatedProfile = {
         ...response.profile,
         avatar_url: avatarChanged ? avatarDraft || null : response.profile.avatar_url || avatarUrl || null,
