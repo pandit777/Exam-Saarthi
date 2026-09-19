@@ -147,7 +147,7 @@ function Profile() {
       }
       const updatedProfile = {
         ...response.profile,
-        avatar_url: avatarChanged ? avatarDraft || null : response.profile.avatar_url || avatarUrl || null,
+        avatar_url: response.profile.avatar_url || (avatarChanged ? null : avatarUrl || null),
       };
       if (updatedProfile.avatar_url) {
         localStorage.setItem(`profileAvatar:${user.id}`, updatedProfile.avatar_url);

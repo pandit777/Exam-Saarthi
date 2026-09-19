@@ -568,7 +568,7 @@ router.patch('/profile', async (req, res) => {
         mobile: cleanMobile,
         university: cleanUniversity,
         course: cleanCourse,
-        avatar_url: profile.avatar_url || null,
+        avatar_url: profile.avatar_url || nextMetadata.avatar_url || null,
       },
       user: authUpdate.user,
     });
