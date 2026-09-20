@@ -7,7 +7,8 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['logo.png', 'favicon.ico'], // आपकी वेबसाइट का लोगो यहाँ शामिल है
+      // यहाँ से favicon.ico हटा दिया गया है, सिर्फ png लोगो रखा है
+      includeAssets: ['logo.png'], 
       manifest: {
         name: 'Exam Saarthi | IGU PYQ & Previous Year Question Papers',
         short_name: 'ExamSaarthi',
@@ -19,7 +20,7 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: 'logo.png', // आपकी वेबसाइट का ओरिजिनल लोगो
+            src: 'logo.png', // आपकी वेबसाइट का ओरिजिनल PNG लोगो
             sizes: '192x192',
             type: 'image/png'
           },
