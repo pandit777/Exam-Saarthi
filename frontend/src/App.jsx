@@ -528,7 +528,6 @@ function App() {
                   path="*"
                   element={<Navigate to="/" replace />}
                 />
-
               </Routes>
 
             </main>
