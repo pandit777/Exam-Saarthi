@@ -39,7 +39,7 @@ function Universities() {
       logo: duLogo,
       fallbackIcon: '📚',
       page: '/du',
-      available: false,
+      available: true,
     },
     {
       name: 'Punjab University (PU)',
