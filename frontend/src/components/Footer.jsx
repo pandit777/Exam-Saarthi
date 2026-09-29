@@ -33,7 +33,7 @@ function Footer() {
           />
           <div className="team-info">
             <span className="team-role">Developer</span>
-            <span className="team-name">Mahesh Verma</span>
+            <span className="team-name">Gourav Sharma</span>
           </div>
         </div>
 
