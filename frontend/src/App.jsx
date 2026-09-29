@@ -267,6 +267,19 @@ function Seo() {
   return null;
 }
 
+/* =========================================
+   SCROLL TO TOP (route change par top pe le jaata hai)
+   ========================================= */
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   const [theme, setTheme] =
     useState('light');
@@ -339,6 +352,7 @@ function App() {
         >
 
           <Seo />
+          <ScrollToTop />
 
           <div className="App">
 
