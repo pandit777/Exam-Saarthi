@@ -1,4 +1,7 @@
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/([^:]\/)\/+/g, '$1').replace(/\/+$/, '');
+const API_URL = (import.meta.env.VITE_API_URL || '')
+  .replace(/([^:]\/)\/+/g, '$1')
+  .replace(/\/+$/, '');
+
 let authToken = null;
 
 export const setAuthToken = (token) => {
@@ -12,6 +15,33 @@ const getAuthHeaders = () => {
   };
 };
 
+// ⭐ Cookies clear karne ka helper (431 fix)
+const clearAllCookies = () => {
+  if (typeof document === 'undefined') return;
+
+  document.cookie.split(';').forEach((c) => {
+    const name = c.split('=')[0].trim();
+    if (!name) return;
+
+    const expire = 'expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    const paths = ['/', ''];
+    const domains = [
+      '',
+      `;domain=${window.location.hostname}`,
+      `;domain=.${window.location.hostname}`,
+      ';domain=.examsaarthi.com',
+      ';domain=examsaarthi.com',
+      ';domain=.onrender.com',
+    ];
+
+    paths.forEach((path) => {
+      domains.forEach((domain) => {
+        document.cookie = `${name}=;${expire};path=${path}${domain}`;
+      });
+    });
+  });
+};
+
 export const api = {
   // ===== REGISTER =====
   register: async (userData) => {
@@ -19,11 +49,14 @@ export const api = {
     try {
       res = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
+        credentials: 'include',  // ⭐ Cookies bhejne ke liye
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
       });
     } catch (error) {
-      throw new Error('Unable to connect to the server. Please start the backend and try again.');
+      throw new Error(
+        'Unable to connect to the server. Please try again.'
+      );
     }
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Registration failed');
@@ -36,11 +69,14 @@ export const api = {
     try {
       res = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
+        credentials: 'include',  // ⭐ Cookies bhejne ke liye
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
     } catch (error) {
-      throw new Error('Unable to connect to the server. Please start the backend and try again.');
+      throw new Error(
+        'Unable to connect to the server. Please try again.'
+      );
     }
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Login failed');
@@ -49,7 +85,9 @@ export const api = {
 
   // ===== GOOGLE - Get OAuth URL =====
   getGoogleUrl: async () => {
-    const res = await fetch(`${API_URL}/auth/google`);
+    const res = await fetch(`${API_URL}/auth/google`, {
+      credentials: 'include',
+    });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Google login failed');
     return data;
@@ -59,6 +97,7 @@ export const api = {
   oauthCallback: async (accessToken) => {
     const res = await fetch(`${API_URL}/auth/oauth-callback`, {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ access_token: accessToken }),
     });
@@ -67,35 +106,52 @@ export const api = {
     return data;
   },
 
-  // ===== LOGOUT =====
+  // ===== LOGOUT (431 fix ke saath) =====
   logout: async () => {
     try {
       await fetch(`${API_URL}/auth/logout`, {
         method: 'POST',
-        headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+        credentials: 'include',
+        headers: authToken
+          ? { Authorization: `Bearer ${authToken}` }
+          : {},
       });
     } catch (err) {
-      // Silent fail
+      // Silent fail — cookies fir bhi clear karni hain
     }
+
+    // ⭐⭐⭐ SAB cookies clear karein (431 error ka asli fix) ⭐⭐⭐
+    clearAllCookies();
+
+    // LocalStorage aur SessionStorage clear karein
+    if (typeof localStorage !== 'undefined') localStorage.clear();
+    if (typeof sessionStorage !== 'undefined') sessionStorage.clear();
+
+    // Token reset
     authToken = null;
   },
 
   // ===== GET ME =====
   getMe: async () => {
     const res = await fetch(`${API_URL}/auth/me`, {
-      headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+      credentials: 'include',
+      headers: authToken
+        ? { Authorization: `Bearer ${authToken}` }
+        : {},
     });
     return res.json();
   },
 
   // ===== UPDATE PROFILE =====
   updateProfile: async (profileData) => {
-    // Keep the token out of headers for this endpoint. Older accounts may
-    // have an oversized JWT because a base64 avatar was saved in metadata.
     const res = await fetch(`${API_URL}/auth/profile`, {
       method: 'PATCH',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...profileData, access_token: authToken }),
+      body: JSON.stringify({
+        ...profileData,
+        access_token: authToken,
+      }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Profile update failed');
@@ -105,6 +161,7 @@ export const api = {
   // ===== ADMIN: GET USERS =====
   getAdminUsers: async () => {
     const res = await fetch(`${API_URL}/auth/admin/users`, {
+      credentials: 'include',
       headers: getAuthHeaders(),
     });
     const data = await res.json();
@@ -116,6 +173,7 @@ export const api = {
   createPaper: async (paperData) => {
     const res = await fetch(`${API_URL}/auth/admin/papers`, {
       method: 'POST',
+      credentials: 'include',
       headers: getAuthHeaders(),
       body: JSON.stringify(paperData),
     });
@@ -127,6 +185,7 @@ export const api = {
   // ===== ADMIN: GET ALL PAPERS =====
   getAdminPapers: async () => {
     const res = await fetch(`${API_URL}/auth/admin/papers`, {
+      credentials: 'include',
       headers: getAuthHeaders(),
     });
     const data = await res.json();
@@ -137,7 +196,9 @@ export const api = {
   // ===== GET PAPERS FOR A COURSE =====
   getPapers: async (courseName) => {
     const params = new URLSearchParams({ course: courseName });
-    const res = await fetch(`${API_URL}/auth/papers?${params.toString()}`);
+    const res = await fetch(`${API_URL}/auth/papers?${params.toString()}`, {
+      credentials: 'include',
+    });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed to load papers');
     return data;
@@ -147,6 +208,7 @@ export const api = {
   resetUserPassword: async (userId, newPassword) => {
     const res = await fetch(`${API_URL}/auth/admin/reset-password`, {
       method: 'POST',
+      credentials: 'include',
       headers: getAuthHeaders(),
       body: JSON.stringify({ userId, newPassword }),
     });
@@ -158,6 +220,7 @@ export const api = {
   // ===== ADMIN: GET USER LOGS =====
   getAdminLogs: async () => {
     const res = await fetch(`${API_URL}/auth/admin/logs`, {
+      credentials: 'include',
       headers: getAuthHeaders(),
     });
     const data = await res.json();
