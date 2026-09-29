@@ -10,6 +10,48 @@ export const useAuth = () => {
   return context;
 };
 
+// ⭐ Cookies clear karne ka helper (431 fix)
+const clearAllCookies = () => {
+  if (typeof document === 'undefined') return;
+
+  document.cookie.split(';').forEach((c) => {
+    const name = c.split('=')[0].trim();
+    if (!name) return;
+
+    const expire = 'expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    const paths = ['/', ''];
+    const domains = [
+      '',
+      `;domain=${window.location.hostname}`,
+      `;domain=.${window.location.hostname}`,
+      ';domain=.examsaarthi.com',
+      ';domain=examsaarthi.com',
+      ';domain=.onrender.com',
+    ];
+
+    paths.forEach((path) => {
+      domains.forEach((domain) => {
+        document.cookie = `${name}=;${expire};path=${path}${domain}`;
+      });
+    });
+  });
+};
+
+// ⭐ LocalStorage se Supabase auth keys clear karne ka helper
+const clearSupabaseStorage = () => {
+  if (typeof localStorage === 'undefined') return;
+
+  try {
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('sb-') || key.includes('supabase')) {
+        localStorage.removeItem(key);
+      }
+    });
+  } catch (err) {
+    // silent fail
+  }
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
@@ -19,7 +61,6 @@ export const AuthProvider = ({ children }) => {
 
   const logUserAction = async (userData, action, details = {}) => {
     if (!userData?.id || !userData?.email) return;
-
     // Browser anon key cannot write to protected user_logs table without RLS.
     // Skip the client-side write to prevent the 401 loop and let the backend
     // handle auditing if needed in the future.
@@ -186,20 +227,48 @@ export const AuthProvider = ({ children }) => {
   };
 
   // =====================================================
-  // LOGOUT
+  // LOGOUT (431 fix ke saath)
   // =====================================================
   const logout = async () => {
     try {
+      // 1. Backend ko logout request bhejein (silent fail ok)
       await api.logout();
+    } catch (err) {
+      // silent fail
+    }
+
+    try {
+      // 2. Supabase signOut
       await supabase.auth.signOut();
     } catch (err) {
-      // silent fail for logout
-    } finally {
-      setAuthToken(null);
-      setUser(null);
-      setUserProfile(null);
-      setIsLoggedIn(false);
+      // silent fail
     }
+
+    // ⭐⭐⭐ 431 FIX — Saari cookies aur storage clear karein ⭐⭐⭐
+    clearAllCookies();           // Saari browser cookies clear
+    clearSupabaseStorage();      // Supabase ke localStorage keys clear
+
+    // LocalStorage aur SessionStorage clear (lekin profileAvatar keys preserve karein)
+    if (typeof localStorage !== 'undefined') {
+      const avatarKeys = {};
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('profileAvatar:')) {
+          avatarKeys[key] = localStorage.getItem(key);
+        }
+      });
+      localStorage.clear();
+      // Avatar cache wapas daal dein (optional — user ne chahe to hata sakta hai)
+      Object.entries(avatarKeys).forEach(([key, value]) => {
+        localStorage.setItem(key, value);
+      });
+    }
+    if (typeof sessionStorage !== 'undefined') sessionStorage.clear();
+
+    // State reset
+    setAuthToken(null);
+    setUser(null);
+    setUserProfile(null);
+    setIsLoggedIn(false);
   };
 
   // =====================================================
