@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Private pages — don't index
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /profile
+Disallow: /dashboard
+Disallow: /resume-builder
+Disallow: /admin/
+
+Sitemap: https://www.examsaarthi.com/sitemap.xml
