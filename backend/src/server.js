@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import http from 'http';
 import rateLimit from 'express-rate-limit';
 import authRoutes from './routes/auth.js';
 import { FRONTEND_ORIGINS, FRONTEND_URL } from './utils/frontendConfig.js';
@@ -60,6 +61,7 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['Content-Length', 'X-Request-Id'],
   optionsSuccessStatus: 200,
+  maxAge: 86400, // 24 hours — preflight cache
 };
 
 app.use(cors(corsOptions));
@@ -68,10 +70,21 @@ app.use(cors(corsOptions));
 app.options(/.*/, cors(corsOptions));
 
 // =====================================================
-// BODY PARSERS
+// BODY PARSERS (431 error ke liye limits badhaye)
 // =====================================================
-app.use(express.json({ limit: '2mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(
+  express.json({
+    limit: '2mb',
+    parameterLimit: 10000,
+  })
+);
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: '2mb',
+    parameterLimit: 10000,
+  })
+);
 
 // =====================================================
 // RATE LIMITING
@@ -138,6 +151,15 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error('❌ Server error:', err.message);
 
+  // 431 error — Request Header Fields Too Large
+  if (err.status === 431 || err.code === 'HPE_HEADER_OVERFLOW') {
+    return res.status(431).json({
+      success: false,
+      message: 'Request header too large. Please clear cookies and try again.',
+      hint: 'Frontend se purani cookies clear karein',
+    });
+  }
+
   // CORS error ko clear message ke saath bhejein
   if (err.message && err.message.includes('CORS')) {
     return res.status(403).json({
@@ -156,9 +178,27 @@ app.use((err, req, res, next) => {
 });
 
 // =====================================================
+// SERVER (431 fix + Node.js timeout rules)
+// =====================================================
+// Node.js Rule: headersTimeout <= requestTimeout
+// keepAliveTimeout hamesha headersTimeout se chota
+const server = http.createServer(
+  {
+    maxHeaderSize: 32768,      // 32KB (default 16KB thi) — 431 fix
+    requestTimeout: 120000,    // 120s (2 min) — sabse bada
+    headersTimeout: 115000,    // 115s — requestTimeout se CHOTA
+    keepAliveTimeout: 65000,   // 65s — Render load balancer ke liye
+  },
+  app
+);
+
+// Extra safety: max headers count
+server.maxHeadersCount = 2000;
+
+// =====================================================
 // START SERVER
 // =====================================================
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log('');
   console.log('════════════════════════════════════════════');
   console.log(`🚀 Backend Server Started`);
@@ -167,6 +207,27 @@ app.listen(PORT, () => {
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 Frontend:    ${FRONTEND_URL}`);
   console.log(`💚 Health:      http://localhost:${PORT}/api/health`);
+  console.log(`📦 Max Header:  32KB`);
+  console.log(`⏱️  Timeouts:    req=120s, headers=115s, keepAlive=65s`);
   console.log('════════════════════════════════════════════');
   console.log('');
+});
+
+// =====================================================
+// GRACEFUL SHUTDOWN
+// =====================================================
+process.on('SIGTERM', () => {
+  console.log('⚠️  SIGTERM received, shutting down gracefully...');
+  server.close(() => {
+    console.log('✅ Server closed');
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('⚠️  SIGINT received, shutting down gracefully...');
+  server.close(() => {
+    console.log('✅ Server closed');
+    process.exit(0);
+  });
 });
