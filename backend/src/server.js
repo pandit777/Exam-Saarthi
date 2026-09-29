@@ -10,26 +10,66 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// =====================================================
+// TRUST PROXY (Render ke liye zaroori)
+// =====================================================
+app.set('trust proxy', 1);
+
 // =====================================================
 // SECURITY MIDDLEWARE
 // =====================================================
-app.use(helmet());
-
 app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || FRONTEND_ORIGINS.includes(origin)) {
-        return callback(null, true);
-      }
-
-      return callback(new Error('Origin is not allowed by CORS'));
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    contentSecurityPolicy: false,
   })
 );
 
+// =====================================================
+// CORS CONFIGURATION
+// =====================================================
+console.log('');
+console.log('════════════════════════════════════════════');
+console.log('🌐 CORS Configuration');
+console.log('════════════════════════════════════════════');
+console.log('✅ Allowed Origins:');
+FRONTEND_ORIGINS.forEach((o) => console.log(`   → ${o}`));
+console.log('════════════════════════════════════════════');
+console.log('');
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Postman / curl / same-origin requests ke liye
+    if (!origin) {
+      console.log('🌐 Request with no origin (Postman/curl) - ALLOWED');
+      return callback(null, true);
+    }
+
+    if (FRONTEND_ORIGINS.includes(origin)) {
+      console.log(`✅ CORS ALLOWED: ${origin}`);
+      return callback(null, true);
+    }
+
+    console.log(`❌ CORS BLOCKED: ${origin}`);
+    console.log(`   Allowed list: ${FRONTEND_ORIGINS.join(', ')}`);
+    return callback(new Error(`Origin ${origin} is not allowed by CORS`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Length', 'X-Request-Id'],
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
+// Preflight requests handle karein (Express 5 compatible)
+app.options(/.*/, cors(corsOptions));
+
+// =====================================================
+// BODY PARSERS
+// =====================================================
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
@@ -43,11 +83,15 @@ const authLimiter = rateLimit({
     success: false,
     message: 'Too many attempts. Try again in 15 minutes.',
   },
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
 app.use('/api/', generalLimiter);
@@ -72,14 +116,19 @@ app.get('/api/health', (req, res) => {
     status: 'ok',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV,
+    allowedOrigins: FRONTEND_ORIGINS,
   });
 });
 
-// 404 handler
+// =====================================================
+// 404 HANDLER
+// =====================================================
 app.use((req, res) => {
+  console.log(`⚠️  404 - Route not found: ${req.method} ${req.originalUrl}`);
   res.status(404).json({
     success: false,
     message: 'Route not found',
+    path: req.originalUrl,
   });
 });
 
@@ -87,7 +136,17 @@ app.use((req, res) => {
 // ERROR HANDLER
 // =====================================================
 app.use((err, req, res, next) => {
-  console.error('❌ Server error:', err);
+  console.error('❌ Server error:', err.message);
+
+  // CORS error ko clear message ke saath bhejein
+  if (err.message && err.message.includes('CORS')) {
+    return res.status(403).json({
+      success: false,
+      message: err.message,
+      hint: 'Check FRONTEND_URLS env variable on Render',
+    });
+  }
+
   const isDev = process.env.NODE_ENV === 'development';
   res.status(err.status || 500).json({
     success: false,
@@ -97,7 +156,7 @@ app.use((err, req, res, next) => {
 });
 
 // =====================================================
-// START
+// START SERVER
 // =====================================================
 app.listen(PORT, () => {
   console.log('');
