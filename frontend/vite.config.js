@@ -7,12 +7,12 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      injectRegister: 'inline', // 👈 यह लाइन सर्विस वर्कर को सीधे HTML में जोड़ देगी
-      includeAssets: ['logo.png'], 
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'maskable-icon.png'],
       manifest: {
         name: 'Exam Saarthi | IGU PYQ & Previous Year Question Papers',
         short_name: 'ExamSaarthi',
-        description: 'Exam Saarthi offers IGU previous year question papers, PYQ PDFs, and university exam resources for smarter preparation.',
+        description:
+          'Exam Saarthi offers IGU previous year question papers, PYQ PDFs, and university exam resources for smarter preparation.',
         theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'standalone',
@@ -20,27 +20,41 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: 'logo.png',
+            src: 'pwa-192x192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
-            src: 'logo.png',
-            sizes: '512x512',
-            type: 'image/png'
-          },
-          {
-            src: 'logo.png',
+            src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable'
-          }
-        ]
-      }
-    })
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
+        ],
+      },
+    }),
   ],
   server: {
     port: 5173,
+    // ⭐ LOCAL DEV PROXY — backend URL console se chhupa dega
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+        // Optional: backend URL ko log bhi nahi karega
+        configure: (proxy) => {
+          proxy.on('error', (err) => {
+            console.log('❌ Proxy error:', err.message);
+          });
+        },
+      },
+    },
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
