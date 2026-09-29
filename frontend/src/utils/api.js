@@ -1,4 +1,8 @@
-const API_URL = (import.meta.env.VITE_API_URL || '')
+// ⭐ Backend URL — VITE_API_URL se ya fallback
+const API_URL = (
+  import.meta.env.VITE_API_URL ||
+  'https://exam-saarthi-icwv.onrender.com/api'
+)
   .replace(/([^:]\/)\/+/g, '$1')
   .replace(/\/+$/, '');
 
@@ -13,6 +17,30 @@ const getAuthHeaders = () => {
     'Content-Type': 'application/json',
     ...(authToken && { Authorization: `Bearer ${authToken}` }),
   };
+};
+
+// ⭐ Safe JSON parser — empty ya HTML response handle karta hai
+const safeJson = async (res) => {
+  const text = await res.text();
+
+  if (!text || text.trim() === '') {
+    throw new Error(
+      `Server returned empty response (status: ${res.status}). Please try again.`
+    );
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch (err) {
+    if (text.trim().startsWith('<')) {
+      throw new Error(
+        `Server returned HTML instead of JSON. Check backend URL. (status: ${res.status})`
+      );
+    }
+    throw new Error(
+      `Invalid JSON response (status: ${res.status}): ${text.substring(0, 200)}`
+    );
+  }
 };
 
 // ⭐ Cookies clear karne ka helper (431 fix)
@@ -49,16 +77,14 @@ export const api = {
     try {
       res = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
-        credentials: 'include',  // ⭐ Cookies bhejne ke liye
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
       });
     } catch (error) {
-      throw new Error(
-        'Unable to connect to the server. Please try again.'
-      );
+      throw new Error('Unable to connect to the server. Please try again.');
     }
-    const data = await res.json();
+    const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Registration failed');
     return data;
   },
@@ -69,16 +95,14 @@ export const api = {
     try {
       res = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
-        credentials: 'include',  // ⭐ Cookies bhejne ke liye
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
     } catch (error) {
-      throw new Error(
-        'Unable to connect to the server. Please try again.'
-      );
+      throw new Error('Unable to connect to the server. Please try again.');
     }
-    const data = await res.json();
+    const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Login failed');
     return data;
   },
@@ -88,7 +112,7 @@ export const api = {
     const res = await fetch(`${API_URL}/auth/google`, {
       credentials: 'include',
     });
-    const data = await res.json();
+    const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Google login failed');
     return data;
   },
@@ -101,7 +125,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ access_token: accessToken }),
     });
-    const data = await res.json();
+    const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'OAuth failed');
     return data;
   },
@@ -139,7 +163,7 @@ export const api = {
         ? { Authorization: `Bearer ${authToken}` }
         : {},
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // ===== UPDATE PROFILE =====
@@ -153,7 +177,7 @@ export const api = {
         access_token: authToken,
       }),
     });
-    const data = await res.json();
+    const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Profile update failed');
     return data;
   },
@@ -164,7 +188,7 @@ export const api = {
       credentials: 'include',
       headers: getAuthHeaders(),
     });
-    const data = await res.json();
+    const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to load users');
     return data;
   },
@@ -177,7 +201,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(paperData),
     });
-    const data = await res.json();
+    const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to save paper');
     return data;
   },
@@ -188,7 +212,7 @@ export const api = {
       credentials: 'include',
       headers: getAuthHeaders(),
     });
-    const data = await res.json();
+    const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to load papers');
     return data;
   },
@@ -199,7 +223,7 @@ export const api = {
     const res = await fetch(`${API_URL}/auth/papers?${params.toString()}`, {
       credentials: 'include',
     });
-    const data = await res.json();
+    const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to load papers');
     return data;
   },
@@ -212,7 +236,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify({ userId, newPassword }),
     });
-    const data = await res.json();
+    const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to reset password');
     return data;
   },
@@ -223,7 +247,7 @@ export const api = {
       credentials: 'include',
       headers: getAuthHeaders(),
     });
-    const data = await res.json();
+    const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to load logs');
     return data;
   },
