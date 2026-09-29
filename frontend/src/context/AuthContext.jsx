@@ -37,7 +37,7 @@ const clearAllCookies = () => {
   });
 };
 
-// ⭐ LocalStorage se Supabase auth keys clear karne ka helper
+// ⭐ Supabase ke localStorage keys clear karne ka helper
 const clearSupabaseStorage = () => {
   if (typeof localStorage === 'undefined') return;
 
@@ -61,9 +61,6 @@ export const AuthProvider = ({ children }) => {
 
   const logUserAction = async (userData, action, details = {}) => {
     if (!userData?.id || !userData?.email) return;
-    // Browser anon key cannot write to protected user_logs table without RLS.
-    // Skip the client-side write to prevent the 401 loop and let the backend
-    // handle auditing if needed in the future.
   };
 
   // =====================================================
@@ -76,7 +73,6 @@ export const AuthProvider = ({ children }) => {
       sessionSyncInProgress.current = true;
       setAuthToken(session.access_token);
 
-      // Restore the local auth state immediately so a refresh does not look like logout.
       const sessionUser = {
         id: session.user.id,
         email: session.user.email,
@@ -117,7 +113,6 @@ export const AuthProvider = ({ children }) => {
           setUserProfile(null);
           setIsLoggedIn(false);
         } else {
-          // Keep the Supabase session alive; a temporary API failure must not log the user out.
           console.error('Auth session sync failed:', error.message);
         }
       } finally {
@@ -227,7 +222,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // =====================================================
-  // LOGOUT (431 fix ke saath)
+  // LOGOUT (431 fix + full page reload)
   // =====================================================
   const logout = async () => {
     try {
@@ -248,7 +243,7 @@ export const AuthProvider = ({ children }) => {
     clearAllCookies();           // Saari browser cookies clear
     clearSupabaseStorage();      // Supabase ke localStorage keys clear
 
-    // LocalStorage aur SessionStorage clear (lekin profileAvatar keys preserve karein)
+    // LocalStorage aur SessionStorage clear (profileAvatar preserve karein)
     if (typeof localStorage !== 'undefined') {
       const avatarKeys = {};
       Object.keys(localStorage).forEach((key) => {
@@ -257,7 +252,6 @@ export const AuthProvider = ({ children }) => {
         }
       });
       localStorage.clear();
-      // Avatar cache wapas daal dein (optional — user ne chahe to hata sakta hai)
       Object.entries(avatarKeys).forEach(([key, value]) => {
         localStorage.setItem(key, value);
       });
@@ -269,6 +263,9 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setUserProfile(null);
     setIsLoggedIn(false);
+
+    // ⭐⭐⭐ FULL PAGE RELOAD — console clear + fresh state ⭐⭐⭐
+    window.location.href = '/';
   };
 
   // =====================================================
