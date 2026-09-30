@@ -10,6 +10,9 @@ function Header({ theme, toggleTheme }) {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Debug - console me dikhega
+  console.log('🔵 HEADER RENDER - isLoggedIn:', isLoggedIn, 'user:', user?.email);
+
   useEffect(() => {
     setMobileOpen(false);
     setDropdownOpen(false);
@@ -36,6 +39,8 @@ function Header({ theme, toggleTheme }) {
     null;
 
   const initial = displayName.charAt(0).toUpperCase();
+
+  const isActive = (path) => location.pathname === path;
 
   const getMarqueeMessage = () => {
     const path = location.pathname;
@@ -68,7 +73,37 @@ function Header({ theme, toggleTheme }) {
 
         {/* DESKTOP NAV */}
         <nav className="desktop-nav">
-          {/* All nav links removed */}
+          <ul>
+            <li>
+              <Link to="/" className={isActive('/') ? 'active-nav-link' : ''}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/university"
+                className={isActive('/university') ? 'active-nav-link' : ''}
+              >
+                Universities
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/about"
+                className={isActive('/about') ? 'active-nav-link' : ''}
+              >
+                About
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/contact"
+                className={isActive('/contact') ? 'active-nav-link' : ''}
+              >
+                Contact
+              </Link>
+            </li>
+          </ul>
 
           {/* ====== YE HAI MAIN PART ====== */}
           {isLoggedIn === true ? (
@@ -141,13 +176,6 @@ function Header({ theme, toggleTheme }) {
                   >
                     <i className="fas fa-tachometer-alt"></i> Dashboard
                   </Link>
-                  <Link
-                    to="/resume-builder"
-                    className="dropdown-item"
-                    onClick={() => setDropdownOpen(false)}
-                  >
-                    <i className="fas fa-file-signature"></i> Build Resume
-                  </Link>
 
                   <hr className="dropdown-divider" />
 
@@ -209,7 +237,20 @@ function Header({ theme, toggleTheme }) {
             </div>
           )}
 
-          {/* All mobile nav links removed */}
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/university">Universities</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
+            </li>
+          </ul>
 
           {isLoggedIn ? (
             <>
