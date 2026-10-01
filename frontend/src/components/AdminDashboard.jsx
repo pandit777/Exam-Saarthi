@@ -22,6 +22,7 @@ function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [stats, setStats] = useState({ totalUsers: 0, totalLoggedIn: 0, totalNotLoggedIn: 0, totalPapers: 0, recentDownloads: [] });
   const [users, setUsers] = useState([]);
+  const [usersError, setUsersError] = useState('');
   const [papers, setPapers] = useState([]);
   const [logs, setLogs] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
@@ -58,6 +59,9 @@ function AdminDashboard() {
       const neverLoggedInUsers = Math.max(userCount - loggedInUsers, 0);
 
       setUsers(usersData);
+      setUsersError(usersResult.status === 'rejected'
+        ? usersResult.reason?.message || 'Unable to load users. Please try again.'
+        : '');
       setPapers(papersData);
       setLogs(logsData);
       setStats({
@@ -69,6 +73,7 @@ function AdminDashboard() {
       });
     } catch (err) {
       setUsers([]);
+      setUsersError('Unable to load admin data. Please try again.');
       setPapers([]);
       setLogs([]);
       setStats({
@@ -220,6 +225,13 @@ function AdminDashboard() {
         </div>
 
         <div className="admin-content">
+          {usersError && (
+            <div className="alert alert-error" role="alert">
+              {usersError}{' '}
+              <button type="button" onClick={fetchData}>Retry</button>
+            </div>
+          )}
+
           {formMessage.text && (
             <div className={`alert ${formMessage.type === 'error' ? 'alert-error' : 'alert-success'}`}>
               {formMessage.text}

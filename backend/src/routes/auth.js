@@ -685,21 +685,52 @@ router.get('/admin/users', async (req, res) => {
   try {
     await verifyAdmin(req);
 
-    const { data, error } = await supabaseAdmin
-      .from('users')
-      .select('*')
-      .order('created_at', { ascending: false });
+    const authUsers = [];
+    const perPage = 1000;
+    let page = 1;
 
-    if (error) {
-      if (error.message.includes('does not exist') || error.code === '42P01') {
-        return res.json({ success: true, users: [] });
-      }
-      throw error;
+    while (true) {
+      const { data, error } = await supabaseAdmin.auth.admin.listUsers({ page, perPage });
+      if (error) throw error;
+
+      const pageUsers = data?.users || [];
+      authUsers.push(...pageUsers);
+      if (pageUsers.length < perPage) break;
+      page += 1;
     }
 
-    return res.json({ success: true, users: data || [] });
+    const profilesById = new Map();
+    for (let index = 0; index < authUsers.length; index += 100) {
+      const userIds = authUsers.slice(index, index + 100).map((authUser) => authUser.id);
+      const { data: profiles, error } = await supabaseAdmin
+        .from('users')
+        .select('*')
+        .in('id', userIds);
+
+      if (!error) {
+        profiles?.forEach((profile) => profilesById.set(profile.id, profile));
+      }
+    }
+
+    const users = authUsers.map((authUser) => {
+      const profile = profilesById.get(authUser.id) || {};
+      return {
+        ...profile,
+        id: authUser.id,
+        email: profile.email || authUser.email,
+        name: profile.name || authUser.user_metadata?.full_name || authUser.user_metadata?.name || authUser.email?.split('@')[0],
+        role: profile.role || 'user',
+        active: profile.active ?? true,
+        last_login_at: profile.last_login_at || authUser.last_sign_in_at,
+        created_at: profile.created_at || authUser.created_at,
+      };
+    });
+
+    users.sort((first, second) => new Date(second.created_at || 0) - new Date(first.created_at || 0));
+    return res.json({ success: true, users });
   } catch (error) {
-    return res.status(403).json({ success: false, message: error.message || 'Admin access required' });
+    const status = error.message === 'Admin access required' || error.message === 'Invalid token' || error.message === 'Authorization token required' ? 403 : 500;
+    return res.status(status).json({ success: false, message: error.message || 'Unable to fetch users' });
   }
 });
 
