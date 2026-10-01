@@ -12,7 +12,6 @@ export const setAuthToken = (token) => {
 const getAuthHeaders = () => {
   return {
     'Content-Type': 'application/json',
-    ...(authToken && { Authorization: `Bearer ${authToken}` }),
   };
 };
 
@@ -181,8 +180,10 @@ export const api = {
   // ===== ADMIN: GET USERS =====
   getAdminUsers: async () => {
     const res = await fetch(`${API_URL}/auth/admin/users`, {
+      method: 'POST',
       credentials: 'omit',
       headers: getAuthHeaders(),
+      body: JSON.stringify({ access_token: authToken }),
     });
     const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to load users');
@@ -195,7 +196,7 @@ export const api = {
       method: 'POST',
       credentials: 'omit',
       headers: getAuthHeaders(),
-      body: JSON.stringify(paperData),
+      body: JSON.stringify({ ...paperData, access_token: authToken }),
     });
     const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to save paper');
@@ -205,8 +206,10 @@ export const api = {
   // ===== ADMIN: GET ALL PAPERS =====
   getAdminPapers: async () => {
     const res = await fetch(`${API_URL}/auth/admin/papers`, {
+      method: 'POST',
       credentials: 'omit',
       headers: getAuthHeaders(),
+      body: JSON.stringify({ access_token: authToken }),
     });
     const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to load papers');
@@ -230,7 +233,7 @@ export const api = {
       method: 'POST',
       credentials: 'omit',
       headers: getAuthHeaders(),
-      body: JSON.stringify({ userId, newPassword }),
+      body: JSON.stringify({ userId, newPassword, access_token: authToken }),
     });
     const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to reset password');
@@ -240,8 +243,10 @@ export const api = {
   // ===== ADMIN: GET USER LOGS =====
   getAdminLogs: async () => {
     const res = await fetch(`${API_URL}/auth/admin/logs`, {
+      method: 'POST',
       credentials: 'omit',
       headers: getAuthHeaders(),
+      body: JSON.stringify({ access_token: authToken }),
     });
     const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to load logs');

@@ -654,7 +654,7 @@ router.get('/me', async (req, res) => {
 });
 
 const verifyAdmin = async (req) => {
-  const token = req.headers.authorization?.replace('Bearer ', '');
+  const token = req.headers.authorization?.replace('Bearer ', '') || req.body?.access_token;
   if (!token) {
     throw new Error('Authorization token required');
   }
@@ -681,7 +681,7 @@ const verifyAdmin = async (req) => {
   return { user, profile };
 };
 
-router.get('/admin/users', async (req, res) => {
+router.post('/admin/users', async (req, res) => {
   try {
     await verifyAdmin(req);
 
@@ -734,7 +734,7 @@ router.get('/admin/users', async (req, res) => {
   }
 });
 
-router.get('/admin/logs', async (req, res) => {
+router.post('/admin/logs', async (req, res) => {
   try {
     await verifyAdmin(req);
 
@@ -757,7 +757,7 @@ router.get('/admin/logs', async (req, res) => {
   }
 });
 
-router.get('/admin/papers', async (req, res) => {
+router.post('/admin/papers', async (req, res) => {
   try {
     await verifyAdmin(req);
 
