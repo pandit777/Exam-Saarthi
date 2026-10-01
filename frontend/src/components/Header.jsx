@@ -10,9 +10,6 @@ function Header({ theme, toggleTheme }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Debug - console me dikhega
-  console.log('🔵 HEADER RENDER - isLoggedIn:', isLoggedIn, 'user:', user?.email);
-
   useEffect(() => {
     setMobileOpen(false);
     setDropdownOpen(false);

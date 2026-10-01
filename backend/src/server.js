@@ -129,7 +129,6 @@ app.get('/api/health', (req, res) => {
     status: 'ok',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV,
-    allowedOrigins: FRONTEND_ORIGINS,
   });
 });
 

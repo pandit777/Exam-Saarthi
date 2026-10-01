@@ -26,7 +26,6 @@ const clearAllCookies = () => {
       `;domain=.${window.location.hostname}`,
       ';domain=.examsaarthi.com',
       ';domain=examsaarthi.com',
-      ';domain=.onrender.com',
     ];
 
     paths.forEach((path) => {
@@ -113,7 +112,7 @@ export const AuthProvider = ({ children }) => {
           setUserProfile(null);
           setIsLoggedIn(false);
         } else {
-          console.error('Auth session sync failed:', error.message);
+          setIsLoggedIn(Boolean(session?.access_token));
         }
       } finally {
         sessionSyncInProgress.current = false;

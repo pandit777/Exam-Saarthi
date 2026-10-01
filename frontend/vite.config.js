@@ -3,6 +3,22 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  esbuild: {
+    drop: ['console'],
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      drop: ['console'],
+    },
+  },
+  build: {
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+      },
+    },
+  },
   plugins: [
     react(),
     VitePWA({
@@ -47,12 +63,6 @@ export default defineConfig({
         target: 'http://localhost:5000',
         changeOrigin: true,
         secure: false,
-        // Optional: backend URL ko log bhi nahi karega
-        configure: (proxy) => {
-          proxy.on('error', (err) => {
-            console.log('❌ Proxy error:', err.message);
-          });
-        },
       },
     },
   },

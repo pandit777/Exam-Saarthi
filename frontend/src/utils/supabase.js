@@ -9,15 +9,6 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Validate env (development mein helpful)
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error(
-    '❌ Missing Supabase env variables. Check .env file:\n' +
-    '   VITE_SUPABASE_URL\n' +
-    '   VITE_SUPABASE_ANON_KEY'
-  );
-}
-
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     // ⭐⭐⭐ 431 FIX — Cookies ki jagah localStorage use karein ⭐⭐⭐

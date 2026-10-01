@@ -56,7 +56,6 @@ const clearAllCookies = () => {
       `;domain=.${window.location.hostname}`,
       ';domain=.examsaarthi.com',
       ';domain=examsaarthi.com',
-      ';domain=.onrender.com',
     ];
 
     paths.forEach((path) => {
