@@ -53,3 +53,6 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 });
 
 export default supabase;
+
+export const AVATAR_BUCKET =
+  import.meta.env.VITE_SUPABASE_AVATAR_BUCKET || 'avatars';

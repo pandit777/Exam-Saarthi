@@ -8,10 +8,14 @@ alter table public.users
   add column if not exists course text,
   add column if not exists avatar_url text,
   add column if not exists role text default 'user',
-  add column if not exists active boolean default true;
+  add column if not exists active boolean default true,
+  add column if not exists last_login_at timestamptz;
 
 create unique index if not exists users_email_unique_idx
   on public.users (lower(email));
+
+create index if not exists users_last_login_idx
+  on public.users (last_login_at);
 
 -- These fields are not collected during signup and must not block profile creation.
 alter table public.users

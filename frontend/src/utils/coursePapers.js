@@ -11,6 +11,8 @@ export const iguCourseOptions = [
   { value: 'MA', label: 'MA (Master of Arts)' },
   { value: 'B.Com', label: 'B.Com (Bachelor of Commerce)' },
   { value: 'M.Com', label: 'M.Com (Master of Commerce)' },
+  { value: 'Delhi University', label: 'Delhi University (DU)' },
+  { value: 'DU Course', label: 'DU Course / Semester Papers' },
 ];
 
 export const semesterOptions = ['1st', '2nd', '3rd', '4th', '5th', '6th'];
@@ -23,7 +25,7 @@ export async function loadAdminPapers(courseName) {
       id: paper.paper_id || paper.id,
       name: paper.paper_name,
       sem: paper.semester,
-      year: String(paper.year || new Date(paper.created_at || Date.now()).getFullYear()),
+      year: paper.year ? String(paper.year) : 'N/A',
       link: paper.google_drive_link,
     }));
   } catch (error) {

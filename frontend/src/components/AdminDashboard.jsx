@@ -20,7 +20,7 @@ function AdminDashboard() {
   const { isAdminUser, loading } = useAdmin();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [stats, setStats] = useState({ totalUsers: 0, totalDownloads: 0, totalPapers: 0, recentDownloads: [] });
+  const [stats, setStats] = useState({ totalUsers: 0, totalLoggedIn: 0, totalNotLoggedIn: 0, totalPapers: 0, recentDownloads: [] });
   const [users, setUsers] = useState([]);
   const [papers, setPapers] = useState([]);
   const [logs, setLogs] = useState([]);
@@ -41,31 +41,43 @@ function AdminDashboard() {
     setLoadingData(true);
     try {
       const [usersResult, papersResult, logsResult, recentDownloadsResult] = await Promise.allSettled([
-        supabase.from('users').select('*').order('created_at', { ascending: false }),
+        api.getAdminUsers(),
         api.getAdminPapers(),
         api.getAdminLogs(),
         supabase.from('downloads').select('*').order('created_at', { ascending: false }).limit(10),
       ]);
 
-      const usersData = usersResult.status === 'fulfilled' ? usersResult.value.data || [] : [];
+      const usersData = usersResult.status === 'fulfilled' ? usersResult.value.users || [] : [];
       const papersData = papersResult.status === 'fulfilled' ? papersResult.value.papers || [] : [];
       const logsData = logsResult.status === 'fulfilled' ? logsResult.value.logs || [] : [];
       const recentDownloads = recentDownloadsResult.status === 'fulfilled' ? recentDownloadsResult.value.data || [] : [];
 
       const userCount = usersData.length;
       const paperCount = papersData.length;
-      const downloadCount = recentDownloads.length;
+      const loggedInUsers = usersData.filter((user) => user.last_login_at).length;
+      const neverLoggedInUsers = Math.max(userCount - loggedInUsers, 0);
 
       setUsers(usersData);
       setPapers(papersData);
       setLogs(logsData);
       setStats({
         totalUsers: userCount,
-        totalDownloads: downloadCount,
+        totalLoggedIn: loggedInUsers,
+        totalNotLoggedIn: neverLoggedInUsers,
         totalPapers: paperCount,
         recentDownloads,
       });
     } catch (err) {
+      setUsers([]);
+      setPapers([]);
+      setLogs([]);
+      setStats({
+        totalUsers: 0,
+        totalLoggedIn: 0,
+        totalNotLoggedIn: 0,
+        totalPapers: 0,
+        recentDownloads: [],
+      });
     } finally {
       setLoadingData(false);
     }
@@ -87,6 +99,13 @@ function AdminDashboard() {
     }
   };
 
+  const normalizeYearInput = (value) => {
+    const raw = String(value ?? '').trim();
+    if (!raw) return '';
+    const match = raw.match(/\d{4}/);
+    return match ? match[0] : raw.replace(/[^\d]/g, '');
+  };
+
   const handlePaperChange = (e) => {
     const { name, value } = e.target;
     setPaperForm((prev) => ({ ...prev, [name]: value }));
@@ -102,7 +121,7 @@ function AdminDashboard() {
         paper_name: paperForm.paper_name.trim(),
         course_name: paperForm.course_name.trim(),
         semester: paperForm.semester.trim(),
-        year: paperForm.year.trim(),
+        year: normalizeYearInput(paperForm.year),
         google_drive_link: paperForm.google_drive_link.trim(),
       };
 
@@ -215,16 +234,16 @@ function AdminDashboard() {
                   <div className="admin-stat-info"><h3>{stats.totalUsers}</h3><p>Total Users</p></div>
                 </div>
                 <div className="admin-stat-card">
+                  <div className="admin-stat-icon active"><i className="fas fa-user-check"></i></div>
+                  <div className="admin-stat-info"><h3>{stats.totalLoggedIn}</h3><p>Logged In</p></div>
+                </div>
+                <div className="admin-stat-card">
+                  <div className="admin-stat-icon downloads"><i className="fas fa-user-slash"></i></div>
+                  <div className="admin-stat-info"><h3>{stats.totalNotLoggedIn}</h3><p>Not Logged In</p></div>
+                </div>
+                <div className="admin-stat-card">
                   <div className="admin-stat-icon papers"><i className="fas fa-file-pdf"></i></div>
                   <div className="admin-stat-info"><h3>{stats.totalPapers}</h3><p>Total Papers</p></div>
-                </div>
-                <div className="admin-stat-card">
-                  <div className="admin-stat-icon downloads"><i className="fas fa-download"></i></div>
-                  <div className="admin-stat-info"><h3>{stats.totalDownloads}</h3><p>Recent Downloads</p></div>
-                </div>
-                <div className="admin-stat-card">
-                  <div className="admin-stat-icon active"><i className="fas fa-user-check"></i></div>
-                  <div className="admin-stat-info"><h3>{users.filter((u) => u.active !== false).length}</h3><p>Active Users</p></div>
                 </div>
               </div>
 
@@ -253,13 +272,22 @@ function AdminDashboard() {
               <h2>All Users ({users.length})</h2>
               <div className="admin-table-wrapper">
                 <table className="admin-table">
-                  <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Action</th></tr></thead>
+                  <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Last Login</th><th>Joined</th><th>Action</th></tr></thead>
                   <tbody>
                     {users.length > 0 ? users.map((u) => (
                       <tr key={u.id}>
                         <td>{u.name || 'N/A'}</td>
                         <td>{u.email}</td>
                         <td><span className={`badge-role ${u.role || 'user'}`}>{u.role || 'user'}</span></td>
+                        <td>
+                          {u.last_login_at ? (
+                            <span className={`badge-status ${new Date(u.last_login_at).getTime() ? 'active' : 'inactive'}`}>
+                              {new Date(u.last_login_at).toLocaleString()}
+                            </span>
+                          ) : (
+                            <span className="badge-status inactive">Never</span>
+                          )}
+                        </td>
                         <td>{u.created_at ? new Date(u.created_at).toLocaleDateString() : 'N/A'}</td>
                         <td>
                           <button className="admin-action-btn" onClick={() => handlePasswordReset(u)}>
@@ -267,7 +295,7 @@ function AdminDashboard() {
                           </button>
                         </td>
                       </tr>
-                    )) : <tr><td colSpan="5" className="text-center">No users found</td></tr>}
+                    )) : <tr><td colSpan="6" className="text-center">No users found</td></tr>}
                   </tbody>
                 </table>
               </div>

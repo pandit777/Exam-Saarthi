@@ -5,6 +5,12 @@ import { AVATAR_BUCKET, supabase, supabaseAdmin } from '../utils/supabase.js';
 
 const router = express.Router();
 const isGmailAddress = (email) => email.trim().toLowerCase().endsWith('@gmail.com');
+const normalizePaperYear = (value) => {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+  const match = raw.match(/\d{4}/);
+  return match ? match[0] : raw.replace(/[^\d]/g, '');
+};
 
 // =====================================================
 // REGISTER
@@ -167,6 +173,17 @@ router.post(
         password,
       });
 
+      if (sessionData?.user?.id) {
+        await supabaseAdmin
+          .from('users')
+          .update({
+            active: true,
+            last_login_at: new Date().toISOString(),
+          })
+          .eq('id', sessionData.user.id)
+          .catch(() => {});
+      }
+
       if (sessionError || !sessionData?.session) {
         console.error('❌ Registration login error:', sessionError?.message || 'Session was not created');
         return res.status(201).json({
@@ -257,6 +274,16 @@ router.post(
           message: 'Account profile is incomplete. Please contact support.',
         });
       }
+
+      const nowIso = new Date().toISOString();
+      await supabaseAdmin
+        .from('users')
+        .update({
+          active: true,
+          last_login_at: nowIso,
+        })
+        .eq('id', data.user.id)
+        .catch(() => {});
 
       return res.json({
         success: true,
@@ -382,6 +409,7 @@ router.post('/oauth-callback', async (req, res) => {
           null,
         role: 'user',
         active: true,
+        last_login_at: new Date().toISOString(),
       };
 
       const { data: created, error: createError } = await supabaseAdmin
@@ -397,6 +425,15 @@ router.post('/oauth-callback', async (req, res) => {
         profile = created;
         console.log('✅ Profile created');
       }
+    } else {
+      await supabaseAdmin
+        .from('users')
+        .update({
+          active: true,
+          last_login_at: new Date().toISOString(),
+        })
+        .eq('id', user.id)
+        .catch(() => {});
     }
 
     return res.json({
@@ -735,8 +772,9 @@ router.post('/admin/papers', async (req, res) => {
     await verifyAdmin(req);
 
     const { paper_id, paper_name, course_name, semester, year, google_drive_link } = req.body || {};
+    const safeYear = normalizePaperYear(year);
 
-    if (!paper_id || !paper_name || !course_name || !semester || !year || !google_drive_link) {
+    if (!paper_id || !paper_name || !course_name || !semester || !safeYear || !google_drive_link) {
       return res.status(400).json({ success: false, message: 'paper_id, paper_name, course_name, semester, year and google_drive_link are required' });
     }
 
@@ -745,7 +783,7 @@ router.post('/admin/papers', async (req, res) => {
       paper_name: String(paper_name).trim(),
       course_name: String(course_name).trim(),
       semester: String(semester).trim(),
-      year: String(year).trim(),
+      year: safeYear,
       google_drive_link: String(google_drive_link).trim(),
       created_at: new Date().toISOString(),
     };

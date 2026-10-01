@@ -1,10 +1,7 @@
-// ⭐ Backend URL — VITE_API_URL se ya fallback
-const API_URL = (
-  import.meta.env.VITE_API_URL ||
-  'https://exam-saarthi-icwv.onrender.com/api'
-)
-  .replace(/([^:]\/)\/+/g, '$1')
-  .replace(/\/+$/, '');
+// Hide the backend host from the browser bundle.
+// Requests always go through the same origin (/api), and in local dev Vite proxies
+// /api to the backend service so the actual backend URL never leaks into the client.
+const API_URL = '/api';
 
 let authToken = null;
 
