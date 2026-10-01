@@ -73,7 +73,7 @@ export const api = {
     try {
       res = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
-        credentials: 'include',
+        credentials: 'omit',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
       });
@@ -91,7 +91,7 @@ export const api = {
     try {
       res = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
-        credentials: 'include',
+        credentials: 'omit',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
@@ -106,7 +106,7 @@ export const api = {
   // ===== GOOGLE - Get OAuth URL =====
   getGoogleUrl: async () => {
     const res = await fetch(`${API_URL}/auth/google`, {
-      credentials: 'include',
+      credentials: 'omit',
     });
     const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Google login failed');
@@ -117,7 +117,7 @@ export const api = {
   oauthCallback: async (accessToken) => {
     const res = await fetch(`${API_URL}/auth/oauth-callback`, {
       method: 'POST',
-      credentials: 'include',
+      credentials: 'omit',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ access_token: accessToken }),
     });
@@ -131,7 +131,7 @@ export const api = {
     try {
       await fetch(`${API_URL}/auth/logout`, {
         method: 'POST',
-        credentials: 'include',
+        credentials: 'omit',
         headers: authToken
           ? { Authorization: `Bearer ${authToken}` }
           : {},
@@ -154,7 +154,7 @@ export const api = {
   // ===== GET ME =====
   getMe: async () => {
     const res = await fetch(`${API_URL}/auth/me`, {
-      credentials: 'include',
+      credentials: 'omit',
       headers: authToken
         ? { Authorization: `Bearer ${authToken}` }
         : {},
@@ -166,7 +166,7 @@ export const api = {
   updateProfile: async (profileData) => {
     const res = await fetch(`${API_URL}/auth/profile`, {
       method: 'PATCH',
-      credentials: 'include',
+      credentials: 'omit',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         ...profileData,
@@ -181,7 +181,7 @@ export const api = {
   // ===== ADMIN: GET USERS =====
   getAdminUsers: async () => {
     const res = await fetch(`${API_URL}/auth/admin/users`, {
-      credentials: 'include',
+      credentials: 'omit',
       headers: getAuthHeaders(),
     });
     const data = await safeJson(res);
@@ -193,7 +193,7 @@ export const api = {
   createPaper: async (paperData) => {
     const res = await fetch(`${API_URL}/auth/admin/papers`, {
       method: 'POST',
-      credentials: 'include',
+      credentials: 'omit',
       headers: getAuthHeaders(),
       body: JSON.stringify(paperData),
     });
@@ -205,7 +205,7 @@ export const api = {
   // ===== ADMIN: GET ALL PAPERS =====
   getAdminPapers: async () => {
     const res = await fetch(`${API_URL}/auth/admin/papers`, {
-      credentials: 'include',
+      credentials: 'omit',
       headers: getAuthHeaders(),
     });
     const data = await safeJson(res);
@@ -217,7 +217,7 @@ export const api = {
   getPapers: async (courseName) => {
     const params = new URLSearchParams({ course: courseName });
     const res = await fetch(`${API_URL}/auth/papers?${params.toString()}`, {
-      credentials: 'include',
+      credentials: 'omit',
     });
     const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to load papers');
@@ -228,7 +228,7 @@ export const api = {
   resetUserPassword: async (userId, newPassword) => {
     const res = await fetch(`${API_URL}/auth/admin/reset-password`, {
       method: 'POST',
-      credentials: 'include',
+      credentials: 'omit',
       headers: getAuthHeaders(),
       body: JSON.stringify({ userId, newPassword }),
     });
@@ -240,7 +240,7 @@ export const api = {
   // ===== ADMIN: GET USER LOGS =====
   getAdminLogs: async () => {
     const res = await fetch(`${API_URL}/auth/admin/logs`, {
-      credentials: 'include',
+      credentials: 'omit',
       headers: getAuthHeaders(),
     });
     const data = await safeJson(res);
