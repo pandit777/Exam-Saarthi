@@ -11,6 +11,23 @@ const normalizePaperYear = (value) => {
   const match = raw.match(/\d{4}/);
   return match ? match[0] : raw.replace(/[^\d]/g, '');
 };
+const updateLastLogin = async (userId) => {
+  try {
+    const { error } = await supabaseAdmin
+      .from('users')
+      .update({
+        active: true,
+        last_login_at: new Date().toISOString(),
+      })
+      .eq('id', userId);
+
+    if (error) {
+      console.error('❌ Login timestamp update failed:', error.message);
+    }
+  } catch (error) {
+    console.error('❌ Login timestamp update failed:', error.message);
+  }
+};
 
 // =====================================================
 // REGISTER
@@ -174,14 +191,7 @@ router.post(
       });
 
       if (sessionData?.user?.id) {
-        await supabaseAdmin
-          .from('users')
-          .update({
-            active: true,
-            last_login_at: new Date().toISOString(),
-          })
-          .eq('id', sessionData.user.id)
-          .catch(() => {});
+        await updateLastLogin(sessionData.user.id);
       }
 
       if (sessionError || !sessionData?.session) {
@@ -275,15 +285,7 @@ router.post(
         });
       }
 
-      const nowIso = new Date().toISOString();
-      await supabaseAdmin
-        .from('users')
-        .update({
-          active: true,
-          last_login_at: nowIso,
-        })
-        .eq('id', data.user.id)
-        .catch(() => {});
+      await updateLastLogin(data.user.id);
 
       return res.json({
         success: true,
@@ -426,14 +428,7 @@ router.post('/oauth-callback', async (req, res) => {
         console.log('✅ Profile created');
       }
     } else {
-      await supabaseAdmin
-        .from('users')
-        .update({
-          active: true,
-          last_login_at: new Date().toISOString(),
-        })
-        .eq('id', user.id)
-        .catch(() => {});
+      await updateLastLogin(user.id);
     }
 
     return res.json({
@@ -824,16 +819,24 @@ router.post('/admin/reset-password', async (req, res) => {
       throw error;
     }
 
-    await supabaseAdmin.from('user_logs').insert([
-      {
-        user_id: userId,
-        user_email: adminSession.profile.email,
-        name: adminSession.profile.name || 'Admin',
-        action: 'password_reset',
-        details: JSON.stringify({ reset_for_user_id: userId, reset_by: adminSession.user.email }),
-        created_at: new Date().toISOString(),
-      },
-    ]).catch(() => {});
+    try {
+      const { error: logError } = await supabaseAdmin.from('user_logs').insert([
+        {
+          user_id: userId,
+          user_email: adminSession.profile.email,
+          name: adminSession.profile.name || 'Admin',
+          action: 'password_reset',
+          details: JSON.stringify({ reset_for_user_id: userId, reset_by: adminSession.user.email }),
+          created_at: new Date().toISOString(),
+        },
+      ]);
+
+      if (logError) {
+        console.error('❌ Password reset log failed:', logError.message);
+      }
+    } catch (logError) {
+      console.error('❌ Password reset log failed:', logError.message);
+    }
 
     return res.json({ success: true, message: 'Password reset successfully' });
   } catch (error) {
