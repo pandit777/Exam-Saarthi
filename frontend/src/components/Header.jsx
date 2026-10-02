@@ -5,6 +5,7 @@ import logo from '../assets/logo.png';
 
 function Header({ theme, toggleTheme }) {
   const { isLoggedIn, user, userProfile, logout } = useAuth();
+  const hasUserSession = isLoggedIn || Boolean(user?.id || userProfile?.id);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ function Header({ theme, toggleTheme }) {
 
   const displayName =
     userProfile?.name ||
+    user?.name ||
     user?.user_metadata?.full_name ||
     user?.user_metadata?.name ||
     user?.email?.split('@')[0] ||
@@ -31,6 +33,7 @@ function Header({ theme, toggleTheme }) {
 
   const avatarUrl =
     userProfile?.avatar_url ||
+    user?.avatar_url ||
     user?.user_metadata?.avatar_url ||
     user?.user_metadata?.picture ||
     null;
@@ -103,7 +106,7 @@ function Header({ theme, toggleTheme }) {
           </ul>
 
           {/* ====== YE HAI MAIN PART ====== */}
-          {isLoggedIn === true ? (
+          {hasUserSession ? (
             // LOGGED IN - show profile
             <div
               className="user-info"
@@ -214,7 +217,7 @@ function Header({ theme, toggleTheme }) {
       {/* MOBILE NAV */}
       {mobileOpen && (
         <nav className="mobile-nav" style={{ display: 'block' }}>
-          {isLoggedIn && (
+          {hasUserSession && (
             <div className="mobile-user-card">
               <div className="mobile-user-avatar">
                 {avatarUrl ? (
@@ -249,7 +252,7 @@ function Header({ theme, toggleTheme }) {
             </li>
           </ul>
 
-          {isLoggedIn ? (
+          {hasUserSession ? (
             <>
               <div style={{ padding: '8px 15px' }}>
                 <Link to="/profile" className="mobile-login-btn">

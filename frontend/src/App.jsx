@@ -9,6 +9,7 @@ import {
 
 import { AuthProvider } from './context/AuthContext';
 import { AdminProvider } from './context/AdminContext';
+import { isSupabaseConfigured } from './utils/supabase';
 
 import IGUMtech from './components/IGUMtech';
 import IGUBCA from './components/IGUBCA';
@@ -287,7 +288,7 @@ function ScrollToTop() {
   return null;
 }
 
-function App() {
+function AppContent() {
   const [theme, setTheme] =
     useState('light');
 
@@ -541,6 +542,23 @@ function App() {
       </AdminProvider>
     </AuthProvider>
   );
+}
+
+function App() {
+  if (!isSupabaseConfigured) {
+    return (
+      <main style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: '2rem', background: '#f5f7f6', color: '#18312d', fontFamily: 'Georgia, serif' }}>
+        <section style={{ maxWidth: '560px', padding: '2rem', borderTop: '4px solid #d28a37', background: '#fff', boxShadow: '0 16px 40px rgba(24, 49, 45, .1)' }}>
+          <p style={{ margin: '0 0 .5rem', color: '#8b5b26', font: '700 .75rem sans-serif', textTransform: 'uppercase' }}>Local setup required</p>
+          <h1 style={{ margin: '0 0 1rem', fontSize: '2rem' }}>Connect Exam Saarthi</h1>
+          <p style={{ margin: '0 0 1rem', lineHeight: 1.6 }}>Supabase authentication is not configured. Add your project URL and anon key to <code>frontend/.env</code>, then restart the development server.</p>
+          <p style={{ margin: 0, color: '#52645f', font: '.9rem sans-serif' }}>Use <code>frontend/.env.example</code> as the template. Keep real keys out of source control.</p>
+        </section>
+      </main>
+    );
+  }
+
+  return <AppContent />;
 }
 
 export default App;

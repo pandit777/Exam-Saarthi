@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const sessionSyncInProgress = useRef(false);
+  const sessionSyncToken = useRef(null);
 
   const logUserAction = async (userData, action, details = {}) => {
     if (!userData?.id || !userData?.email) return;
@@ -67,22 +67,23 @@ export const AuthProvider = ({ children }) => {
   // =====================================================
   useEffect(() => {
     const syncSession = async (session) => {
-      if (!session?.access_token || !session.user || sessionSyncInProgress.current) return;
+      if (!session?.access_token || !session.user || sessionSyncToken.current === session.access_token) return;
 
-      sessionSyncInProgress.current = true;
+      sessionSyncToken.current = session.access_token;
       setAuthToken(session.access_token);
 
+      const metadata = session.user.user_metadata || {};
       const sessionUser = {
         id: session.user.id,
         email: session.user.email,
-        name: session.user.user_metadata?.full_name || session.user.user_metadata?.name,
-        mobile: session.user.user_metadata?.mobile,
-        university: session.user.user_metadata?.university,
-        course: session.user.user_metadata?.course,
+        name: metadata.full_name || metadata.name || session.user.email?.split('@')[0],
+        mobile: metadata.mobile,
+        university: metadata.university,
+        course: metadata.course,
         role: 'user',
         avatar_url:
-          session.user.user_metadata?.avatar_url ||
-          session.user.user_metadata?.picture ||
+          metadata.avatar_url ||
+          metadata.picture ||
           localStorage.getItem(`profileAvatar:${session.user.id}`) ||
           undefined,
       };
@@ -96,36 +97,47 @@ export const AuthProvider = ({ children }) => {
           ? await api.oauthCallback(session.access_token)
           : await api.getMe();
 
-        if (response.success && (response.user || response.profile)) {
+        if (sessionSyncToken.current === session.access_token && response.success && (response.user || response.profile)) {
           const syncedUser = response.user || response.profile;
-          setUser(syncedUser);
-          setUserProfile(syncedUser);
-          if (syncedUser.avatar_url) {
-            localStorage.setItem(`profileAvatar:${syncedUser.id}`, syncedUser.avatar_url);
+          const mergedUser = {
+            ...sessionUser,
+            ...syncedUser,
+            name: syncedUser.name || sessionUser.name,
+            avatar_url: syncedUser.avatar_url || sessionUser.avatar_url,
+          };
+          setUser(mergedUser);
+          setUserProfile(mergedUser);
+          if (mergedUser.avatar_url) {
+            localStorage.setItem(`profileAvatar:${mergedUser.id}`, mergedUser.avatar_url);
           }
         }
       } catch (error) {
         if (session.user.app_metadata?.provider === 'google' && error.message?.includes('Only Gmail')) {
-          await supabase.auth.signOut();
+          sessionSyncToken.current = null;
           setAuthToken(null);
           setUser(null);
           setUserProfile(null);
           setIsLoggedIn(false);
+          window.setTimeout(() => {
+            supabase.auth.signOut().catch(() => {});
+          }, 0);
         } else {
           setIsLoggedIn(Boolean(session?.access_token));
         }
       } finally {
-        sessionSyncInProgress.current = false;
-        setLoading(false);
+        if (sessionSyncToken.current === session.access_token || sessionSyncToken.current === null) {
+          setLoading(false);
+        }
       }
     };
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if ((event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.access_token) {
-        await syncSession(session);
+        void syncSession(session);
       } else if (event === 'SIGNED_OUT') {
+        sessionSyncToken.current = null;
         setAuthToken(null);
         setUser(null);
         setUserProfile(null);
@@ -207,14 +219,18 @@ export const AuthProvider = ({ children }) => {
   // =====================================================
   const loginWithGoogle = async () => {
     try {
-      const response = await api.getGoogleUrl();
-
-      if (response.success && response.url) {
-        window.location.href = response.url;
-        return { error: null };
-      } else {
-        throw new Error('Failed to get Google URL');
-      }
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      });
+      if (error) throw error;
+      return { error: null };
     } catch (error) {
       return { error };
     }

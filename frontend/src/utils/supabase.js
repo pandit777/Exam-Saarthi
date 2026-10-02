@@ -8,8 +8,9 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+export const supabase = isSupabaseConfigured ? createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     // ⭐⭐⭐ 431 FIX — Cookies ki jagah localStorage use karein ⭐⭐⭐
     storage: typeof window !== 'undefined' ? window.localStorage : undefined,
@@ -41,7 +42,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   db: {
     schema: 'public',
   },
-});
+}) : null;
 
 export default supabase;
 

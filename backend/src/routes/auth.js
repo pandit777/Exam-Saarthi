@@ -386,11 +386,13 @@ router.post('/oauth-callback', async (req, res) => {
     console.log('✅ OAuth user:', user.email);
 
     // Check if profile exists
-    const { data: existingProfile } = await supabaseAdmin
+    const { data: existingProfile, error: profileLookupError } = await supabaseAdmin
       .from('users')
       .select('*')
       .eq('id', user.id)
-      .single();
+      .maybeSingle();
+
+    if (profileLookupError) throw profileLookupError;
 
     let profile = existingProfile;
 
@@ -416,16 +418,15 @@ router.post('/oauth-callback', async (req, res) => {
 
       const { data: created, error: createError } = await supabaseAdmin
         .from('users')
-        .insert([newProfile])
+        .upsert(newProfile, { onConflict: 'id' })
         .select()
         .single();
 
       if (createError) {
-        console.error('❌ Profile create error:', createError.message);
-        profile = newProfile;
+        throw createError;
       } else {
         profile = created;
-        console.log('✅ Profile created');
+        console.log('✅ Profile created or updated');
       }
     } else {
       await updateLastLogin(user.id);

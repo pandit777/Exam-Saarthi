@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useRef } from 'react';
 import { supabase } from '../utils/supabase';
 
 const AdminContext = createContext();
@@ -12,18 +12,22 @@ export const useAdmin = () => {
 export const AdminProvider = ({ children }) => {
   const [isAdminUser, setIsAdminUser] = useState(false);
   const [loading, setLoading] = useState(true);
+  const requestId = useRef(0);
 
   useEffect(() => {
     const checkAdmin = async (session) => {
-      const activeSession = session || (await supabase.auth.getSession()).data.session;
-      const userId = activeSession?.user?.id;
+      const currentRequest = ++requestId.current;
+      const userId = session?.user?.id;
 
       if (!userId) {
-        setIsAdminUser(false);
-        setLoading(false);
+        if (currentRequest === requestId.current) {
+          setIsAdminUser(false);
+          setLoading(false);
+        }
         return;
       }
 
+      setLoading(true);
       try {
         const { data, error } = await supabase
           .from('users')
@@ -31,20 +35,31 @@ export const AdminProvider = ({ children }) => {
           .eq('id', userId)
           .maybeSingle();
 
-        setIsAdminUser(!error && data?.role === 'admin');
+        if (currentRequest === requestId.current) setIsAdminUser(!error && data?.role === 'admin');
       } catch (err) {
-        setIsAdminUser(false);
+        if (currentRequest === requestId.current) setIsAdminUser(false);
       } finally {
-        setLoading(false);
+        if (currentRequest === requestId.current) setLoading(false);
       }
     };
 
-    checkAdmin();
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => checkAdmin(session))
+      .catch(() => {
+        setIsAdminUser(false);
+        setLoading(false);
+      });
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      checkAdmin(session);
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        requestId.current += 1;
+        setIsAdminUser(false);
+        setLoading(false);
+      } else if (session?.user) {
+        void checkAdmin(session);
+      }
     });
 
     return () => subscription.unsubscribe();

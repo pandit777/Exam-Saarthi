@@ -1,5 +1,15 @@
 # React + Vite
 
+## Local development
+
+Create `frontend/.env` from `.env.example` and set `VITE_SUPABASE_URL` and
+`VITE_SUPABASE_ANON_KEY` to the public values from your Supabase project. Then
+start the backend and run `npm run dev` from this directory. Restart Vite after
+changing environment values.
+
+The app shows a setup notice when these values are missing instead of crashing
+during Supabase client initialization.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

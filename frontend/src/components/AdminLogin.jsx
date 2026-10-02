@@ -28,7 +28,7 @@ function AdminLogin() {
     setError('');
     setLoading(true);
     try {
-      const { data, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error: signInError } = await login(email.trim().toLowerCase(), password);
       if (signInError) throw signInError;
 
       const { data: userData, error: userError } = await supabase
@@ -44,7 +44,6 @@ function AdminLogin() {
         return;
       }
 
-      await login(email, password);
       navigate('/admin/dashboard', { replace: true });
     } catch (err) {
       setError(err.message || 'Failed to login as admin');
