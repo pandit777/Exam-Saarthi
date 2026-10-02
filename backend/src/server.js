@@ -116,6 +116,14 @@ app.use('/api/auth/register', authLimiter);
 // =====================================================
 app.use('/api/auth', authRoutes);
 
+app.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    message: 'Exam Saarthi API is running',
+    health: '/api/health',
+  });
+});
+
 app.get('/api', (req, res) => {
   res.json({
     status: 'ok',
