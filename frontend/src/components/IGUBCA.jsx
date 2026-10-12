@@ -36,7 +36,7 @@ function IGUBCA() {
     { id: '17672', name: 'Hindi Bhasha aur Vyakaran', sem: '1st', year: '2024', link: 'https://drive.google.com/file/d/1tydCfVC-y4ROhQwcJO9-wRIqVz0ToEbc/view' },
     { id: '11321', name: 'Computer And Programming Fundamental', sem: '1st', year: '2024', link: 'https://drive.google.com/file/d/1v58Ov94dRkN-EU7anGBo3MoUnlpqJ_QM/view' },
     { id: '17652', name: 'Environmental Studies', sem: '1st', year: '2024', link: 'https://drive.google.com/file/d/1rPQjYUB3pci12WaN4nsdQ0XYu_IYYoT5/view' },
-    { id: '11321', name: 'Computer and Programming Fundamental (NEW NEP)', sem: '1st', year: '2025', link: 'https://drive.google.com/drive/folders/1gys3H00xsQnZTixhvyGNFLrQqVwnJCvv' },
+    { id: '11321', name: 'Computer and Programming Fundamental (NEW NEP)', sem: '1st', year: '2025', link: 'https://drive.google.com/file/d/11wkpqb-0XctjMs_eJ0q2ShNVvusWOXZw/view?usp=drive_link' },
     { id: '11324', name: 'Logical Organization of Computer (NEW NEP)', sem: '1st', year: '2025', link: 'https://drive.google.com/file/d/1ystHnkl78KB_s30gI7FTi1DlKiWyP7tN/view?usp=drive_link' },
     { id: '11323', name: 'Mathematics (New NEP)', sem: '1st', year: '2025', link: 'https://drive.google.com/file/d/1sos2w3bRYcE5Uy3kAjzAleKw2xrcyjUi/view?usp=drive_link' },
     { id: '11322', name: 'PC Software (New NEP)', sem: '1st', year: '2025', link: 'https://drive.google.com/file/d/104yLHFStDWlc-QRWwQkcuLeBem6SB9ZA/view?usp=drive_link' },
