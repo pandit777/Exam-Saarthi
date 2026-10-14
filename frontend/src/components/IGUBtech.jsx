@@ -7,6 +7,7 @@ import { loadAdminPapers } from '../utils/coursePapers';
 function IGUBtech() {
   const { isLoggedIn } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
+  const [appliedSearchTerm, setAppliedSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
   const [expandedSections, setExpandedSections] = useState({
     1: true,
@@ -28,6 +29,10 @@ function IGUBtech() {
     { id: '12477', name: 'Basic Electrical Engineering', sem: '1st', year: '2024', link: 'https://drive.google.com/file/d/1nggK3htInbjiL0IH8l86I1C2leKjp7AG/view' },
     { id: '12472', name: 'Semiconductor Physics', sem: '1st', year: '2024', link: 'https://drive.google.com/file/d/1MLSSZ1rsXR7XTCDWJGWlCd1axosd-PCQ/view' },
     { id: '12476', name: 'Calculus and Linear Algebra', sem: '1st', year: '2024', link: 'https://drive.google.com/file/d/1wZvOzDdxVddptPW42a1sOuoUjol0ZEF_/view' },
+    { id: '12470', name: 'Introduction to Electromagnetic Theory', sem: '1st', year: '2025', link: 'https://drive.google.com/file/d/1_Otlr505bnixgcUZdMUq4Azn1vl_0nVq/view?usp=drive_link' },
+    { id: '12472', name: 'Semiconductor Physics', sem: '1st', year: '2025', link:'https://drive.google.com/file/d/18-p9R_qr9C9BvBX45v8p0G6_mAVPnnQT/view?usp=drive_link' },
+    { id: '12476', name: 'Calculus and Linear Algebra', sem: '1st', year: '2025',link: 'https://drive.google.com/file/d/1NFUq9Zy3cQ21vFunN3pWqfLapyIOAsT5/view?usp=drive_link' },
+
     { id: '12474', name: 'Chemistry - I', sem: '2nd', year: '2019', link: 'https://drive.google.com/file/d/11MtNfJnjAGZ_bAwimR5C2-ze4WtQmxmG/view' },
     { id: '22480', name: 'Workshop', sem: '2nd', year: '2022', link: 'https://drive.google.com/file/d/1Tu5fRQhmFLENmxY6aK3V_MbXJT53xJHZ/view' },
     { id: '22999', name: 'Computer Awareness', sem: '2nd', year: '2022', link: 'https://drive.google.com/file/d/1cWAIh_e3WA11QR6MJvK6ClMmx_pPaXs1/view' },
@@ -198,7 +203,7 @@ function IGUBtech() {
   };
 
   const filterPapers = (sems) => {
-    const search = searchTerm.toLowerCase().trim();
+    const search = appliedSearchTerm.toLowerCase().trim();
     return [...papersData, ...adminPapers].filter((p) => {
       if (!sems.includes(p.sem)) return false;
       if (activeFilter !== 'all' && p.sem !== activeFilter) return false;
@@ -273,7 +278,13 @@ function IGUBtech() {
       <div className="container">
         {/* Toolbar */}
         <div className="toolbar">
-          <div className="search-wrapper">
+          <form
+            className="search-wrapper"
+            onSubmit={(event) => {
+              event.preventDefault();
+              setAppliedSearchTerm(searchTerm);
+            }}
+          >
             <i className="fas fa-search"></i>
             <input
               type="text"
@@ -281,7 +292,8 @@ function IGUBtech() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </div>
+            <button type="submit">Search</button>
+          </form>
           <div className="filter-group">
             <button
               className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}

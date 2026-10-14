@@ -205,7 +205,7 @@ export const api = {
 
   // ===== ADMIN: GET ALL PAPERS =====
   getAdminPapers: async () => {
-    const res = await fetch(`${API_URL}/auth/admin/papers`, {
+    const res = await fetch(`${API_URL}/auth/admin/papers/list`, {
       method: 'POST',
       credentials: 'omit',
       headers: getAuthHeaders(),

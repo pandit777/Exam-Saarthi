@@ -758,7 +758,7 @@ router.post('/admin/logs', async (req, res) => {
   }
 });
 
-router.post('/admin/papers', async (req, res) => {
+router.post('/admin/papers/list', async (req, res) => {
   try {
     await verifyAdmin(req);
 
