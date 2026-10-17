@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import http from 'http';
 import rateLimit from 'express-rate-limit';
 import authRoutes from './routes/auth.js';
+import { requireAuth } from './middleware/authMiddleware.js'; // ← नया सुरक्षा मिडिलवेयर इम्पोर्ट किया
 import { FRONTEND_ORIGINS, FRONTEND_URL } from './utils/frontendConfig.js';
 
 dotenv.config();
@@ -41,7 +42,6 @@ console.log('');
 
 const corsOptions = {
   origin: (origin, callback) => {
-    // Postman / curl / same-origin requests ke liye
     if (!origin) {
       console.log('🌐 Request with no origin (Postman/curl) - ALLOWED');
       return callback(null, true);
@@ -61,16 +61,14 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['Content-Length', 'X-Request-Id'],
   optionsSuccessStatus: 200,
-  maxAge: 86400, // 24 hours — preflight cache
+  maxAge: 86400,
 };
 
 app.use(cors(corsOptions));
-
-// Preflight requests handle karein (Express 5 compatible)
 app.options(/.*/, cors(corsOptions));
 
 // =====================================================
-// BODY PARSERS (431 error ke liye limits badhaye)
+// BODY PARSERS
 // =====================================================
 app.use(
   express.json({
@@ -124,11 +122,16 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/api', (req, res) => {
+// इस रूट को अब requireAuth मिडिलवेयर लगाकर पूरी तरह सुरक्षित (PROTECTED) कर दिया गया है
+app.get('/api', requireAuth, (req, res) => {
   res.json({
+    success: true,
     status: 'ok',
-    message: 'Exam Saarthi API is running',
-    health: '/api/health',
+    message: 'Exam Saarthi API is running SECURELY!',
+    user: {
+      id: req.user.id,
+      email: req.user.email,
+    }
   });
 });
 
@@ -158,7 +161,6 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error('❌ Server error:', err.message);
 
-  // 431 error — Request Header Fields Too Large
   if (err.status === 431 || err.code === 'HPE_HEADER_OVERFLOW') {
     return res.status(431).json({
       success: false,
@@ -167,7 +169,6 @@ app.use((err, req, res, next) => {
     });
   }
 
-  // CORS error ko clear message ke saath bhejein
   if (err.message && err.message.includes('CORS')) {
     return res.status(403).json({
       success: false,
@@ -185,21 +186,18 @@ app.use((err, req, res, next) => {
 });
 
 // =====================================================
-// SERVER (431 fix + Node.js timeout rules)
+// SERVER CONFIGURATION
 // =====================================================
-// Node.js Rule: headersTimeout <= requestTimeout
-// keepAliveTimeout hamesha headersTimeout se chota
 const server = http.createServer(
   {
-    maxHeaderSize: 32768,      // 32KB (default 16KB thi) — 431 fix
-    requestTimeout: 120000,    // 120s (2 min) — sabse bada
-    headersTimeout: 115000,    // 115s — requestTimeout se CHOTA
-    keepAliveTimeout: 65000,   // 65s — Render load balancer ke liye
+    maxHeaderSize: 32768,
+    requestTimeout: 120000,
+    headersTimeout: 115000,
+    keepAliveTimeout: 65000,
   },
   app
 );
 
-// Extra safety: max headers count
 server.maxHeadersCount = 2000;
 
 // =====================================================
@@ -208,14 +206,12 @@ server.maxHeadersCount = 2000;
 server.listen(PORT, () => {
   console.log('');
   console.log('════════════════════════════════════════════');
-  console.log(`🚀 Backend Server Started`);
+  console.log(`🚀 Backend Server Started Securely`);
   console.log('════════════════════════════════════════════');
   console.log(`📍 URL:         http://localhost:${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 Frontend:    ${FRONTEND_URL}`);
   console.log(`💚 Health:      http://localhost:${PORT}/api/health`);
-  console.log(`📦 Max Header:  32KB`);
-  console.log(`⏱️  Timeouts:    req=120s, headers=115s, keepAlive=65s`);
   console.log('════════════════════════════════════════════');
   console.log('');
 });
@@ -224,17 +220,13 @@ server.listen(PORT, () => {
 // GRACEFUL SHUTDOWN
 // =====================================================
 process.on('SIGTERM', () => {
-  console.log('⚠️  SIGTERM received, shutting down gracefully...');
   server.close(() => {
-    console.log('✅ Server closed');
     process.exit(0);
   });
 });
 
 process.on('SIGINT', () => {
-  console.log('⚠️  SIGINT received, shutting down gracefully...');
   server.close(() => {
-    console.log('✅ Server closed');
     process.exit(0);
   });
 });
