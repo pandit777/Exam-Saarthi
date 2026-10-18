@@ -1,6 +1,5 @@
 import express from 'express';
-import { createHmac, randomInt } from 'node:crypto';
-import nodemailer from 'nodemailer';
+import { createClient } from '@supabase/supabase-js';
 import { FRONTEND_URL } from '../utils/frontendConfig.js';
 import { body, validationResult } from 'express-validator';
 import { AVATAR_BUCKET, supabase, supabaseAdmin } from '../utils/supabase.js';
@@ -9,6 +8,17 @@ import { requireAuth } from '../middleware/authMiddleware.js';
 const router = express.Router();
 const isGmailAddress = (email) => email.trim().toLowerCase().endsWith('@gmail.com');
 const normalizeEmail = (email) => String(email ?? '').trim().toLowerCase();
+const createRequestAuthClient = () => createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY,
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+      detectSessionInUrl: false,
+    },
+  }
+);
 const logUserActivity = async (req, user, action, name, details = {}) => {
   try {
     const { error } = await supabaseAdmin.from('user_logs').insert({
@@ -25,44 +35,6 @@ const logUserActivity = async (req, user, action, name, details = {}) => {
   } catch (error) {
     console.error('❌ User activity log failed:', error.message);
   }
-};
-const findAuthUserByEmail = async (email) => {
-  const perPage = 1000;
-  let page = 1;
-
-  while (true) {
-    const { data, error } = await supabaseAdmin.auth.admin.listUsers({ page, perPage });
-    if (error) throw error;
-
-    const users = data?.users || [];
-    const user = users.find((candidate) => normalizeEmail(candidate.email) === email);
-    if (user) return user;
-    if (users.length < perPage) return null;
-    page += 1;
-  }
-};
-const hashRegistrationOtp = (email, otp) => {
-  const secret = process.env.EMAIL_OTP_SECRET;
-  if (!secret || secret.length < 32) throw new Error('Email verification is not configured.');
-  return createHmac('sha256', secret).update(`${email}:${otp}`).digest('hex');
-};
-const sendRegistrationOtp = async (email, otp) => {
-  const { GMAIL_USER, GMAIL_APP_PASSWORD } = process.env;
-  if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
-    throw new Error('Email verification is not configured.');
-  }
-
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD },
-  });
-
-  await transporter.sendMail({
-    from: `Exam Saarthi <${GMAIL_USER}>`,
-    to: email,
-    subject: 'Your Exam Saarthi verification code',
-    text: `Your verification code is ${otp}. It expires in 10 minutes. If you did not request this code, you can ignore this email.`,
-  });
 };
 const normalizePaperYear = (value) => {
   const raw = String(value ?? '').trim();
@@ -104,40 +76,37 @@ router.post(
       }
 
       const email = normalizeEmail(req.body.email);
-      if (
-        !process.env.GMAIL_USER
-        || !process.env.GMAIL_APP_PASSWORD
-        || !process.env.EMAIL_OTP_SECRET
-        || process.env.EMAIL_OTP_SECRET.length < 32
-      ) {
-        return res.status(503).json({
-          success: false,
-          message: 'Email verification is not configured on the server.',
-        });
+      const { data: existingProfile, error: profileLookupError } = await supabaseAdmin
+        .from('users')
+        .select('id')
+        .ilike('email', email)
+        .maybeSingle();
+
+      if (profileLookupError) {
+        console.error('❌ Registration profile lookup failed:', profileLookupError.message);
+        return res.status(500).json({ success: false, message: 'Unable to verify email. Please try again later.' });
       }
 
-      const otp = String(randomInt(100000, 1000000));
-      const codeHash = hashRegistrationOtp(email, otp);
-      const { data: issued, error: issueError } = await supabaseAdmin.rpc('store_registration_otp', {
-        p_email: email,
-        p_code_hash: codeHash,
+      if (existingProfile) {
+        return res.status(409).json({ success: false, message: 'Email already registered. Please login.' });
+      }
+
+      const requestAuth = createRequestAuthClient();
+      const { error: otpError } = await requestAuth.auth.signInWithOtp({
+        email,
+        options: { shouldCreateUser: true },
       });
 
-      if (issueError) throw issueError;
-      if (!issued) {
-        return res.status(429).json({ success: false, message: 'Please wait before requesting another code.' });
+      if (otpError) {
+        console.error('❌ Supabase registration OTP error:', otpError.message);
+        const status = otpError.status === 429 ? 429 : 502;
+        return res.status(status).json({ success: false, message: 'Unable to send verification code. Please try again later.' });
       }
 
-      await sendRegistrationOtp(email, otp);
-
-      return res.json({ success: true, message: 'Verification code sent. Check your Gmail inbox.' });
+      return res.json({ success: true, message: 'Verification code sent. Check your email.' });
     } catch (error) {
       console.error('❌ Registration OTP error:', error.message);
-      const message = error.message === 'Email verification is not configured.'
-        ? error.message
-        : 'Unable to send verification code. Please try again later.';
-      const status = error.message === 'Email verification is not configured.' ? 503 : 500;
-      return res.status(status).json({ success: false, message });
+      return res.status(500).json({ success: false, message: 'Unable to send verification code. Please try again later.' });
     }
   }
 );
@@ -171,17 +140,6 @@ router.post(
       const normalizedEmail = normalizeEmail(email);
       console.log('📝 Register attempt:', normalizedEmail);
 
-      const submittedHash = hashRegistrationOtp(normalizedEmail, otp);
-      const { data: otpAttempts, error: otpError } = await supabaseAdmin.rpc('check_registration_otp', {
-        p_email: normalizedEmail,
-        p_code_hash: submittedHash,
-      });
-
-      if (otpError) throw otpError;
-      if (typeof otpAttempts !== 'number' || otpAttempts <= 0) {
-        return res.status(400).json({ success: false, message: 'Verification code is invalid or expired.' });
-      }
-
       const { data: existing, error: profileLookupError } = await supabaseAdmin
         .from('users')
         .select('id')
@@ -203,77 +161,37 @@ router.post(
         });
       }
 
-      const { data: consumedOtp, error: consumeOtpError } = await supabaseAdmin.rpc('consume_registration_otp', {
-        p_email: normalizedEmail,
-        p_code_hash: submittedHash,
-      });
-
-      if (consumeOtpError) throw consumeOtpError;
-      if (!consumedOtp) {
-        return res.status(409).json({ success: false, message: 'Verification code was already used or expired. Request a new code.' });
-      }
-
-      let authUser;
-      let createdNewAuthUser = false;
-      const { data: createdAuthData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+      const requestAuth = createRequestAuthClient();
+      const { data: verifiedOtp, error: verificationError } = await requestAuth.auth.verifyOtp({
         email: normalizedEmail,
-        password,
-        email_confirm: true,
-        user_metadata: { full_name: name, university, course },
+        token: otp,
+        type: 'email',
       });
 
-      if (authError) {
-        const alreadyRegistered = authError.code === 'email_exists' || authError.message?.toLowerCase().includes('already registered');
-        if (!alreadyRegistered) {
-          console.error('❌ Auth error:', authError.message);
-          return res.status(400).json({ success: false, message: 'Unable to create account. Please try again.' });
-        }
-
-        let existingAuthUser;
-        try {
-          existingAuthUser = await findAuthUserByEmail(normalizedEmail);
-        } catch (existingAuthError) {
-          console.error('❌ Existing auth user lookup error:', existingAuthError.message);
-          return res.status(500).json({ success: false, message: 'Unable to complete this account. Please try again later.' });
-        }
-        if (!existingAuthUser) {
-          return res.status(500).json({ success: false, message: 'Unable to complete this account. Please try again later.' });
-        }
-
-        const { data: recoveredAuthData, error: recoveryError } = await supabaseAdmin.auth.admin.updateUserById(
-          existingAuthUser.id,
-          {
-            password,
-            email_confirm: true,
-            user_metadata: {
-              ...existingAuthUser.user_metadata,
-              full_name: name,
-              university,
-              course,
-            },
-          }
-        );
-
-        if (recoveryError || !recoveredAuthData?.user) {
-          console.error('❌ Verified auth account recovery error:', recoveryError?.message || 'No user was returned');
-          return res.status(500).json({ success: false, message: 'Unable to complete this account. Please try again later.' });
-        }
-
-        authUser = recoveredAuthData.user;
-      } else {
-        authUser = createdAuthData?.user;
-        createdNewAuthUser = Boolean(authUser);
+      if (verificationError || !verifiedOtp?.user) {
+        return res.status(400).json({ success: false, message: 'Verification code is invalid or expired. Request a new code.' });
       }
 
-      const authData = { user: authUser };
+      const { data: authUpdate, error: authUpdateError } = await supabaseAdmin.auth.admin.updateUserById(
+        verifiedOtp.user.id,
+        {
+          password,
+          email_confirm: true,
+          user_metadata: {
+            ...verifiedOtp.user.user_metadata,
+            full_name: name,
+            university,
+            course,
+          },
+        }
+      );
 
-      if (!authData.user) {
-        console.error('❌ Auth error:', authError?.message || 'No user was returned');
-        return res.status(400).json({
-          success: false,
-          message: 'Unable to create account. Please try again.',
-        });
+      if (authUpdateError || !authUpdate?.user) {
+        console.error('❌ Verified Supabase user update failed:', authUpdateError?.message || 'No user was returned');
+        return res.status(500).json({ success: false, message: 'Unable to complete this account. Please try again later.' });
       }
+
+      const authData = { user: authUpdate.user };
 
       console.log('✅ Auth user created:', authData.user.id);
 
@@ -311,9 +229,6 @@ router.post(
 
       if (dbError) {
         console.error('❌ DB error:', dbError.message);
-        if (createdNewAuthUser) {
-          await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
-        }
         return res.status(500).json({
           success: false,
           message: `Failed to create profile: ${dbError.message}`,
@@ -323,7 +238,7 @@ router.post(
       console.log('✅ Profile saved');
       await logUserActivity(req, authData.user, 'register', name, { source: 'email' });
 
-      const { data: sessionData, error: sessionError } = await supabase.auth.signInWithPassword({
+      const { data: sessionData, error: sessionError } = await requestAuth.auth.signInWithPassword({
         email: normalizedEmail,
         password,
       });
