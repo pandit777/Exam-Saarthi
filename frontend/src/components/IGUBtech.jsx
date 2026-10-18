@@ -210,8 +210,20 @@ function IGUBtech() {
   const [adminPapers, setAdminPapers] = useState([]);
 
   useEffect(() => {
-    loadAdminPapers('B.Tech').then(setAdminPapers);
-  }, []);
+    if (!isLoggedIn) {
+      setAdminPapers([]);
+      return;
+    }
+
+    let active = true;
+    loadAdminPapers('B.Tech').then((papers) => {
+      if (active) setAdminPapers(papers);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [isLoggedIn]);
 
   const yearSections = [
     { id: 1, title: 'B.Tech 1st Year (Sem 1 & 2)', icon: 'fa-book-open', sems: ['1st', '2nd'] },

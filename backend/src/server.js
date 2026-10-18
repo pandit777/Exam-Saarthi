@@ -103,6 +103,9 @@ const generalLimiter = rateLimit({
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => req.path === '/auth/login'
+    || req.path === '/auth/register'
+    || req.path.startsWith('/auth/register/'),
 });
 
 app.use('/api/', generalLimiter);

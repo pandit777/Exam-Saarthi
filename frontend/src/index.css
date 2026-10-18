@@ -4226,6 +4226,22 @@ footer p {
   cursor: not-allowed;
 }
 
+.register-resend-btn {
+  align-self: center;
+  padding: 0.35rem 0.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.register-resend-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .register-link {
   text-align: center;
   margin-top: 1.2rem;

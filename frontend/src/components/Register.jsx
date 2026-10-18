@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { api } from '../utils/api';
+import { universitiesList } from '../data/universities';
 import logo from '../assets/logo.png';
 
 function Register() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    university: '',
+    course: '',
     password: '',
     confirmPassword: '',
+    otp: '',
   });
+  const [otpSent, setOtpSent] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -39,10 +45,20 @@ function Register() {
     setLoading(true);
 
     try {
+      if (!otpSent) {
+        const response = await api.sendRegistrationOtp(formData.email.trim().toLowerCase());
+        setOtpSent(true);
+        setSuccess(response.message || 'Verification code sent. Check your Gmail inbox.');
+        return;
+      }
+
       const { data, error: regError } = await register({
         name: formData.name.trim(),
         email: formData.email.trim().toLowerCase(),
+        university: formData.university,
+        course: formData.course.trim(),
         password: formData.password,
+        otp: formData.otp.trim(),
       });
 
       if (regError) throw regError;
@@ -61,10 +77,34 @@ function Register() {
     }
   };
 
+  const handleResendOtp = async () => {
+    setError('');
+    setSuccess('');
+    setLoading(true);
+    try {
+      const response = await api.sendRegistrationOtp(formData.email.trim().toLowerCase());
+      setSuccess(response.message || 'Verification code sent. Check your Gmail inbox.');
+    } catch (err) {
+      setError(err.message || 'Unable to send verification code.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleGoogleSignup = async () => {
     setError('');
+    if (!formData.name.trim() || !validateEmail(formData.email) || !formData.university || !formData.course.trim()) {
+      setError('Enter your name, Gmail address, university, and course before continuing with Google.');
+      return;
+    }
+
     setGoogleLoading(true);
-    const { error: googleError } = await loginWithGoogle();
+    const { error: googleError } = await loginWithGoogle({
+      name: formData.name.trim(),
+      email: formData.email.trim().toLowerCase(),
+      university: formData.university,
+      course: formData.course.trim(),
+    });
     if (googleError) {
       setError(googleError.message || 'Google signup failed');
       setGoogleLoading(false);
@@ -180,6 +220,41 @@ function Register() {
 
               <div className="form-group">
                 <label>
+                  <i className="fas fa-university"></i> University
+                </label>
+                <select
+                  name="university"
+                  value={formData.university}
+                  onChange={handleChange}
+                  required
+                  disabled={loading || googleLoading || otpSent}
+                >
+                  <option value="">Select your university</option>
+                  {universitiesList.map((university) => (
+                    <option key={university.name} value={university.fullName}>
+                      {university.fullName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>
+                  <i className="fas fa-book"></i> Course
+                </label>
+                <input
+                  type="text"
+                  name="course"
+                  value={formData.course}
+                  onChange={handleChange}
+                  placeholder="e.g. B.Tech Computer Science"
+                  required
+                  disabled={loading || googleLoading}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>
                   <i className="fas fa-envelope"></i> Email
                 </label>
                 <input
@@ -190,7 +265,7 @@ function Register() {
                   placeholder="your@email.com"
                   autoComplete="new-email"
                   required
-                  disabled={loading || googleLoading}
+                  disabled={loading || googleLoading || otpSent}
                 />
               </div>
 
@@ -237,6 +312,26 @@ function Register() {
                 />
               </div>
 
+              {otpSent && (
+                <div className="form-group">
+                  <label>
+                    <i className="fas fa-key"></i> Gmail verification code
+                  </label>
+                  <input
+                    type="text"
+                    name="otp"
+                    value={formData.otp}
+                    onChange={handleChange}
+                    placeholder="Enter 6-digit code"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    maxLength={6}
+                    required
+                    disabled={loading || googleLoading}
+                  />
+                </div>
+              )}
+
               <button
                 type="submit"
                 className="login-submit-btn"
@@ -244,14 +339,25 @@ function Register() {
               >
                 {loading ? (
                   <>
-                    <span className="spinner"></span> Creating...
+                    <span className="spinner"></span> {otpSent ? 'Creating...' : 'Sending code...'}
                   </>
                 ) : (
                   <>
-                    <i className="fas fa-user-plus"></i> Sign Up
+                    <i className={otpSent ? 'fas fa-user-plus' : 'fas fa-paper-plane'}></i>{' '}
+                    {otpSent ? 'Verify & Sign Up' : 'Send verification code'}
                   </>
                 )}
               </button>
+              {otpSent && (
+                <button
+                  type="button"
+                  className="register-resend-btn"
+                  onClick={handleResendOtp}
+                  disabled={loading || googleLoading}
+                >
+                  Resend code
+                </button>
+              )}
             </form>
 
             <div className="register-link">

@@ -1,10 +1,69 @@
 import express from 'express';
+import { createHmac, randomInt } from 'node:crypto';
+import nodemailer from 'nodemailer';
 import { FRONTEND_URL } from '../utils/frontendConfig.js';
 import { body, validationResult } from 'express-validator';
 import { AVATAR_BUCKET, supabase, supabaseAdmin } from '../utils/supabase.js';
+import { requireAuth } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 const isGmailAddress = (email) => email.trim().toLowerCase().endsWith('@gmail.com');
+const normalizeEmail = (email) => String(email ?? '').trim().toLowerCase();
+const logUserActivity = async (req, user, action, name, details = {}) => {
+  try {
+    const { error } = await supabaseAdmin.from('user_logs').insert({
+      user_id: user?.id || null,
+      user_email: user?.email || null,
+      name: name || user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || 'Unknown',
+      ip_address: req.ip || req.socket.remoteAddress || null,
+      action,
+      details: JSON.stringify(details),
+      created_at: new Date().toISOString(),
+    });
+
+    if (error) console.error('❌ User activity log failed:', error.message);
+  } catch (error) {
+    console.error('❌ User activity log failed:', error.message);
+  }
+};
+const findAuthUserByEmail = async (email) => {
+  const perPage = 1000;
+  let page = 1;
+
+  while (true) {
+    const { data, error } = await supabaseAdmin.auth.admin.listUsers({ page, perPage });
+    if (error) throw error;
+
+    const users = data?.users || [];
+    const user = users.find((candidate) => normalizeEmail(candidate.email) === email);
+    if (user) return user;
+    if (users.length < perPage) return null;
+    page += 1;
+  }
+};
+const hashRegistrationOtp = (email, otp) => {
+  const secret = process.env.EMAIL_OTP_SECRET;
+  if (!secret || secret.length < 32) throw new Error('Email verification is not configured.');
+  return createHmac('sha256', secret).update(`${email}:${otp}`).digest('hex');
+};
+const sendRegistrationOtp = async (email, otp) => {
+  const { GMAIL_USER, GMAIL_APP_PASSWORD } = process.env;
+  if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
+    throw new Error('Email verification is not configured.');
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD },
+  });
+
+  await transporter.sendMail({
+    from: `Exam Saarthi <${GMAIL_USER}>`,
+    to: email,
+    subject: 'Your Exam Saarthi verification code',
+    text: `Your verification code is ${otp}. It expires in 10 minutes. If you did not request this code, you can ignore this email.`,
+  });
+};
 const normalizePaperYear = (value) => {
   const raw = String(value ?? '').trim();
   if (!raw) return '';
@@ -33,6 +92,57 @@ const updateLastLogin = async (userId) => {
 // REGISTER
 // =====================================================
 router.post(
+  '/register/send-otp',
+  [
+    body('email').trim().isEmail().normalizeEmail().custom(isGmailAddress).withMessage('Only Gmail addresses are allowed'),
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, message: errors.array()[0].msg });
+      }
+
+      const email = normalizeEmail(req.body.email);
+      if (
+        !process.env.GMAIL_USER
+        || !process.env.GMAIL_APP_PASSWORD
+        || !process.env.EMAIL_OTP_SECRET
+        || process.env.EMAIL_OTP_SECRET.length < 32
+      ) {
+        return res.status(503).json({
+          success: false,
+          message: 'Email verification is not configured on the server.',
+        });
+      }
+
+      const otp = String(randomInt(100000, 1000000));
+      const codeHash = hashRegistrationOtp(email, otp);
+      const { data: issued, error: issueError } = await supabaseAdmin.rpc('store_registration_otp', {
+        p_email: email,
+        p_code_hash: codeHash,
+      });
+
+      if (issueError) throw issueError;
+      if (!issued) {
+        return res.status(429).json({ success: false, message: 'Please wait before requesting another code.' });
+      }
+
+      await sendRegistrationOtp(email, otp);
+
+      return res.json({ success: true, message: 'Verification code sent. Check your Gmail inbox.' });
+    } catch (error) {
+      console.error('❌ Registration OTP error:', error.message);
+      const message = error.message === 'Email verification is not configured.'
+        ? error.message
+        : 'Unable to send verification code. Please try again later.';
+      const status = error.message === 'Email verification is not configured.' ? 503 : 500;
+      return res.status(status).json({ success: false, message });
+    }
+  }
+);
+
+router.post(
   '/register',
   [
     body('name').trim().isLength({ min: 2, max: 100 }).withMessage('Name must be 2-100 characters'),
@@ -42,7 +152,10 @@ router.post(
       .normalizeEmail()
       .custom((email) => isGmailAddress(email))
       .withMessage('Only Gmail addresses are allowed'),
+    body('university').trim().isLength({ min: 2, max: 150 }).withMessage('University is required'),
+    body('course').trim().isLength({ min: 2, max: 150 }).withMessage('Course is required'),
     body('password').isLength({ min: 6 }).withMessage('Password min 6 characters'),
+    body('otp').trim().isLength({ min: 6, max: 6 }).isNumeric().withMessage('Enter the 6-digit verification code'),
   ],
   async (req, res) => {
     try {
@@ -54,14 +167,25 @@ router.post(
         });
       }
 
-      const { name, email, password } = req.body;
-      const normalizedEmail = email.trim().toLowerCase();
+      const { name, email, password, university, course, otp } = req.body;
+      const normalizedEmail = normalizeEmail(email);
       console.log('📝 Register attempt:', normalizedEmail);
+
+      const submittedHash = hashRegistrationOtp(normalizedEmail, otp);
+      const { data: otpAttempts, error: otpError } = await supabaseAdmin.rpc('check_registration_otp', {
+        p_email: normalizedEmail,
+        p_code_hash: submittedHash,
+      });
+
+      if (otpError) throw otpError;
+      if (typeof otpAttempts !== 'number' || otpAttempts <= 0) {
+        return res.status(400).json({ success: false, message: 'Verification code is invalid or expired.' });
+      }
 
       const { data: existing, error: profileLookupError } = await supabaseAdmin
         .from('users')
         .select('id')
-        .eq('email', normalizedEmail)
+        .ilike('email', normalizedEmail)
         .maybeSingle();
 
       if (profileLookupError) {
@@ -79,61 +203,72 @@ router.post(
         });
       }
 
+      const { data: consumedOtp, error: consumeOtpError } = await supabaseAdmin.rpc('consume_registration_otp', {
+        p_email: normalizedEmail,
+        p_code_hash: submittedHash,
+      });
+
+      if (consumeOtpError) throw consumeOtpError;
+      if (!consumedOtp) {
+        return res.status(409).json({ success: false, message: 'Verification code was already used or expired. Request a new code.' });
+      }
+
       let authUser;
       let createdNewAuthUser = false;
       const { data: createdAuthData, error: authError } = await supabaseAdmin.auth.admin.createUser({
         email: normalizedEmail,
         password,
         email_confirm: true,
-        user_metadata: { full_name: name },
+        user_metadata: { full_name: name, university, course },
       });
 
       if (authError) {
-        if (authError.code === 'email_exists' || authError.message?.toLowerCase().includes('already registered')) {
-          const { data: existingAuthData, error: existingAuthError } = await supabaseAdmin.auth.admin.getUserByEmail(normalizedEmail);
-
-          if (existingAuthError || !existingAuthData?.user) {
-            console.error('❌ Existing auth user lookup error:', existingAuthError?.message || authError.message);
-            return res.status(400).json({
-              success: false,
-              message: 'Email already registered. Please login or reset your password.',
-            });
-          }
-
-          const { data: recoveredAuthData, error: recoveryError } = await supabaseAdmin.auth.admin.updateUserById(
-            existingAuthData.user.id,
-            {
-              password,
-              user_metadata: { ...existingAuthData.user.user_metadata, full_name: name },
-              email_confirm: true,
-            }
-          );
-
-          if (recoveryError) {
-            console.error('❌ Auth user recovery error:', recoveryError.message);
-            return res.status(400).json({
-              success: false,
-              message: 'Email already registered. Please login or reset your password.',
-            });
-          }
-
-          authUser = recoveredAuthData.user;
-        } else {
+        const alreadyRegistered = authError.code === 'email_exists' || authError.message?.toLowerCase().includes('already registered');
+        if (!alreadyRegistered) {
           console.error('❌ Auth error:', authError.message);
-          return res.status(400).json({
-            success: false,
-            message: authError.message,
-          });
+          return res.status(400).json({ success: false, message: 'Unable to create account. Please try again.' });
         }
+
+        let existingAuthUser;
+        try {
+          existingAuthUser = await findAuthUserByEmail(normalizedEmail);
+        } catch (existingAuthError) {
+          console.error('❌ Existing auth user lookup error:', existingAuthError.message);
+          return res.status(500).json({ success: false, message: 'Unable to complete this account. Please try again later.' });
+        }
+        if (!existingAuthUser) {
+          return res.status(500).json({ success: false, message: 'Unable to complete this account. Please try again later.' });
+        }
+
+        const { data: recoveredAuthData, error: recoveryError } = await supabaseAdmin.auth.admin.updateUserById(
+          existingAuthUser.id,
+          {
+            password,
+            email_confirm: true,
+            user_metadata: {
+              ...existingAuthUser.user_metadata,
+              full_name: name,
+              university,
+              course,
+            },
+          }
+        );
+
+        if (recoveryError || !recoveredAuthData?.user) {
+          console.error('❌ Verified auth account recovery error:', recoveryError?.message || 'No user was returned');
+          return res.status(500).json({ success: false, message: 'Unable to complete this account. Please try again later.' });
+        }
+
+        authUser = recoveredAuthData.user;
       } else {
-        authUser = createdAuthData.user;
-        createdNewAuthUser = true;
+        authUser = createdAuthData?.user;
+        createdNewAuthUser = Boolean(authUser);
       }
 
       const authData = { user: authUser };
 
       if (!authData.user) {
-        console.error('❌ Auth error:', authError.message);
+        console.error('❌ Auth error:', authError?.message || 'No user was returned');
         return res.status(400).json({
           success: false,
           message: 'Unable to create account. Please try again.',
@@ -146,6 +281,8 @@ router.post(
         id: authData.user.id,
         email: normalizedEmail,
         name,
+        university,
+        course,
         role: 'user',
         active: true,
       };
@@ -184,6 +321,7 @@ router.post(
       }
 
       console.log('✅ Profile saved');
+      await logUserActivity(req, authData.user, 'register', name, { source: 'email' });
 
       const { data: sessionData, error: sessionError } = await supabase.auth.signInWithPassword({
         email: normalizedEmail,
@@ -203,6 +341,8 @@ router.post(
             id: authData.user.id,
             email: authData.user.email,
             name,
+            university,
+            course,
             role: 'user',
           },
           session: null,
@@ -216,6 +356,8 @@ router.post(
           id: authData.user.id,
           email: authData.user.email,
           name,
+          university,
+          course,
           role: 'user',
         },
         session: sessionData?.session || null,
@@ -286,6 +428,7 @@ router.post(
       }
 
       await updateLastLogin(data.user.id);
+      await logUserActivity(req, data.user, 'login', profile.name, { source: 'email' });
 
       return res.json({
         success: true,
@@ -355,7 +498,7 @@ router.get('/google', async (req, res) => {
 // =====================================================
 router.post('/oauth-callback', async (req, res) => {
   try {
-    const { access_token } = req.body;
+    const { access_token, signup_profile: signupProfile } = req.body;
 
     if (!access_token) {
       return res.status(400).json({
@@ -383,6 +526,21 @@ router.post('/oauth-callback', async (req, res) => {
       });
     }
 
+    const signupEmailMatches = normalizeEmail(signupProfile?.email) === normalizeEmail(user.email);
+    if (signupProfile && !signupEmailMatches) {
+      return res.status(403).json({
+        success: false,
+        message: 'The selected Google account must match the Gmail address entered for registration.',
+      });
+    }
+    const signupName = String(signupProfile?.name || '').trim();
+    const signupUniversity = String(signupProfile?.university || '').trim();
+    const signupCourse = String(signupProfile?.course || '').trim();
+    const hasSignupDetails = signupEmailMatches
+      && signupName.length >= 2 && signupName.length <= 100
+      && signupUniversity.length >= 2 && signupUniversity.length <= 150
+      && signupCourse.length >= 2 && signupCourse.length <= 150;
+
     console.log('✅ OAuth user:', user.email);
 
     // Check if profile exists
@@ -404,9 +562,12 @@ router.post('/oauth-callback', async (req, res) => {
         id: user.id,
         email: user.email,
         name:
+          (hasSignupDetails && signupName) ||
           user.user_metadata?.full_name ||
           user.user_metadata?.name ||
           user.email.split('@')[0],
+        university: hasSignupDetails ? signupUniversity : null,
+        course: hasSignupDetails ? signupCourse : null,
         avatar_url:
           user.user_metadata?.avatar_url ||
           user.user_metadata?.picture ||
@@ -431,6 +592,14 @@ router.post('/oauth-callback', async (req, res) => {
     } else {
       await updateLastLogin(user.id);
     }
+
+    await logUserActivity(
+      req,
+      user,
+      existingProfile ? 'oauth_login' : 'register',
+      profile?.name,
+      { source: 'google' }
+    );
 
     return res.json({
       success: true,
@@ -461,14 +630,30 @@ router.post('/oauth-callback', async (req, res) => {
 // LOGOUT
 // =====================================================
 router.post('/logout', async (req, res) => {
-  try {
-    const token = req.headers.authorization?.replace('Bearer ', '');
-    if (token) {
-      await supabase.auth.admin.signOut(token);
-    }
-  } catch (err) {
-    // Ignore
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ')) {
+    return res.status(401).json({ success: false, message: 'No token' });
   }
+
+  const token = authHeader.slice('Bearer '.length).trim();
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'No token' });
+  }
+
+  try {
+    const { data: { user } } = await supabase.auth.getUser(token);
+    const { error } = await supabaseAdmin.auth.admin.signOut(token, 'global');
+    if (error) {
+      console.error('❌ Logout error:', error.message);
+      return res.status(500).json({ success: false, message: 'Unable to log out' });
+    }
+
+    if (user) await logUserActivity(req, user, 'logout', user.user_metadata?.full_name);
+  } catch (error) {
+    console.error('❌ Logout error:', error);
+    return res.status(500).json({ success: false, message: 'Unable to log out' });
+  }
+
   return res.json({ success: true, message: 'Logged out' });
 });
 
@@ -592,6 +777,8 @@ router.patch('/profile', async (req, res) => {
       return res.status(500).json({ success: false, message: 'Unable to save profile details' });
     }
 
+    await logUserActivity(req, authUpdate.user, 'profile_update', cleanName);
+
     return res.json({
       success: true,
       message: 'Profile updated successfully',
@@ -630,11 +817,16 @@ router.get('/me', async (req, res) => {
       return res.status(401).json({ success: false, message: 'Invalid token' });
     }
 
-    const { data: profile } = await supabaseAdmin
+    const { data: profile, error: profileError } = await supabaseAdmin
       .from('users')
       .select('*')
       .eq('id', user.id)
-      .single();
+      .maybeSingle();
+
+    if (profileError) {
+      console.error('❌ Profile lookup error:', profileError.message);
+      return res.status(500).json({ success: false, message: 'Unable to load user profile' });
+    }
 
     return res.json({
       success: true,
@@ -774,7 +966,7 @@ router.post('/admin/papers/list', async (req, res) => {
   }
 });
 
-router.get('/papers', async (req, res) => {
+router.get('/papers', requireAuth, async (req, res) => {
   try {
     const courseName = String(req.query.course || '').trim();
     if (!courseName) {
@@ -814,6 +1006,17 @@ router.post('/admin/papers', async (req, res) => {
       google_drive_link: String(google_drive_link).trim(),
       created_at: new Date().toISOString(),
     };
+
+    let paperUrl;
+    try {
+      paperUrl = new URL(paperPayload.google_drive_link);
+    } catch {
+      return res.status(400).json({ success: false, message: 'Enter a valid Google Drive link.' });
+    }
+
+    if (paperUrl.protocol !== 'https:' || !['drive.google.com', 'docs.google.com'].includes(paperUrl.hostname)) {
+      return res.status(400).json({ success: false, message: 'Paper links must use Google Drive.' });
+    }
 
     const { data, error } = await supabaseAdmin
       .from('papers')
@@ -857,6 +1060,7 @@ router.post('/admin/reset-password', async (req, res) => {
           user_id: userId,
           user_email: adminSession.profile.email,
           name: adminSession.profile.name || 'Admin',
+          ip_address: req.ip || req.socket.remoteAddress || null,
           action: 'password_reset',
           details: JSON.stringify({ reset_for_user_id: userId, reset_by: adminSession.user.email }),
           created_at: new Date().toISOString(),

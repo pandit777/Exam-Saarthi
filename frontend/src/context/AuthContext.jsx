@@ -93,8 +93,24 @@ export const AuthProvider = ({ children }) => {
 
       try {
         const provider = session.user.app_metadata?.provider;
+        let signupProfile = null;
+        if (provider === 'google' && typeof sessionStorage !== 'undefined') {
+          try {
+            const pendingSignup = JSON.parse(sessionStorage.getItem('pendingGoogleSignup') || 'null');
+            sessionStorage.removeItem('pendingGoogleSignup');
+            if (
+              pendingSignup?.createdAt > Date.now() - 15 * 60_000
+              && pendingSignup.email?.toLowerCase() === session.user.email?.toLowerCase()
+            ) {
+              signupProfile = pendingSignup;
+            }
+          } catch {
+            sessionStorage.removeItem('pendingGoogleSignup');
+          }
+        }
+
         const response = provider === 'google'
-          ? await api.oauthCallback(session.access_token)
+          ? await api.oauthCallback(session.access_token, signupProfile)
           : await api.getMe();
 
         if (sessionSyncToken.current === session.access_token && response.success && (response.user || response.profile)) {
@@ -112,7 +128,10 @@ export const AuthProvider = ({ children }) => {
           }
         }
       } catch (error) {
-        if (session.user.app_metadata?.provider === 'google' && error.message?.includes('Only Gmail')) {
+        if (
+          session.user.app_metadata?.provider === 'google'
+          && (error.message?.includes('Only Gmail') || error.message?.includes('must match the Gmail'))
+        ) {
           sessionSyncToken.current = null;
           setAuthToken(null);
           setUser(null);
@@ -217,8 +236,15 @@ export const AuthProvider = ({ children }) => {
   // =====================================================
   // GOOGLE LOGIN
   // =====================================================
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = async (signupProfile = null) => {
     try {
+      if (signupProfile && typeof sessionStorage !== 'undefined') {
+        sessionStorage.setItem('pendingGoogleSignup', JSON.stringify({
+          ...signupProfile,
+          createdAt: Date.now(),
+        }));
+      }
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -232,6 +258,7 @@ export const AuthProvider = ({ children }) => {
       if (error) throw error;
       return { error: null };
     } catch (error) {
+      if (typeof sessionStorage !== 'undefined') sessionStorage.removeItem('pendingGoogleSignup');
       return { error };
     }
   };

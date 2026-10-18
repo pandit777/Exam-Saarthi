@@ -1,14 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import duQuestionPapers from '../data/duQuestionPapers';
 import duLogo from '../assets/universities/du.png';
+import { api } from '../utils/api';
 
 function DUCourse() {
   const { course } = useParams();
+  const { isLoggedIn } = useAuth();
+  const [uploadedPapers, setUploadedPapers] = useState([]);
+  const [paperLoadError, setPaperLoadError] = useState('');
 
   const courseName = decodeURIComponent(course || '');
 
   const papers = duQuestionPapers[courseName] || {};
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setUploadedPapers([]);
+      setPaperLoadError('');
+      return;
+    }
+
+    setUploadedPapers([]);
+    setPaperLoadError('');
+    let active = true;
+    api.getPapers(courseName)
+      .then(({ papers: databasePapers = [] }) => {
+        if (active) {
+          setUploadedPapers(databasePapers);
+          setPaperLoadError('');
+        }
+      })
+      .catch(() => {
+        if (active) setPaperLoadError('Unable to load newly uploaded papers. Please refresh the page.');
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [courseName, isLoggedIn]);
 
   return (
     <div className="igu-page">
@@ -58,7 +89,7 @@ function DUCourse() {
 
               <div className="uni-stat">
                 <i className="fas fa-download"></i>
-                <span>Free Access</span>
+                <span>Login Required</span>
               </div>
 
             </div>
@@ -85,7 +116,9 @@ function DUCourse() {
         {/* Papers */}
         <div className="du-paper-list">
 
-          {Object.keys(papers).length === 0 ? (
+          {paperLoadError && <p role="alert">{paperLoadError}</p>}
+
+          {Object.keys(papers).length === 0 && uploadedPapers.length === 0 ? (
 
             <div className="du-no-papers">
 
@@ -156,21 +189,24 @@ function DUCourse() {
 
                           </div>
 
-                          {driveLink &&
-                          driveLink !==
-                            'PASTE_GOOGLE_DRIVE_LINK_HERE' ? (
-
-                            <a
-                              href={driveLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="drive-button"
-                            >
-                              <i className="fab fa-google-drive"></i>
-                              View PDF
-                              <i className="fas fa-external-link-alt"></i>
-                            </a>
-
+                          {driveLink && driveLink !== 'PASTE_GOOGLE_DRIVE_LINK_HERE' ? (
+                            isLoggedIn ? (
+                              <a
+                                href={driveLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="drive-button"
+                              >
+                                <i className="fab fa-google-drive"></i>
+                                View Paper
+                                <i className="fas fa-external-link-alt"></i>
+                              </a>
+                            ) : (
+                              <Link to="/login" className="drive-button">
+                                <i className="fas fa-lock"></i>
+                                Login to view
+                              </Link>
+                            )
                           ) : (
 
                             <span className="coming-soon">
@@ -191,6 +227,42 @@ function DUCourse() {
               )
             )
 
+          )}
+
+          {uploadedPapers.length > 0 && (
+            <div className="du-exam-card">
+              <div className="du-exam-header">
+                <div>
+                  <i className="fas fa-cloud-upload-alt"></i>
+                  <h3>Recently Uploaded Papers</h3>
+                </div>
+              </div>
+              <div className="du-year-list">
+                {uploadedPapers.map((paper) => (
+                  <div className="du-year-row" key={paper.id}>
+                    <div className="du-year-info">
+                      <div className="du-pdf-icon"><i className="fas fa-file-pdf"></i></div>
+                      <div>
+                        <strong>{paper.paper_name}</strong>
+                        <small>{paper.semester} Semester · {paper.year}</small>
+                      </div>
+                    </div>
+                    {isLoggedIn ? (
+                      <a href={paper.google_drive_link} target="_blank" rel="noopener noreferrer" className="drive-button">
+                        <i className="fab fa-google-drive"></i>
+                        View Paper
+                        <i className="fas fa-external-link-alt"></i>
+                      </a>
+                    ) : (
+                      <Link to="/login" className="drive-button">
+                        <i className="fas fa-lock"></i>
+                        Login to view
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
 
         </div>

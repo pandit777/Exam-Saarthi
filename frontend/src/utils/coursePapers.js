@@ -1,4 +1,5 @@
 import { api } from './api';
+import duQuestionPapers from '../data/duQuestionPapers';
 
 export const iguCourseOptions = [
   { value: 'B.Tech', label: 'B.Tech (All Branches)' },
@@ -11,8 +12,11 @@ export const iguCourseOptions = [
   { value: 'MA', label: 'MA (Master of Arts)' },
   { value: 'B.Com', label: 'B.Com (Bachelor of Commerce)' },
   { value: 'M.Com', label: 'M.Com (Master of Commerce)' },
-  { value: 'Delhi University', label: 'Delhi University (DU)' },
-  { value: 'DU Course', label: 'DU Course / Semester Papers' },
+];
+
+export const adminCourseOptions = [
+  ...iguCourseOptions,
+  ...Object.keys(duQuestionPapers).map((course) => ({ value: course, label: `DU · ${course}` })),
 ];
 
 export const semesterOptions = ['1st', '2nd', '3rd', '4th', '5th', '6th'];

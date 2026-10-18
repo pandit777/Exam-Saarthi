@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useAdmin } from '../context/AdminContext';
 import { supabase } from '../utils/supabase';
 import { api } from '../utils/api';
-import { iguCourseOptions, semesterOptions } from '../utils/coursePapers';
+import { adminCourseOptions, semesterOptions } from '../utils/coursePapers';
 
 const initialPaperForm = {
   paper_id: '',
@@ -330,8 +330,8 @@ function AdminDashboard() {
                   <label>
                     Course Name
                     <select name="course_name" value={paperForm.course_name} onChange={handlePaperChange}>
-                      <option value="">Select IGU course</option>
-                      {iguCourseOptions.map((course) => (
+                      <option value="">Select university course</option>
+                      {adminCourseOptions.map((course) => (
                         <option key={course.value} value={course.value}>{course.label}</option>
                       ))}
                     </select>
@@ -395,17 +395,18 @@ function AdminDashboard() {
               <h2>User Activity Logs</h2>
               <div className="admin-table-wrapper">
                 <table className="admin-table">
-                  <thead><tr><th>User</th><th>Email</th><th>Action</th><th>Details</th><th>Time</th></tr></thead>
+                  <thead><tr><th>User</th><th>Email</th><th>IP Address</th><th>Action</th><th>Details</th><th>Time</th></tr></thead>
                   <tbody>
                     {logs.length > 0 ? logs.map((log) => (
                       <tr key={log.id || `${log.user_id}-${log.created_at}`}>
                         <td>{log.name || 'Unknown'}</td>
                         <td>{log.user_email || 'N/A'}</td>
+                        <td>{log.ip_address || 'N/A'}</td>
                         <td><span className="badge-role admin">{log.action || 'activity'}</span></td>
                         <td>{getLogSummary(log)}</td>
                         <td>{log.created_at ? new Date(log.created_at).toLocaleString() : 'N/A'}</td>
                       </tr>
-                    )) : <tr><td colSpan="5" className="text-center">No logs found</td></tr>}
+                    )) : <tr><td colSpan="6" className="text-center">No logs found</td></tr>}
                   </tbody>
                 </table>
               </div>

@@ -66,6 +66,18 @@ const clearAllCookies = () => {
 };
 
 export const api = {
+  sendRegistrationOtp: async (email) => {
+    const res = await fetch(`${API_URL}/auth/register/send-otp`, {
+      method: 'POST',
+      credentials: 'omit',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    const data = await safeJson(res);
+    if (!res.ok) throw new Error(data.message || 'Unable to send verification code');
+    return data;
+  },
+
   // ===== REGISTER =====
   register: async (userData) => {
     let res;
@@ -113,12 +125,12 @@ export const api = {
   },
 
   // ===== GOOGLE - OAuth callback sync =====
-  oauthCallback: async (accessToken) => {
+  oauthCallback: async (accessToken, signupProfile = null) => {
     const res = await fetch(`${API_URL}/auth/oauth-callback`, {
       method: 'POST',
       credentials: 'omit',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ access_token: accessToken }),
+      body: JSON.stringify({ access_token: accessToken, signup_profile: signupProfile }),
     });
     const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'OAuth failed');
@@ -221,6 +233,7 @@ export const api = {
     const params = new URLSearchParams({ course: courseName });
     const res = await fetch(`${API_URL}/auth/papers?${params.toString()}`, {
       credentials: 'omit',
+      headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
     });
     const data = await safeJson(res);
     if (!res.ok) throw new Error(data.message || 'Failed to load papers');

@@ -1,16 +1,10 @@
-import { createClient } from '@supabase/supabase-js';
-
-// Supabase क्लाइंट इनिशियलाइज़ करें (यह आपके .env फ़ाइल के वेरिएबल्स का उपयोग करेगा)
-const supabase = createClient(
-  process.env.SUPABASE_URL || '', 
-  process.env.SUPABASE_ANON_KEY || ''
-);
+import { supabase } from '../utils/supabase.js';
 
 export const requireAuth = async (req, res, next) => {
   try {
     // 1. पोस्टमैन या फ्रंटएंड से आ रहे Authorization हेडर को निकालें
     const authHeader = req.headers.authorization;
-    
+
     // 2. चेक करें कि हेडर मौजूद है और 'Bearer ' से शुरू हो रहा है या नहीं
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({
